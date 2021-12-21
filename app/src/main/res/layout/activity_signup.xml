@@ -5,14 +5,15 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/back"
+    <ImageButton
+        android:id="@+id/backButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:padding="10dp"
         android:src="@drawable/back_icon"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +28,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
     <FrameLayout
         android:id="@+id/frame1"
@@ -45,7 +46,8 @@
             android:drawableStart="@drawable/email_icon"
             android:drawablePadding="10dp"
             android:hint="이메일 주소"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:inputType="text"/>
 
         <ImageView
             android:id="@+id/emailCheckIcon"

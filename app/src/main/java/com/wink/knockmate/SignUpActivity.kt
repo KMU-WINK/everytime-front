@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -14,6 +15,10 @@ import android.view.inputmethod.InputMethodManager
 
 
 class SignUpActivity : AppCompatActivity() {
+
+    private val backButton : ImageButton by lazy{
+        findViewById(R.id.backButton)
+    }
 
     private val editEmail : EditText by lazy{
         findViewById(R.id.signUpEmail)
@@ -38,6 +43,10 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
+
+        backButton.setOnClickListener {
+            //TODO 이전 화면으로 이동
+        }
 
         val passwordSlashedEye : ImageButton = findViewById(R.id.passwordSlashedEye)
         val passwordOpenedEye : ImageButton = findViewById(R.id.passwordOpenedEye)
@@ -188,7 +197,8 @@ class SignUpActivity : AppCompatActivity() {
         if(emailFlag && passwordFlag && passwordCheckFlag){
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
-                //TODO 버튼 누르면 다음 페이지로 이동
+                val intent : Intent = Intent(this,TermsActivity::class.java)
+                startActivity(intent)
             }
         }
     }

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:padding="10dp"
+        android:src="@drawable/back_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="56dp"
+        android:text="약관 동의"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+
+    <CheckBox
+        android:id="@+id/agreeAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="약관 전체동의"
+        android:buttonTint="#FF7A53"
+        app:layout_constraintBottom_toTopOf="@+id/termsOfService"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="#A8A8A8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/agreeAll" />
+
+    <CheckBox
+        android:id="@+id/termsOfService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="이용약관 동의 (필수)"
+        android:buttonTint="#FF7A53"
+        app:layout_constraintBottom_toTopOf="@+id/personalInfoCollection"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/personalInfoCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="개인정보 수집 및 이용 동의 (필수)"
+        android:buttonTint="#FF7A53"
+        app:layout_constraintBottom_toTopOf="@+id/marketingInfo"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/marketingInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="40dp"
+        android:text="혜택 및 마케팅 정보 수신 동의 (선택)"
+        android:buttonTint="#FF7A53"
+        app:layout_constraintBottom_toTopOf="@+id/appCompatButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/appCompatButton"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/signupbutton_background_gray"
+        android:text="확인"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
