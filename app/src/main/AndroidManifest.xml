@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate">
         <activity
-            android:name=".SignUpActivity"
+            android:name=".LogInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,7 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".TermsActivity"/>
         <activity android:name=".NicknameActivity"/>
+        <activity android:name=".SignUpActivity"/>
     </application>
 
 </manifest>
