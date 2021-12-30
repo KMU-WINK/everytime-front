@@ -111,6 +111,8 @@ class LogInActivity : AppCompatActivity() {
                                     Log.d("success", "success")
                                     // TODO 다음 화면으로 이동
                                 } else if(response.code() == 201){
+                                    Log.d("email", email)
+                                    Log.d("password", password)
                                     Log.d("log", "잘못된 이메일 또는 비밀번호")
                                     runOnUiThread {
                                         findViewById<TextView>(R.id.wrong).isVisible = true
@@ -122,7 +124,7 @@ class LogInActivity : AppCompatActivity() {
                                     Log.d("log", "로그인 실패")
                                 }
                             }
-                        }
+                        }.run()
                     }
                 })
             }
