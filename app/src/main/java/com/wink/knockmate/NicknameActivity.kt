@@ -3,15 +3,22 @@ package com.wink.knockmate
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.*
+import java.io.IOException
 
 class NicknameActivity : AppCompatActivity() {
+
+    lateinit var email : String
+    lateinit var password : String
 
     private val backButton : ImageButton by lazy{
         findViewById(R.id.backButton)
@@ -29,6 +36,9 @@ class NicknameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nickname)
 
+        email = intent.getStringExtra("email").toString()
+        password = intent.getStringExtra("password").toString()
+
         backButton.setOnClickListener {
             finish()
         }
@@ -44,15 +54,51 @@ class NicknameActivity : AppCompatActivity() {
         }
     }
 
-    fun activateButton(){
+    private fun activateButton(){
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
         nextButton.setOnClickListener {
-            // TODO 닉네임 서버로 전송
-            // TODO 다음 화면으로 이동
+            val client = OkHttpClient()
+            val body = FormBody.Builder()
+                .add("email", email)
+                .add("password", password)
+                .add("userid", editNickname.text.toString()).build()
+
+            val request : Request = Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded").url("http://3.35.146.57:3000/signup").post(body).build()
+
+            client.newCall(request).enqueue(object: Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread{
+                        Log.d("log",e.toString())
+                        Toast.makeText(this@NicknameActivity, "인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object: Thread() {
+                        override fun run() {
+                            if (response.code() == 200) {
+                                Log.d("email",email)
+                                Log.d("password",password)
+                                Log.d("nickname",editNickname.text.toString())
+                                // TODO 다음 화면으로 이동
+                            } else {
+                                runOnUiThread {
+                                    Toast.makeText(
+                                        this@NicknameActivity,
+                                        "회원가입 실패",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+                            }
+                        }
+                    }.run()
+                }
+            })
         }
     }
 
-    fun inactivateButton(){
+    private fun inactivateButton(){
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_gray)
         nextButton.setOnClickListener {}
     }

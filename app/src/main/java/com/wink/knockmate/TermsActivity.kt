@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 
 class TermsActivity : AppCompatActivity() {
 
+    lateinit var email : String
+    lateinit var password : String
+
     private val backButton : ImageButton by lazy{
         findViewById(R.id.backButton)
     }
@@ -37,6 +40,9 @@ class TermsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terms)
+
+        email = intent.getStringExtra("email").toString()
+        password = intent.getStringExtra("password").toString()
 
         backButton.setOnClickListener {
             finish()
@@ -76,6 +82,8 @@ class TermsActivity : AppCompatActivity() {
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
                 val intent : Intent = Intent(this, NicknameActivity::class.java)
+                intent.putExtra("email", email)
+                intent.putExtra("password", password)
                 startActivity(intent)
             }
         }

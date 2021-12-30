@@ -197,7 +197,9 @@ class SignUpActivity : AppCompatActivity() {
         if(emailFlag && passwordFlag && passwordCheckFlag){
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
-                val intent : Intent = Intent(this,TermsActivity::class.java)
+                val intent = Intent(this,TermsActivity::class.java)
+                intent.putExtra("email", editEmail.text.toString())
+                intent.putExtra("password", editPassword.text.toString())
                 startActivity(intent)
             }
         }
