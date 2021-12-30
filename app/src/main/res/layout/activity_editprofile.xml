@@ -62,14 +62,46 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/edit_nickname_background"
-        android:gravity="center"
+        android:hint="닉네임을 입력해주세요"
         android:inputType="text"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frameLayout7"
         tools:text="윤상원" />
+
+    <TextView
+        android:id="@+id/nicknameShort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="닉네임은 2자 이상 입력해주세요"
+        android:textColor="#D75750"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNickname" />
+
+    <TextView
+        android:id="@+id/nicknameLong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="닉네임은 12자 이하로 입력해주세요"
+        android:textColor="#D75750"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNickname" />
+
+    <TextView
+        android:id="@+id/nicknameFormWrong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="닉네임은 띄어쓰기 없이 한글, 영문, 숫자만 가능해요"
+        android:textColor="#D75750"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editNickname" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/nextButton"
