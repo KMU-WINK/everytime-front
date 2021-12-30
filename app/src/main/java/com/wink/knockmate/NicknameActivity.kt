@@ -7,11 +7,9 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import okhttp3.*
 import java.io.IOException
 
@@ -32,6 +30,22 @@ class NicknameActivity : AppCompatActivity() {
         findViewById(R.id.nextButton)
     }
 
+    private val message : TextView by lazy{
+        findViewById(R.id.message)
+    }
+
+    private val short : TextView by lazy{
+        findViewById(R.id.nicknameShort)
+    }
+
+    private val long : TextView by lazy{
+        findViewById(R.id.nicknameLong)
+    }
+
+    private val wrong : TextView by lazy{
+        findViewById(R.id.nicknameFormWrong)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_nickname)
@@ -46,6 +60,10 @@ class NicknameActivity : AppCompatActivity() {
         editNickname.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             if(!hasFocus){
                 if (editNickname.text.toString().isNotEmpty()){
+                    short.isVisible = false
+                    long.isVisible = false
+                    wrong.isVisible = false
+                    message.isVisible = true
                     activateButton()
                 } else{
                     inactivateButton()
@@ -54,47 +72,80 @@ class NicknameActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkNickname() : String { // 닉네임이 유효한지 검사
+        val nickname = editNickname.text.toString()
+        if(nickname.replace(" ","").length != nickname.length){
+            return "Wrong"
+        } else if(nickname.length < 2){
+            return "Short"
+        } else if(nickname.length > 12) {
+            return "Long"
+        } else {
+            return "OK"
+        }
+    }
+
     private fun activateButton(){
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
         nextButton.setOnClickListener {
-            val client = OkHttpClient()
-            val body = FormBody.Builder()
-                .add("email", email)
-                .add("password", password)
-                .add("userid", editNickname.text.toString()).build()
+            if(checkNickname() == "OK") {
+                val client = OkHttpClient()
+                val body = FormBody.Builder()
+                    .add("email", email)
+                    .add("password", password)
+                    .add("userid", editNickname.text.toString()).build()
 
-            val request : Request = Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded").url("http://3.35.146.57:3000/signup").post(body).build()
+                val request: Request =
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/signup").post(body).build()
 
-            client.newCall(request).enqueue(object: Callback{
-                override fun onFailure(call: Call, e: IOException) {
-                    runOnUiThread{
-                        Log.d("log",e.toString())
-                        Toast.makeText(this@NicknameActivity, "인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        runOnUiThread {
+                            Log.d("log", e.toString())
+                            Toast.makeText(
+                                this@NicknameActivity,
+                                "인터넷 연결이 불안정합니다. 다시 시도해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
 
-                override fun onResponse(call: Call, response: Response) {
-                    object: Thread() {
-                        override fun run() {
-                            if (response.code() == 200) {
-                                Log.d("email",email)
-                                Log.d("password",password)
-                                Log.d("nickname",editNickname.text.toString())
-                                // TODO 다음 화면으로 이동
-                            } else {
-                                runOnUiThread {
-                                    Toast.makeText(
-                                        this@NicknameActivity,
-                                        "회원가입 실패",
-                                        Toast.LENGTH_SHORT
-                                    )
-                                        .show()
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    Log.d("email", email)
+                                    Log.d("password", password)
+                                    Log.d("nickname", editNickname.text.toString())
+                                    // TODO 다음 화면으로 이동
+                                } else {
+                                    runOnUiThread {
+                                        Toast.makeText(
+                                            this@NicknameActivity,
+                                            "회원가입 실패",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                            .show()
+                                    }
                                 }
                             }
-                        }
-                    }.run()
-                }
-            })
+                        }.run()
+                    }
+                })
+            } else if(checkNickname() == "Wrong"){
+                message.isVisible = false
+                wrong.isVisible = true
+                inactivateButton()
+            } else if(checkNickname() == "Short"){
+                message.isVisible = false
+                short.isVisible = true
+                inactivateButton()
+            } else if(checkNickname() == "Long"){
+                message.isVisible = false
+                long.isVisible = true
+                inactivateButton()
+            }
         }
     }
 
