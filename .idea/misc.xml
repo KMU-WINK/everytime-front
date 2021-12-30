@@ -6,7 +6,9 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/button_background_white.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/custom_checkbox.xml" value="0.14814814814814814" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/default_profile.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/edit_nickname_background.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/email.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/human_icon.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/lock_icon.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/right_arrow.xml" value="0.38229166666666664" />
@@ -15,6 +17,7 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_gray.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/toggle_off.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/toggle_selector.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_editprofile.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_nickname.xml" value="0.33" />
