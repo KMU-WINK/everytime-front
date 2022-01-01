@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.InputType
@@ -109,6 +110,14 @@ class LogInActivity : AppCompatActivity() {
                                     Log.d("email", email)
                                     Log.d("password", password)
                                     Log.d("success", "success")
+
+                                    // 자동 로그인을 위해 로그인한 이메일과 비밀번호를 preference에 저장
+                                    val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
+                                    val editor = pref.edit()
+                                    editor.putString("email",email)
+                                    editor.putString("password",password)
+                                    editor.apply()
+
                                     // TODO 다음 화면으로 이동
                                 } else if(response.code() == 201){
                                     Log.d("email", email)
