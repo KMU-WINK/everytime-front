@@ -74,7 +74,7 @@ class NicknameActivity : AppCompatActivity() {
 
     private fun checkNickname() : String { // 닉네임이 유효한지 검사
         val nickname = editNickname.text.toString()
-        if(nickname.replace(" ","").length != nickname.length){
+        if(!isValid(nickname)){ // 닉네임 형식이 유효하지 않으면
             return "Wrong"
         } else if(nickname.length < 2){
             return "Short"
@@ -83,6 +83,19 @@ class NicknameActivity : AppCompatActivity() {
         } else {
             return "OK"
         }
+    }
+
+    private fun isValid(str : String) : Boolean{ // 닉네임이 한글, 영어, 숫자로만 이루어져있는지 확인
+        var i = 0
+        while(i < str.length){
+            val c = str.codePointAt(i)
+            if(c in 0xAC00..0xD800 || c in 0x0041..0x005A || c in 0x0061..0x007A || c in 0x0030..0x0039){
+                i += Character.charCount(c)
+            } else {
+                return false
+            }
+        }
+        return true
     }
 
     private fun activateButton(){
