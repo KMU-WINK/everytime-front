@@ -12,6 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import org.w3c.dom.Text
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -82,16 +83,24 @@ class SignUpActivity : AppCompatActivity() {
         editEmail.onFocusChangeListener = View.OnFocusChangeListener{ v, hasFocus ->
             if(!hasFocus){ //이메일 입력 후 포커스를 잃은 뒤 이메일이 유효한지 체크
                 val inputEmail : String = editEmail.text.toString()
-                if(checkEmail(inputEmail)){
+                if(checkEmail(inputEmail) == "OK"){
                     val checkIcon : ImageView = findViewById(R.id.emailCheckIcon)
                     checkIcon.isVisible = true
 
                     emailFlag = true
                     activateButton()
-                } else{
+                } else if(checkEmail(inputEmail) == "wrong"){
                     val xIcon : ImageView = findViewById(R.id.emailXIcon)
                     xIcon.isVisible = true
-                    val unavailableEmail : TextView = findViewById(R.id.unavailableEmail)
+                    val wrongEmail : TextView = findViewById(R.id.wrongEmail)
+                    wrongEmail.isVisible = true // "올바르지 않은 이메일 형식입니다." 문구를 띄움
+
+                    emailFlag = false
+                    inactivateButton()
+                } else if(checkEmail(inputEmail) == "already"){
+                    val xIcon : ImageView = findViewById(R.id.emailXIcon)
+                    xIcon.isVisible = true
+                    val unavailableEmail : TextView = findViewById(R.id.alreadyExist)
                     unavailableEmail.isVisible = true // "이미 가입되어 있는 이메일입니다." 문구를 띄움
 
                     emailFlag = false
@@ -193,7 +202,7 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun activateButton(){ // 모든 정보를 기입 했는지 확인 후 버튼 활성화 여부를 결정한다.
+    private fun activateButton(){ // 모든 정보를 기입 했는지 확인 후 버튼 활성화 여부를 결정한다.
         if(emailFlag && passwordFlag && passwordCheckFlag){
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
@@ -205,17 +214,16 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun inactivateButton(){ // 버튼이 활성화 된 후 버튼을 다시 비활성화 해야할 때 사용되는 함수
+    private fun inactivateButton(){ // 버튼이 활성화 된 후 버튼을 다시 비활성화 해야할 때 사용되는 함수
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_gray)
         nextButton.setOnClickListener{}
     }
 
-    fun checkEmail(email : String) : Boolean{
-        //TODO 유효한 이메일 주소인지 확인
-        //TODO 이미 가입되어 있는 이메일 주소인지 확인
-        //TODO 가입되지 않은 이메일이면 true 반환
-        //TODO 가입된 이메일이면 false 반환
-        return true
+    private fun checkEmail(email : String) : String{
+        //TODO 가입되지 않은 이메일이고 유효한 형식이면 "OK" 반환
+        //TODO 유효하지 않은 이메일 형식이면 "wrong" 반환
+        //TODO 가입된 이메일이면 "already" 반환
+        return "OK"
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean { // 현재 포커스된 뷰의 영역이 아닌 다른 곳을 클릭 시 키보드를 내리고 포커스를 해제한다.
