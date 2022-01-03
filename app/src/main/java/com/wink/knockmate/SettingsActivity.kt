@@ -7,11 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 
 class SettingsActivity : AppCompatActivity() {
 
-    private val editProfileButton : Button = findViewById(R.id.editProfileButton)
+    private val editProfileButton : Button by lazy{
+        findViewById(R.id.editProfileButton)
+    }
 
-    private val editEmailButton : Button = findViewById(R.id.changeEmail)
+    private val editEmailButton : Button by lazy{
+        findViewById(R.id.changeEmail)
+    }
 
-    private val editPasswordButton : Button = findViewById(R.id.changePassword)
+    private val editPasswordButton : Button by lazy{
+        findViewById(R.id.changePassword)
+    } 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
