@@ -56,7 +56,7 @@
                 android:text=""
                 android:textColor="#000000"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/profile"
+                app:layout_constraintStart_toEndOf="@+id/profileImage"
                 app:layout_constraintTop_toBottomOf="@+id/textView5"
                 tools:text="윤상원"/>
 
@@ -67,12 +67,12 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
                 android:text=""
-                app:layout_constraintStart_toEndOf="@+id/profile"
+                app:layout_constraintStart_toEndOf="@+id/profileImage"
                 app:layout_constraintTop_toBottomOf="@+id/userName"
                 tools:text="yoonsw0532@naver.com" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/appCompatButton2"
+                android:id="@+id/editProfileButton"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 android:layout_marginStart="16dp"
@@ -83,7 +83,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile" />
+                app:layout_constraintTop_toBottomOf="@+id/profileImage" />
 
             <FrameLayout
                 android:id="@+id/frameLayout1"
@@ -92,7 +92,7 @@
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appCompatButton2">
+                app:layout_constraintTop_toBottomOf="@+id/editProfileButton">
 
                 <TextView
                     android:layout_width="wrap_content"
