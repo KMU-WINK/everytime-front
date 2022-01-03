@@ -77,7 +77,7 @@ class TermsActivity : AppCompatActivity() {
         }
     }
 
-    fun activateButton(){
+    private fun activateButton(){
         if(termsOfService.isChecked && personalInfo.isChecked){
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
@@ -89,7 +89,7 @@ class TermsActivity : AppCompatActivity() {
         }
     }
 
-    fun inactivateButton(){
+    private fun inactivateButton(){
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_gray)
         nextButton.setOnClickListener {}
     }
