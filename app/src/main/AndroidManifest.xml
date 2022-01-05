@@ -23,6 +23,9 @@
         <activity android:name=".NicknameActivity"/>
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".LogInActivity"/>
+        <activity android:name=".EditProfileActivity"/>
+        <activity android:name=".EditEmailActivity"/>
+        <activity android:name=".EditPasswordActivity"/>
     </application>
 
 </manifest>

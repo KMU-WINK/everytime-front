@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.15092592592592594" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/custom_checkbox.xml" value="0.14814814814814814" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/email.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
@@ -19,6 +20,7 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_settings.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/edit_profileimage_bottom_sheet.xml" value="0.5" />
       </map>
     </option>
   </component>
