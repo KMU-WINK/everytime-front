@@ -12,7 +12,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import okhttp3.*
 import org.w3c.dom.Text
+import java.io.IOException
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -83,29 +85,7 @@ class SignUpActivity : AppCompatActivity() {
         editEmail.onFocusChangeListener = View.OnFocusChangeListener{ v, hasFocus ->
             if(!hasFocus){ //이메일 입력 후 포커스를 잃은 뒤 이메일이 유효한지 체크
                 val inputEmail : String = editEmail.text.toString()
-                if(checkEmail(inputEmail) == "OK"){
-                    val checkIcon : ImageView = findViewById(R.id.emailCheckIcon)
-                    checkIcon.isVisible = true
-
-                    emailFlag = true
-                    activateButton()
-                } else if(checkEmail(inputEmail) == "wrong"){
-                    val xIcon : ImageView = findViewById(R.id.emailXIcon)
-                    xIcon.isVisible = true
-                    val wrongEmail : TextView = findViewById(R.id.wrongEmail)
-                    wrongEmail.isVisible = true // "올바르지 않은 이메일 형식입니다." 문구를 띄움
-
-                    emailFlag = false
-                    inactivateButton()
-                } else if(checkEmail(inputEmail) == "already"){
-                    val xIcon : ImageView = findViewById(R.id.emailXIcon)
-                    xIcon.isVisible = true
-                    val unavailableEmail : TextView = findViewById(R.id.alreadyExist)
-                    unavailableEmail.isVisible = true // "이미 가입되어 있는 이메일입니다." 문구를 띄움
-
-                    emailFlag = false
-                    inactivateButton()
-                }
+                checkEmail(inputEmail)
             }
         }
 
@@ -219,11 +199,69 @@ class SignUpActivity : AppCompatActivity() {
         nextButton.setOnClickListener{}
     }
 
-    private fun checkEmail(email : String) : String{
-        //TODO 가입되지 않은 이메일이고 유효한 형식이면 "OK" 반환
-        //TODO 유효하지 않은 이메일 형식이면 "wrong" 반환
-        //TODO 가입된 이메일이면 "already" 반환
-        return "OK"
+    private fun checkEmail(email : String){
+        val checkIcon : ImageView = findViewById(R.id.emailCheckIcon)
+        val xIcon : ImageView = findViewById(R.id.emailXIcon)
+        val wrongEmail : TextView = findViewById(R.id.wrongEmail)
+        val unavailableEmail : TextView = findViewById(R.id.alreadyExist)
+
+        val client = OkHttpClient()
+        val body = FormBody.Builder()
+            .add("email", email).build()
+
+        val request : Request = Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded").url("http://3.35.146.57:3000/check").post(body).build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(
+                        this@SignUpActivity,
+                        "인터넷 연결이 불안정합니다. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                object: Thread(){
+                    override fun run() {
+                        if(response.code() == 200){
+                            if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                                runOnUiThread {
+                                    checkIcon.isVisible = true
+                                    xIcon.isVisible = false
+                                    wrongEmail.isVisible = false
+                                    unavailableEmail.isVisible = false
+
+                                    emailFlag = true
+                                    activateButton()
+                                }
+                            } else{
+                                runOnUiThread {
+                                    xIcon.isVisible = true
+                                    wrongEmail.isVisible = true // "올바르지 않은 이메일 형식입니다." 문구를 띄움
+                                    checkIcon.isVisible = false
+                                    unavailableEmail.isVisible = false
+
+                                    emailFlag = false
+                                    inactivateButton()
+                                }
+                            }
+                        } else if(response.code() == 201){
+                            runOnUiThread {
+                                xIcon.isVisible = true
+                                unavailableEmail.isVisible = true // "이미 가입되어 있는 이메일입니다." 문구를 띄움
+                                checkIcon.isVisible = false
+                                wrongEmail.isVisible = false
+
+                                emailFlag = false
+                                inactivateButton()
+                            }
+                        }
+                    }
+                }.run()
+            }
+        })
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean { // 현재 포커스된 뷰의 영역이 아닌 다른 곳을 클릭 시 키보드를 내리고 포커스를 해제한다.
