@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/selectPhoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -14,20 +15,21 @@
         android:text="앨범에서 선택"/>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deletePhoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:gravity="left|center"
         android:paddingStart="15dp"
-        android:text="프로필 사진 삭제"/>
+        android:text="프로필 사진 삭제" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cancel_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@android:color/transparent"
         android:gravity="left|center"
-        android:onClick="close"
         android:paddingStart="15dp"
         android:text="취소"
         android:textColor="#FF8080"/>

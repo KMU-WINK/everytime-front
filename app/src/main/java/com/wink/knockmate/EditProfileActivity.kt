@@ -2,6 +2,7 @@ package com.wink.knockmate
 
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -11,7 +12,7 @@ import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.w3c.dom.Text
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.OnDataPassListener {
 
     private val backButton : ImageButton by lazy{
         findViewById(R.id.backButton)
@@ -49,7 +50,7 @@ class EditProfileActivity : AppCompatActivity() {
             finish()
         }
 
-        val imageFlag = false
+        val imageFlag = true
 
         // TODO 서버에서 기존 프로필 사진 가져오기
         // TODO 프로필 사진 있으면 imageFlag 값을 true로 변경
@@ -58,10 +59,9 @@ class EditProfileActivity : AppCompatActivity() {
         userImage.setOnClickListener {
             // TODO 프로필 사진 있는 경우 (imageFlag 이용해서 판별) 앨범에서 선택 / 프로필 사진 삭제 선택 기능
             if(imageFlag){
-                val bottomSheetView = layoutInflater.inflate(R.layout.edit_profileimage_bottom_sheet, null)
-                val bottomSheetDialog = BottomSheetDialog(this,R.style.BottomSheet)
-                bottomSheetDialog.setContentView(bottomSheetView)
-                bottomSheetDialog.show()
+                val bottomSheetFragment = BottomSheetFragment_settings(applicationContext)
+
+                bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag) // bottom sheet fragment를 보여준다.
             }
 
             // TODO 프로필 사진 없는 경우 바로 앨범으로 전환
@@ -92,16 +92,8 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun deleteProfileImage(v : View){
-        // TODO 프로필 사진을 삭제한다.
-    }
-
-    fun selectImage(v : View){
-        // TODO 앨범에서 이미지를 선택한다.
-    }
-
-    fun close(v : View){
-        // TODO bottom_sheet이 꺼지도록 한다.
+    override fun onDataPass(data : String?){
+        Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
     }
 
     private fun checkNickname() : String { // 닉네임이 유효한지 검사
