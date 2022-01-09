@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/drawable/bt_border.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/drawable/search.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/layout/activity_create_group.xml" value="0.19078679345157043" />
+        <entry key="app/src/main/res/layout/activity_invite_group_mem.xml" value="0.3027080064696513" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
+        <entry key="app/src/main/res/layout/invite_profile_item.xml" value="0.4792514239218877" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

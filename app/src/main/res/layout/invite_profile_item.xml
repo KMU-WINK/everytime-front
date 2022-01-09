@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/recycleProfilePic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/profile_pic"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:id="@+id/recycleProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="신재혁"
+            android:textSize="14sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"/>
+        <ImageButton
+            android:id="@+id/btRecycleProfileCheck"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="260dp"
+            android:src="@drawable/false_radio"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="15dp"/>
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

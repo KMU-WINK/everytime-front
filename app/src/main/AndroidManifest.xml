@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate">
         <activity
+            android:name=".InviteGroupMemActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
