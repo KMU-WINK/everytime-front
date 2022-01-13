@@ -1,7 +1,11 @@
 package com.wink.knockmate
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -9,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.w3c.dom.Text
@@ -51,7 +56,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
             finish()
         }
 
-        val imageFlag = true
+        val imageFlag = false
 
         // TODO 서버에서 기존 프로필 사진 가져오기
         // TODO 프로필 사진 있으면 imageFlag 값을 true로 변경
@@ -63,6 +68,20 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                 val bottomSheetFragment = BottomSheetFragment_settings(applicationContext)
 
                 bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag) // bottom sheet fragment를 보여준다.
+            } else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    when{
+                        ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ->{
+                            navigatePhotos()
+                        }
+                        shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+                            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),2000)
+                        }
+                        else -> {
+                            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),2000)
+                        }
+                    }
+                }
             }
 
             // TODO 프로필 사진 없는 경우 바로 앨범으로 전환
@@ -95,6 +114,51 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
 
     override fun onDataPass(data : Uri?){
         userImage.setImageURI(data)
+    }
+
+    private fun navigatePhotos(){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        startActivityForResult(intent,1000)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode != Activity.RESULT_OK){
+            return
+        }
+
+        when(requestCode){
+            1000 -> {
+                val selectedImageUri : Uri? = data?.data
+                if(selectedImageUri != null){
+                    userImage.setImageURI(selectedImageUri)
+                } else{
+                    Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            } else -> {
+            Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+        }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when(requestCode){
+            2000 -> {
+                if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    navigatePhotos()
+                } else{
+                    Toast.makeText(this, "권한을 거절하셨습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun checkNickname() : String { // 닉네임이 유효한지 검사
