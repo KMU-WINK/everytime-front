@@ -62,11 +62,11 @@
         app:layout_constraintTop_toBottomOf="@+id/tempEmail">
 
         <EditText
-            android:inputType="text"
             android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="새 이메일 주소" />
+            android:hint="새 이메일 주소"
+            android:inputType="text" />
 
         <ImageView
             android:id="@+id/emailXIcon"
@@ -93,6 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="이미 가입되어 있는 이메일입니다."
+        android:textSize="10sp"
         android:textColor="#D75750"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,11 +124,11 @@
         app:layout_constraintTop_toBottomOf="@+id/editEmailWrapper">
 
         <EditText
-            android:inputType="textPassword"
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="비밀번호"/>
+            android:hint="비밀번호"
+            android:inputType="textPassword"/>
 
         <ImageView
             android:id="@+id/passwordXIcon"
