@@ -1,6 +1,7 @@
 package com.wink.knockmate
 
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -92,8 +93,8 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         }
     }
 
-    override fun onDataPass(data : String?){
-        Toast.makeText(this,data,Toast.LENGTH_SHORT).show()
+    override fun onDataPass(data : Uri?){
+        userImage.setImageURI(data)
     }
 
     private fun checkNickname() : String { // 닉네임이 유효한지 검사
