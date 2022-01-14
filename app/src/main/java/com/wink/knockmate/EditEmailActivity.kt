@@ -67,7 +67,7 @@ class EditEmailActivity : AppCompatActivity() {
         // TODO 현재 이메일 주소를 currentEmail의 text에 넣어준다.
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         // email = pref.getString("email", "") // login branch와 merge하면 추가
-        email = "yoonsw0532@naver.com"
+        email = "iandr0805@gmail.com" // 임시 테스트용
         currentEmail.text = email
 
         editEmail.onFocusChangeListener = View.OnFocusChangeListener{ _, hasFocus ->
@@ -186,9 +186,9 @@ class EditEmailActivity : AppCompatActivity() {
 
             override fun onResponse(call: okhttp3.Call, response: Response) {
                 object: Thread(){
-                    override fun run() {
-                        if(response.code() == 200){
-                            if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                    override fun run() {android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                        if(android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                            if(response.code() == 200){
                                 runOnUiThread {
                                     checkIcon.isVisible = true
                                     xIcon.isVisible = false
@@ -198,23 +198,23 @@ class EditEmailActivity : AppCompatActivity() {
                                     emailFlag = true
                                     activateButton()
                                 }
-                            } else{
+                            } else if(response.code() == 201){
                                 runOnUiThread {
                                     xIcon.isVisible = true
-                                    wrongEmail.isVisible = true // "올바르지 않은 이메일 형식입니다." 문구를 띄움
+                                    unavailableEmail.isVisible = true // "이미 가입되어 있는 이메일입니다." 문구를 띄움
                                     checkIcon.isVisible = false
-                                    unavailableEmail.isVisible = false
+                                    wrongEmail.isVisible = false
 
                                     emailFlag = false
                                     inactivateButton()
                                 }
                             }
-                        } else if(response.code() == 201){
+                        } else{
                             runOnUiThread {
                                 xIcon.isVisible = true
-                                unavailableEmail.isVisible = true // "이미 가입되어 있는 이메일입니다." 문구를 띄움
+                                wrongEmail.isVisible = true // "올바르지 않은 이메일 형식입니다." 문구를 띄움
                                 checkIcon.isVisible = false
-                                wrongEmail.isVisible = false
+                                unavailableEmail.isVisible = false
 
                                 emailFlag = false
                                 inactivateButton()
@@ -230,14 +230,15 @@ class EditEmailActivity : AppCompatActivity() {
         if(emailFlag && passwordFlag){
             nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
             nextButton.setOnClickListener {
+                val newEmail = editEmail.text.toString()
                 // 서버로 변경된 이메일 전달
                 val client = OkHttpClient()
                 val body = FormBody.Builder()
-                    .add("targetEmail", email)
-                    .add("email", editEmail.text.toString())
+                    .add("targetEmail", newEmail)
+                    .add("email", email)
                     .build()
 
-                val request = Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded").url("http://3.35.146.57:3000/email").post(body).build()
+                val request = Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded").url("http://3.35.146.57:3000/email").put(body).build()
 
                 client.newCall(request).enqueue(object : Callback{
                     override fun onFailure(call: okhttp3.Call, e: IOException) {
@@ -251,8 +252,23 @@ class EditEmailActivity : AppCompatActivity() {
                     }
 
                     override fun onResponse(call: okhttp3.Call, response: Response) {
-                        // TODO 응답코드에 따라 예외 처리
-                        // TODO preference에 수정된 이메일 다시 저장하기
+                        if(response.code() == 200){
+                            val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
+                            val editor = pref.edit()
+                            editor.putString("email", newEmail)
+                            editor.apply()
+                            runOnUiThread {
+                                Toast.makeText(this@EditEmailActivity, "이메일이 변경되었습니다.", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        } else{
+                            runOnUiThread {
+                                Log.d("code", response.code().toString())
+                                Log.d("email", email)
+                                Toast.makeText(this@EditEmailActivity, "오류가 발생했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        }
                     }
                 })
             }
