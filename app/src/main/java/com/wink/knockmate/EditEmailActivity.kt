@@ -140,7 +140,7 @@ class EditEmailActivity : AppCompatActivity() {
                                     } else if (response.code() == 201) {
                                         Log.d("email", email)
                                         Log.d("password", password)
-                                        Log.d("log", "잘못된 이메일 또는 비밀번호")
+                                        Log.d("log", "잘못된 비밀번호")
 
                                         passwordFlag = false
                                         runOnUiThread {
@@ -150,7 +150,7 @@ class EditEmailActivity : AppCompatActivity() {
                                             inactivateButton()
                                         }
                                     } else {
-                                        Log.d("log", "로그인 실패")
+                                        Log.d("log", "기존 비밀번호와 일치하지 않음")
                                     }
                                 }
                             }.run()
