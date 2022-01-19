@@ -169,39 +169,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/view1" />
 
             <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
-                android:text="앱 잠금"
-                android:textColor="#000000"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <ToggleButton
-                android:id="@+id/lockButton"
-                android:layout_width="40dp"
-                android:layout_height="28dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/toggle_selector"
-                android:text=""
-                android:textOff=""
-                android:textOn=""
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/alarmSettingButton" />
-
-            <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:text="이메일로 검색 허용"
+                android:text="노크 메이트 검색 허용"
                 android:textColor="#000000"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
             <ToggleButton
                 android:id="@+id/searchSettingButton"
@@ -214,7 +190,7 @@
                 android:textOff=""
                 android:textOn=""
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lockButton"/>
+                app:layout_constraintTop_toBottomOf="@+id/alarmSettingButton"/>
 
             <View
                 android:id="@+id/view2"
