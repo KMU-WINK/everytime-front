@@ -2,20 +2,22 @@ package com.wink.knockmate
 
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
 import java.io.IOException
 
 class SettingsActivity : AppCompatActivity() {
+
+    private val profileImage : ImageView by lazy{
+        findViewById(R.id.profileImage)
+    }
 
     private val editProfileButton : Button by lazy{
         findViewById(R.id.editProfileButton)
@@ -41,6 +43,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+        initViews()
+
         editProfileButton.setOnClickListener {
             initEditProfileButton()
         }
@@ -60,6 +64,35 @@ class SettingsActivity : AppCompatActivity() {
         deleteAccountButton.setOnClickListener {
             initDeleteAccountButton()
         }
+    }
+
+    private fun initViews(){
+        val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
+        // val email = pref.getString("email", "") // login branch와 merge하면 추가
+        val email = "dy@naver.com" // 임시 테스트용
+        val client = OkHttpClient()
+        val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
+
+        client.newCall(request).enqueue(object:Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "인터넷 연결 불안정")
+                runOnUiThread {
+                    Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code() == 200){
+                    Log.d("log", "프로필 이미지 다운로드 성공")
+                    val bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
+                    runOnUiThread{
+                        profileImage.setImageBitmap(bitmap)
+                    }
+                } else{
+                    Log.d("log", "프로필 이미지 다운로드 실패")
+                }
+            }
+        })
     }
 
     private fun initEditProfileButton(){
