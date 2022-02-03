@@ -11,12 +11,29 @@ import android.view.Window
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
+import org.json.JSONObject
+import org.w3c.dom.Text
 import java.io.IOException
 
 class SettingsActivity : AppCompatActivity() {
 
+    private val pref by lazy{
+        getSharedPreferences("loginInfo", MODE_PRIVATE)
+    }
+    //private val email by lazy{
+    //    pref.getString("email", "")
+    //} // login branch와 merge하면 추가
+
     private val profileImage : ImageView by lazy{
         findViewById(R.id.profileImage)
+    }
+
+    private val userName : TextView by lazy{
+        findViewById(R.id.userName)
+    }
+
+    private val userEmail : TextView by lazy{
+        findViewById(R.id.userEmail)
     }
 
     private val editProfileButton : Button by lazy{
@@ -67,15 +84,13 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initViews(){
-        val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
-        // val email = pref.getString("email", "") // login branch와 merge하면 추가
-        val email = "dy@naver.com" // 임시 테스트용
+        var email = "dy@naver.com" // 임시 테스트용
         val client = OkHttpClient()
         val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
 
         client.newCall(request).enqueue(object:Callback{
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("log", "인터넷 연결 불안정")
+                Log.d("log", "프로필 이미지 정보 수신 도중 인터넷 연결 불안정")
                 runOnUiThread {
                     Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                 }
@@ -90,6 +105,37 @@ class SettingsActivity : AppCompatActivity() {
                     }
                 } else{
                     Log.d("log", "프로필 이미지 다운로드 실패")
+                }
+            }
+        })
+
+        // TODO 프로필에 닉네임, 이메일 보여주기
+        email = "test" // 임시 테스트용
+        val userInfoRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
+
+        client.newCall(userInfoRequest).enqueue(object: Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "닉네임, 이메일 정보 수신 도중 인터넷 연결 불안정")
+                runOnUiThread {
+                    Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code() == 200){
+                    Log.d("log", "닉네임 정보 다운로드 성공")
+                    // TODO json 빈거 예외처리
+                    val jsonObject = JSONObject(response.body()?.string())
+                    Log.d("log", jsonObject.toString())
+                    val jsonArray = jsonObject.getJSONArray("data")
+                    Log.d("log", jsonArray.toString())
+                    val targetObject = jsonArray.getJSONObject(0)
+                    runOnUiThread {
+                        userName.text = targetObject.getString("nickname")
+                        userEmail.text = email
+                    }
+                } else{
+                    Log.d("log", "닉네임 정보 다운로드 실패")
                 }
             }
         })
@@ -127,7 +173,6 @@ class SettingsActivity : AppCompatActivity() {
         positiveButton.text = "로그아웃"
         positiveButton.setOnClickListener {
             // preference에 자동 로그인을 위해 저장된 이메일과 비밀번호 정보를 초기화
-            val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
             val editor = pref.edit()
             editor.putString("email","")
             editor.putString("password","")
@@ -165,8 +210,6 @@ class SettingsActivity : AppCompatActivity() {
         }
         positiveButton.text = "확인"
         positiveButton.setOnClickListener {
-            val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
-            // val email = pref.getString("email", "")
             val email = "iandr0805@gmail.com" // 임시 테스트용 이메일
 
             val client = OkHttpClient()
