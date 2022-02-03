@@ -16,9 +16,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import okhttp3.*
+import org.json.JSONObject
 import org.w3c.dom.Text
+import java.io.IOException
 
 class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.OnDataPassListener {
+
+    private val pref by lazy{
+        getSharedPreferences("loginInfo", MODE_PRIVATE)
+    }
+
+    //private val email by lazy{
+    //    pref.getString("email", "")
+    //} // login branch와 merge하면 추가
+
+    private val email = "test" // 임시 테스트용 이메일
 
     private val backButton : ImageButton by lazy{
         findViewById(R.id.backButton)
@@ -88,8 +101,33 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
             // TODO 선택된 사진을 userImage에 올리기
         }
 
-        // TODO 서버에서 기존 닉네임 가져오기
-        // TODO editNickname.text에 기본값으로 기존 닉네임 넣어주기
+        // 서버에서 기존 닉네임 가져오기
+        val client = OkHttpClient()
+        val request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
+
+        client.newCall(request).enqueue(object : Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "닉네임 정보 수신 도중 인터넷 연결 불안정")
+                runOnUiThread {
+                    Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code() == 200){
+                    Log.d("log", "닉네임 정보 수신 성공")
+                    val jsonObject = JSONObject(response.body()?.string())
+                    val jsonArray = jsonObject.getJSONArray("data")
+                    val targetObject = jsonArray.getJSONObject(0)
+                    runOnUiThread {
+                        // editNickname.text에 기본값으로 기존 닉네임 넣어주기
+                        editNickname.setText(targetObject.getString("nickname"))
+                    }
+                } else{
+
+                }
+            }
+        })
 
         editNickname.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus){

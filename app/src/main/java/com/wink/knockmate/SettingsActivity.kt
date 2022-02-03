@@ -84,7 +84,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initViews(){
-        var email = "dy@naver.com" // 임시 테스트용
+        var email = "test@test.com" // 임시 테스트용
         val client = OkHttpClient()
         val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
 
@@ -104,12 +104,13 @@ class SettingsActivity : AppCompatActivity() {
                         profileImage.setImageBitmap(bitmap)
                     }
                 } else{
+                    Log.d("response code", response.code().toString())
                     Log.d("log", "프로필 이미지 다운로드 실패")
                 }
             }
         })
 
-        // TODO 프로필에 닉네임, 이메일 보여주기
+        // 프로필에 닉네임, 이메일 보여주기
         email = "test" // 임시 테스트용
         val userInfoRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
 
@@ -123,12 +124,10 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 if(response.code() == 200){
-                    Log.d("log", "닉네임 정보 다운로드 성공")
+                    Log.d("log", "닉네임 정보 수신 성공")
                     // TODO json 빈거 예외처리
                     val jsonObject = JSONObject(response.body()?.string())
-                    Log.d("log", jsonObject.toString())
                     val jsonArray = jsonObject.getJSONArray("data")
-                    Log.d("log", jsonArray.toString())
                     val targetObject = jsonArray.getJSONObject(0)
                     runOnUiThread {
                         userName.text = targetObject.getString("nickname")
