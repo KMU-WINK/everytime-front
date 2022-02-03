@@ -106,7 +106,9 @@ class NicknameActivity : AppCompatActivity() {
                 val body = FormBody.Builder()
                     .add("email", email)
                     .add("password", password)
-                    .add("userid", editNickname.text.toString()).build()
+                    .add("nickname", editNickname.text.toString())
+                    .add("color", "1") // TODO 임시 테스트용
+                    .build()
 
                 val request: Request =
                     Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
@@ -134,6 +136,10 @@ class NicknameActivity : AppCompatActivity() {
                                     // TODO 다음 화면으로 이동
                                 } else {
                                     runOnUiThread {
+                                        Log.d("response code", response.code().toString())
+                                        Log.d("email", email)
+                                        Log.d("password", password)
+                                        Log.d("nickname", editNickname.text.toString())
                                         Toast.makeText(
                                             this@NicknameActivity,
                                             "회원가입 실패",
