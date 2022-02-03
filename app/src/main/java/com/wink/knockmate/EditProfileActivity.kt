@@ -31,7 +31,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
     //    pref.getString("email", "")
     //} // login branch와 merge하면 추가
 
-    private val email = "test" // 임시 테스트용 이메일
+    private val email = "yoonsw0532@naver.com" // 임시 테스트용 이메일
 
     private val backButton : ImageButton by lazy{
         findViewById(R.id.backButton)
@@ -124,7 +124,10 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                         editNickname.setText(targetObject.getString("nickname"))
                     }
                 } else{
-
+                    Log.d("log", "닉네임 정보 수신 실패")
+                    runOnUiThread {
+                        Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         })
