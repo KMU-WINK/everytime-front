@@ -3,6 +3,7 @@ package com.wink.knockmate
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
@@ -22,6 +23,8 @@ import org.w3c.dom.Text
 import java.io.IOException
 
 class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.OnDataPassListener {
+
+    private var imageFlag : Boolean = false
 
     private val pref by lazy{
         getSharedPreferences("loginInfo", MODE_PRIVATE)
@@ -69,11 +72,61 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
             finish()
         }
 
-        val imageFlag = false
+        initViews()
 
+        editNickname.setOnFocusChangeListener { _, hasFocus ->
+            if(!hasFocus){
+                nicknameWrong.isVisible = false
+                nicknameLong.isVisible = false
+                nicknameShort.isVisible = false
+                if(checkNickname() == "OK"){
+                    activateButton()
+                } else if(checkNickname() == "Wrong"){
+                    inactivateButton()
+                    nicknameWrong.isVisible = true
+                } else if(checkNickname() == "Short"){
+                    inactivateButton()
+                    nicknameShort.isVisible = true
+                } else{
+                    inactivateButton()
+                    nicknameLong.isVisible = true
+                }
+            }
+        }
+    }
+
+    private fun initViews(){
         // TODO 서버에서 기존 프로필 사진 가져오기
         // TODO 프로필 사진 있으면 imageFlag 값을 true로 변경
         // TODO 프로필 사진 없으면 기본 프로필 사진으로
+
+        var email = "dy@test.com" // TODO 임시 테스트용
+        val client = OkHttpClient()
+        val request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
+
+        client.newCall(request).enqueue(object:Callback{
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "프로필 이미지 정보 수신 도중 인터넷 연결 불안정")
+                runOnUiThread {
+                    Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.code() == 200){
+                    Log.d("log", "프로필 이미지 다운로드 성공")
+                    Log.d("response code", response.code().toString())
+                    imageFlag = true
+                    val bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
+                    runOnUiThread{
+                        userImage.setImageBitmap(bitmap)
+                    }
+                } else{
+                    Log.d("response code", response.code().toString())
+                    Log.d("log", "프로필 이미지 다운로드 실패")
+                }
+            }
+        })
 
         userImage.setOnClickListener {
             // TODO 프로필 사진 있는 경우 (imageFlag 이용해서 판별) 앨범에서 선택 / 프로필 사진 삭제 선택 기능
@@ -102,10 +155,9 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         }
 
         // 서버에서 기존 닉네임 가져오기
-        val client = OkHttpClient()
-        val request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
+        val nicknameRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
 
-        client.newCall(request).enqueue(object : Callback{
+        client.newCall(nicknameRequest).enqueue(object : Callback{
             override fun onFailure(call: Call, e: IOException) {
                 Log.d("log", "닉네임 정보 수신 도중 인터넷 연결 불안정")
                 runOnUiThread {
@@ -131,29 +183,11 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                 }
             }
         })
-
-        editNickname.setOnFocusChangeListener { _, hasFocus ->
-            if(!hasFocus){
-                nicknameWrong.isVisible = false
-                nicknameLong.isVisible = false
-                nicknameShort.isVisible = false
-                if(checkNickname() == "OK"){
-                    activateButton()
-                } else if(checkNickname() == "Wrong"){
-                    inactivateButton()
-                    nicknameWrong.isVisible = true
-                } else if(checkNickname() == "Short"){
-                    inactivateButton()
-                    nicknameShort.isVisible = true
-                } else{
-                    inactivateButton()
-                    nicknameLong.isVisible = true
-                }
-            }
-        }
     }
 
-    override fun onDataPass(data : Uri?){
+    override fun onDataPass(data : Uri?, flag : Boolean){
+        imageFlag = flag
+        Log.d("log", flag.toString())
         userImage.setImageURI(data)
     }
 
@@ -175,6 +209,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                 val selectedImageUri : Uri? = data?.data
                 if(selectedImageUri != null){
                     userImage.setImageURI(selectedImageUri)
+                    imageFlag = true
                 } else{
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }

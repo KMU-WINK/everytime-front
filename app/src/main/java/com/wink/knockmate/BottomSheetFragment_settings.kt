@@ -25,7 +25,7 @@ class BottomSheetFragment_settings(context: Context) : BottomSheetDialogFragment
     private val _context = context
 
     interface OnDataPassListener{
-        fun onDataPass(data : Uri?)
+        fun onDataPass(data : Uri?, imageFlag : Boolean)
     }
 
     private lateinit var dataPassListener : OnDataPassListener
@@ -63,7 +63,7 @@ class BottomSheetFragment_settings(context: Context) : BottomSheetDialogFragment
 
         deletePhoto.setOnClickListener {
             val uri : Uri = Uri.parse("android.resource://com.wink.knockmate/drawable/default_profile")
-            dataPassListener.onDataPass(uri)
+            dataPassListener.onDataPass(uri, false)
             dismiss()
         }
 
@@ -109,7 +109,7 @@ class BottomSheetFragment_settings(context: Context) : BottomSheetDialogFragment
             1000 -> {
                 val selectedImageUri : Uri? = data?.data
                 if(selectedImageUri != null){
-                    dataPassListener.onDataPass(selectedImageUri)
+                    dataPassListener.onDataPass(selectedImageUri, true)
                     dismiss()
                 } else{
                     Toast.makeText(_context, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
