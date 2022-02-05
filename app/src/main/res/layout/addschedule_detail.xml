@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/addscedule_backgroud"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/save_button"
+        android:layout_width="30dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="저장"
+        android:textColor="#7A7A7A"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/yellow_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="63dp"
+        android:background="@drawable/yellow_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/schedule_title"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="일정 제목을 적어주세요"
+        android:lineSpacingExtra="0sp"
+        android:text="일정 제목"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:translationY="-0.4sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/yellow_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_frame"
+        app:layout_constraintTop_toBottomOf="@id/schedule_title">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/start_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="36dp"
+                android:background="@drawable/calimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:text="시작"
+                android:textColor="#4B4B4B"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="36dp"
+                app:layout_constraintStart_toEndOf="@id/start_icon"
+                android:layout_marginStart="12dp"/>
+
+            <LinearLayout
+                android:layout_width="194dp"
+                android:layout_height="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="36dp"
+                android:id="@+id/addschedule_start"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="102dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/detail_start_date"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="11월 10일(목)"/>
+                <TextView
+                    android:id="@+id/detail_start_time"
+                    android:layout_width="76dp"
+                    android:layout_height="match_parent"
+                    android:text="오전 11:00"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/start_picker"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addschedule_start"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone">
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="55dp"
+                    android:id="@+id/start_date_picker"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    app:layout_constraintStart_toEndOf="@+id/start_date_picker"
+                    android:layout_marginStart="38dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/start_am_or_pm"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    android:id="@+id/start_time_picker"
+                    app:layout_constraintStart_toEndOf="@id/start_am_or_pm"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="38dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:text="종료"
+                android:textColor="#4B4B4B"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/start_picker"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toEndOf="@id/start_icon"
+                android:layout_marginStart="12dp"/>
+
+            <LinearLayout
+                android:layout_width="194dp"
+                android:layout_height="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@id/start_picker"
+                android:layout_marginTop="16dp"
+                android:id="@+id/addschedule_end"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="102dp"
+                    android:layout_height="24dp"
+                    android:id="@+id/detail_end_date"
+                    android:layout_marginEnd="16dp"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text=""/>
+                <TextView
+                    android:id="@+id/detail_end_time"
+                    android:layout_width="76dp"
+                    android:layout_height="match_parent"
+                    android:text="오후 11:00"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/end_picker"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/addschedule_end"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone">
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="55dp"
+                    android:id="@+id/end_date_picker"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    app:layout_constraintStart_toEndOf="@+id/end_date_picker"
+                    android:layout_marginStart="38dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/end_am_or_pm"/>
+                <NumberPicker
+                    android:layout_width="wrap_content"
+                    android:layout_height="136dp"
+                    android:id="@+id/end_time_picker"
+                    app:layout_constraintStart_toEndOf="@id/end_am_or_pm"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginStart="38dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+            <View
+                android:id="@+id/memo_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/memoimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/end_picker" />
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:text="메모"
+                android:textColor="#4B4B4B"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/end_picker"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toEndOf="@id/memo_icon"
+                android:layout_marginStart="12dp"/>
+
+            <EditText
+                android:id="@+id/memo"
+                android:layout_width="0dp"
+                android:layout_height="84dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="top"
+                android:background="@drawable/addschedule_memo_backgroud"
+                android:hint="이 일정에 대한 메모를 적어주세요."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/memo_icon"
+                android:padding="6dp"
+                android:maxLines="3"/>
+
+
+
+            <View
+                android:id="@+id/invite_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/inviteimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/memo" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/to_invite_button"
+                app:layout_constraintTop_toBottomOf="@id/memo"
+                app:layout_constraintStart_toEndOf="@id/invite_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/invite_button"
+                    android:layout_width="78dp"
+                    android:layout_height="24dp"
+                    android:gravity="center"
+                    android:text="참석자 초대"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/inviters"
+                    android:layout_width="92dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="12dp"
+                    android:gravity="end"
+                    android:text="홍현지 외 1명"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/invite_icon2"/>
+
+                <View
+                    android:id="@+id/invite_icon2"
+                    android:layout_width="8dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/make_group_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/repeat_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/repeatimg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/invite_icon" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/to_repeat_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/invite_icon"
+                app:layout_constraintStart_toEndOf="@id/repeat_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:gravity="center"
+                    android:text="반복 일정"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/repeat_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:gravity="end"
+                    android:layout_marginEnd="12dp"
+                    android:text="맞춤 설정"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/repeat_icon2"/>
+
+                <View
+                    android:id="@+id/repeat_icon2"
+                    android:layout_width="8dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/make_group_arrow"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/color_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="35dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/yellow_icon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repeat_icon" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/to_colorPick_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/repeat_icon"
+                app:layout_constraintStart_toEndOf="@id/color_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:gravity="center"
+                    android:text="일정 색상"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/pick_color_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:gravity="end"
+                    android:text="색상1"
+                    android:layout_marginEnd="12dp"
+                    android:textColor="#4B4B4B"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/color_icon2"/>
+
+                <View
+                    android:id="@+id/color_icon2"
+                    android:layout_width="8dp"
+                    android:layout_height="18dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/make_group_arrow"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

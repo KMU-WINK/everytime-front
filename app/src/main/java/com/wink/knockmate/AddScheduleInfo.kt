@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.text.Editable
 import java.util.*
 
 class AddScheduleInfo {
@@ -8,10 +9,66 @@ class AddScheduleInfo {
         private var endCal : Calendar = Calendar.getInstance()
         private var title : String = ""
         private var memo : String = ""
-        private var inviteMembers = Array(10, {item->""})
+        var inviteMembers = mutableListOf<UserModel>()
+        var invitersNumber : Int = 0
         private var startDay : String = ""
         private var endDay : String = ""
+        private var repeatType : String = "반복 안함"
+        private var repeatDetailType : String = ""
+        private var repeatDays : Array<Boolean> = arrayOf(false, false, false, false, false, false, false)
+        private var repeatAllCount : Int = 0
+        private var repeatInterval : Int = 0
+        private var repeatDay : Int = 0
+        var color : Int = 1
+        var brief : Boolean = true
 
+        fun setRepeatDetailType(repeatDetailType:String){
+            this.repeatDetailType = repeatDetailType
+        }
+
+        fun getRepeatDetailType():String{
+            return repeatDetailType
+        }
+
+        fun setRepeatDay(repeatDay:Int){
+            this.repeatDay = repeatDay
+        }
+
+        fun getRepeatDay():Int{
+            return repeatDay
+        }
+
+        fun setRepeatType(repeatType:String){
+            this.repeatType = repeatType
+        }
+
+        fun getRepeatType() : String{
+            return repeatType
+        }
+
+        fun getRepeatDays():Array<Boolean>{
+            return repeatDays
+        }
+
+        fun setRepeatDays(repeatDays:Array<Boolean>){
+            this.repeatDays = repeatDays
+        }
+
+        fun setRepeatAllCount(repeatAllCount:Int){
+            this.repeatAllCount = repeatAllCount
+        }
+
+        fun getRepeatAllCount():Int{
+            return repeatAllCount
+        }
+
+        fun setRepeatInterval(repeatInterval: Int){
+            this.repeatInterval = repeatInterval
+        }
+
+        fun getRepeatInterval():Int{
+            return repeatInterval
+        }
 
         fun resetStartCal(){
             startCal = Calendar.getInstance()
@@ -64,14 +121,6 @@ class AddScheduleInfo {
 
         fun setMemo(memo:String){
             this.memo = memo
-        }
-
-        fun getInviteMembers() : Array<String>{
-            return inviteMembers
-        }
-
-        fun setInviteMembers(inviteMembers:Array<String>){
-            this.inviteMembers = inviteMembers
         }
 
         fun getStartDay() : String{
