@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/bt_border"
+    android:backgroundTint="@color/black"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/rv_followList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#F6F9FB"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/textKnockNotationFrom"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="12dp"
+            android:text="xxxsss_님에게 노크가 도착했습니다."
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgKnockNotation"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:src="@drawable/notation_profile"
+                android:layout_marginTop="24dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textKnockNotationSchedule"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29dp"
+                    android:layout_marginStart="12dp"
+                    android:text="8월 7일 오후 7시 30분 - 9시 15분"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/textKnockNotationContents"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:text="그날 저녁 약속 어때?"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/btKnockNotationNext"
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:src="@drawable/next"
+                android:layout_marginTop="40dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:layout_marginStart="40dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+            <Button
+                android:id="@+id/btKnockNotationDecline"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bt_border"
+                android:backgroundTint="#DFE9EF"
+                android:text="거절"
+                android:textSize="14sp"
+                android:textColor="#7A7A7A"
+                android:textStyle="bold"/>
+            <Button
+                android:id="@+id/btKnockNotationAccept"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bt_border"
+                android:backgroundTint="#FF7A53"
+                android:text="수락"
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="20dp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

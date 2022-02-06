@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate">
         <activity
+            android:name=".NotationActivity"
+            android:exported="true" />
+        <activity
             android:name=".InviteGroupMemActivity"
             android:exported="true" />
         <activity
