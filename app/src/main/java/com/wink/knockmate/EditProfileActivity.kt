@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -20,9 +22,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import okhttp3.*
 import org.json.JSONObject
 import org.w3c.dom.Text
+import java.io.File
 import java.io.IOException
+import java.net.URI
 
 class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.OnDataPassListener {
+
+    // TODO 수정 필요
+    private var imagePath : String = ""
+
+    private var imageChanged = false
 
     private var imageFlag : Boolean = false
 
@@ -73,6 +82,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         }
 
         initViews()
+        activateButton()
 
         editNickname.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus){
@@ -96,10 +106,8 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
     }
 
     private fun initViews(){
-        // TODO 서버에서 기존 프로필 사진 가져오기
-        // TODO 프로필 사진 있으면 imageFlag 값을 true로 변경
-        // TODO 프로필 사진 없으면 기본 프로필 사진으로
 
+        // 서버에서 기존 프로필 사진 가져오기
         var email = "dy@test.com" // TODO 임시 테스트용
         val client = OkHttpClient()
         val request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
@@ -116,6 +124,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                 if(response.code() == 200){
                     Log.d("log", "프로필 이미지 다운로드 성공")
                     Log.d("response code", response.code().toString())
+                    // 프로필 사진 있으면 imageFlag 값을 true로 변경
                     imageFlag = true
                     val bitmap = BitmapFactory.decodeStream(response.body()?.byteStream())
                     runOnUiThread{
@@ -129,7 +138,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         })
 
         userImage.setOnClickListener {
-            // TODO 프로필 사진 있는 경우 (imageFlag 이용해서 판별) 앨범에서 선택 / 프로필 사진 삭제 선택 기능
+            // 프로필 사진 있는 경우 (imageFlag 이용해서 판별) 앨범에서 선택 / 프로필 사진 삭제 선택 기능
             if(imageFlag){
                 val bottomSheetFragment = BottomSheetFragment_settings(applicationContext)
 
@@ -149,9 +158,6 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                     }
                 }
             }
-
-            // TODO 프로필 사진 없는 경우 바로 앨범으로 전환
-            // TODO 선택된 사진을 userImage에 올리기
         }
 
         // 서버에서 기존 닉네임 가져오기
@@ -185,10 +191,22 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         })
     }
 
+    @SuppressLint("Range")
     override fun onDataPass(data : Uri?, flag : Boolean){
         imageFlag = flag
-        Log.d("log", flag.toString())
+        Log.d("imageFlag", flag.toString())
         userImage.setImageURI(data)
+        // TODO 수정 필요
+        //imageUri = data
+        //val proj = arrayOf(MediaStore.Images.Media.DATA)
+        Log.d("uri", data.toString())
+        val cursor = contentResolver.query(data!!, null, null, null, null)
+        cursor!!.moveToNext()
+        //Log.d("path", cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA)))
+        imagePath = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+
+        imageChanged = true
+        Log.d("이미지 변경사항 저장", imagePath)
     }
 
     private fun navigatePhotos(){
@@ -210,12 +228,16 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
                 if(selectedImageUri != null){
                     userImage.setImageURI(selectedImageUri)
                     imageFlag = true
+                    imageChanged = true
+                    // TODO 수정 필요
+                    imagePath = selectedImageUri.toString()
+                    Log.d("이미지 변경사항 저장", imagePath.toString())
                 } else{
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
             } else -> {
             Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
-        }
+            }
         }
     }
 
@@ -271,7 +293,71 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
     private fun activateButton(){
         completeButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
         completeButton.setOnClickListener {
-            // TODO 수정된 프로필 이미지와 닉네임을 서버로 전송
+
+            // 수정된 닉네임 서버로 전송
+            val client = OkHttpClient()
+            val body = FormBody.Builder()
+                .add("email", email)
+                .add("nickname", editNickname.text.toString())
+                .build()
+            val nicknameSaveRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/nickname").put(body).build()
+
+            client.newCall(nicknameSaveRequest).enqueue(object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log", "닉네임 저장 도중 인터넷 연결 불안정")
+                    runOnUiThread {
+                        Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if(response.code() == 200){
+                        Log.d("log", "닉네임 저장 성공")
+                    } else{
+                        Log.d("log", "닉네임 저장 실패")
+                        runOnUiThread {
+                            Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            })
+
+            // TODO 수정된 프로필 이미지를 서버로 전송
+            if(imageChanged && imagePath != "") {
+                val requestBody = MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("email", email)
+                    .addFormDataPart(
+                        "picture",
+                        "profile_image.png",
+                        // TODO 수정 필요
+                        RequestBody.create(MediaType.parse("image/png"), File(imagePath))
+                    )
+                    .build()
+
+                val request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/upload").post(requestBody).build()
+
+                client.newCall(request).enqueue(object : Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "프로필 이미지 저장 도중 인터넷 연결 불안정")
+                        runOnUiThread {
+                            Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if(response.code() == 200){
+                            Log.d("log", "프로필 이미지 저장 성공")
+                        } else{
+                            Log.d("log", "프로필 이미지 저장 실패")
+                            runOnUiThread {
+                                Toast.makeText(this@EditProfileActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+            }
+
             finish()
         }
     }
