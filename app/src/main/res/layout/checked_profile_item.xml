@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="86dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp">
+    <LinearLayout
+        android:layout_width="83dp"
+        android:layout_height="32dp"
+        android:background="@drawable/border_search_id"
+        android:backgroundTint="#FF7A53"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/rv_checked_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="7dp"
+            android:text="신재혁"
+            android:textSize="14sp"
+            android:textColor="@color/white"/>
+        <Button
+            android:id="@+id/rv_bt_remove"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:text="X"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:background="@null"
+            android:textSize="11sp"
+            android:layout_marginStart="10dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
