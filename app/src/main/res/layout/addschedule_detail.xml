@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/addscedule_backgroud"
+    android:background="@drawable/addschedule_backgroud"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <View
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/yellow_icon"
+        android:id="@+id/addschedule_icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"
@@ -54,7 +54,7 @@
         android:textStyle="bold"
         android:translationY="-0.4sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/yellow_icon"
+        app:layout_constraintStart_toEndOf="@id/addschedule_icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
@@ -382,7 +382,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
+            <ImageView
                 android:id="@+id/color_icon"
                 android:layout_width="16dp"
                 android:layout_height="16dp"

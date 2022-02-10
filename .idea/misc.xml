@@ -6,13 +6,18 @@
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable-v24/addscedule_backgroud.xml" value="0.22083333333333333" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable-v24/invited_member.xml" value="0.21944444444444444" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/addscedule_backgroud.xml" value="0.3764102564102564" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/addschedule_black_check.xml" value="0.22777777777777777" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/addschedule_invite_check.xml" value="0.22777777777777777" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/addschedule_memo_backgroud.xml" value="0.2518518518518518" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invite_knock_button.xml" value="0.21944444444444444" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/search_checkbox.xml" value="0.20462962962962963" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/search_checkbox_false.xml" value="0.20462962962962963" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/search_checkbox_true.xml" value="0.15925925925925927" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/search_search.xml" value="0.29907407407407405" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/activity_main.xml" value="0.17798913043478262" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule.xml" value="0.1" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_brief.xml" value="0.1" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_colorpick.xml" value="0.18" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_colorpick.xml" value="0.22" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_detail.xml" value="0.21" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite.xml" value="0.22" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.1566265060240964" />
@@ -20,9 +25,14 @@
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_item.xml" value="0.36614583333333334" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat.xml" value="0.1651469098277609" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat.xml" value="0.33" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat_detail.xml" value="0.1651469098277609" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeatpick.xml" value="0.3831258644536653" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/search.xml" value="0.2393980848153215" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/search_follower_item.xml" value="0.19293478260869565" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/search_followgroup_item.xml" value="0.19293478260869565" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/search_group_item.xml" value="0.26132246376811596" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/search_item.xml" value="0.26132246376811596" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/testpage.xml" value="0.27311522048364156" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/xml/network_security_config.xml" value="0.15534420289855072" />
         <entry key="..\:/Users/admin/바탕 화면/knockmate/everytime-front/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.36614583333333334" />

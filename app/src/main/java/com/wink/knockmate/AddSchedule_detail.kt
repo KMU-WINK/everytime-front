@@ -7,10 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.NumberPicker
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -25,6 +22,9 @@ class AddSchedule_detail : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater!!.inflate(R.layout.addschedule_detail, container, false)
+
+        val addscheduleIcon = view.findViewById<ImageView>(R.id.addschedule_icon)
+        colorSetting(addscheduleIcon)
 
         val startDateText = view.findViewById<TextView>(R.id.detail_start_date)
         val startTimeText = view.findViewById<TextView>(R.id.detail_start_time)
@@ -217,8 +217,10 @@ class AddSchedule_detail : Fragment() {
         // 일정 색상 선택으로 넘어가는 버튼
         val to_colorPick_button = view.findViewById<ConstraintLayout>(R.id.to_colorPick_button)
         val colorName = view.findViewById<TextView>(R.id.pick_color_name)
-        val colorIcon = view.findViewById<View>(R.id.color_icon)
+        val colorIcon = view.findViewById<ImageView>(R.id.color_icon)
         colorName.text = "색상" + AddScheduleInfo.color.toString()
+        colorSetting(colorIcon)
+        Glide.with(this)
         to_colorPick_button.setOnClickListener(View.OnClickListener {
             startPicker.visibility = View.GONE
             endPicker.visibility = View.GONE
@@ -252,6 +254,34 @@ class AddSchedule_detail : Fragment() {
             6-> "금"
             7-> "토"
             else -> " "
+        }
+    }
+
+    private fun colorSetting(v: ImageView){
+        if(AddScheduleInfo.color == 1){
+            Glide.with(this).load(R.drawable.color1).into(v)
+        }else if(AddScheduleInfo.color == 2){
+            Glide.with(this).load(R.drawable.color2).into(v)
+        }else if(AddScheduleInfo.color == 3){
+            Glide.with(this).load(R.drawable.color3).into(v)
+        }else if(AddScheduleInfo.color == 4){
+            Glide.with(this).load(R.drawable.color4).into(v)
+        }else if(AddScheduleInfo.color == 5){
+            Glide.with(this).load(R.drawable.color5).into(v)
+        }else if(AddScheduleInfo.color == 6){
+            Glide.with(this).load(R.drawable.color6).into(v)
+        }else if(AddScheduleInfo.color == 7){
+            Glide.with(this).load(R.drawable.color7).into(v)
+        }else if(AddScheduleInfo.color == 8){
+            Glide.with(this).load(R.drawable.color8).into(v)
+        }else if(AddScheduleInfo.color == 9){
+            Glide.with(this).load(R.drawable.color9).into(v)
+        }else if(AddScheduleInfo.color == 10){
+            Glide.with(this).load(R.drawable.color10).into(v)
+        }else if(AddScheduleInfo.color == 11){
+            Glide.with(this).load(R.drawable.color11).into(v)
+        }else if(AddScheduleInfo.color == 12){
+            Glide.with(this).load(R.drawable.color12).into(v)
         }
     }
 }

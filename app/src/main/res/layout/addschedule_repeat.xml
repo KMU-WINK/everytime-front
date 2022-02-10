@@ -67,6 +67,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -95,6 +97,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,6 +127,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -151,6 +157,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,6 +187,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,6 +217,8 @@
             android:layout_height="24dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:button="@null"
+            android:background="@drawable/addschedule_black_check"
             android:layout_marginTop="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

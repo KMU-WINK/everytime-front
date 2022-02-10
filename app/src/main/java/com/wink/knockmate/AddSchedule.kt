@@ -51,6 +51,39 @@ class AddSchedule : BottomSheetDialogFragment() {
             .replace(R.id.addschedule_frame, AddSchedule_brief())
             .commit()
 
+        bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if(BottomSheetBehavior.STATE_COLLAPSED == newState){
+                    childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                        .addToBackStack(null)
+                        .replace(R.id.addschedule_frame, AddSchedule_brief())
+                        .commit()
+
+//                    brief.visibility = View.VISIBLE
+//                    frame.visibility = View.INVISIBLE
+//                    detail.visibility = View.INVISIBLE
+////                    space.visibility = View.INVISIBLE
+                }
+                if(BottomSheetBehavior.STATE_EXPANDED == newState){
+                    childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                        .addToBackStack(null)
+                        .replace(R.id.addschedule_frame, AddSchedule_detail())
+                        .commit()
+//                    brief.visibility = View.INVISIBLE
+//                    detail.visibility = View.VISIBLE
+////                    space.visibility = View.VISIBLE
+                }
+                if(BottomSheetBehavior.STATE_DRAGGING == newState){
+
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+
+        })
 
 
 
@@ -266,45 +299,6 @@ class AddSchedule : BottomSheetDialogFragment() {
 //        saveButton.setOnClickListener {
 //            dismiss()
 //        }
-
-
-
-
-
-
-        bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback(){
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if(BottomSheetBehavior.STATE_COLLAPSED == newState){
-                    childFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
-                        .addToBackStack(null)
-                        .replace(R.id.addschedule_frame, AddSchedule_brief())
-                        .commit()
-
-//                    brief.visibility = View.VISIBLE
-//                    frame.visibility = View.INVISIBLE
-//                    detail.visibility = View.INVISIBLE
-////                    space.visibility = View.INVISIBLE
-                }
-                if(BottomSheetBehavior.STATE_EXPANDED == newState){
-                    childFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
-                        .addToBackStack(null)
-                        .replace(R.id.addschedule_frame, AddSchedule_detail())
-                        .commit()
-//                    brief.visibility = View.INVISIBLE
-//                    detail.visibility = View.VISIBLE
-////                    space.visibility = View.VISIBLE
-                }
-                if(BottomSheetBehavior.STATE_DRAGGING == newState){
-
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-
-        })
 
 
         return bottomSheet

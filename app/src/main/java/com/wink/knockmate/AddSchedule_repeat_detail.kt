@@ -35,15 +35,17 @@ class AddSchedule_repeat_detail : Fragment() {
                         anim.duration = 400
                         anim.fillAfter = true
                         monthsFrame.animation = anim
-                        monthsFrame.visibility = View.GONE
                         monthsViewBoolean = false
+
+                        monthsFrame.visibility = View.GONE
                     }else if(weeksViewBoolean){
                         val anim = TranslateAnimation(0f, 0f, 0f, weeksFrame.height.toFloat())
                         anim.duration = 400
                         anim.fillAfter = true
                         weeksFrame.animation = anim
-                        weeksFrame.visibility = View.GONE
                         weeksViewBoolean = false
+
+                        weeksFrame.visibility = View.GONE
                     }
                 }
                 R.id.repeat_weeks_pick->{
@@ -52,22 +54,24 @@ class AddSchedule_repeat_detail : Fragment() {
                         anim.duration = 400
                         anim.fillAfter = true
                         weeksFrame.animation = anim
-                        weeksFrame.visibility = View.VISIBLE
                         weeksViewBoolean = true
+
+                        weeksFrame.visibility = View.VISIBLE
                     }else if(monthsViewBoolean){
                         val anim = TranslateAnimation(0f, 0f, 0f, monthsFrame.height.toFloat())
                         anim.duration = 200
                         anim.fillAfter = true
                         monthsFrame.animation = anim
-                        monthsFrame.visibility = View.GONE
 
                         val anim2 = TranslateAnimation(0f, 0f, weeksFrame.height.toFloat(), 0f)
                         anim2.duration = 200
                         anim2.fillAfter = true
                         weeksFrame.animation = anim2
-                        weeksFrame.visibility = View.VISIBLE
                         weeksViewBoolean = true
                         monthsViewBoolean = false
+
+                        monthsFrame.visibility = View.GONE
+                        weeksFrame.visibility = View.VISIBLE
                     }
                 }
                 R.id.repeat_months_pick->{
@@ -76,22 +80,24 @@ class AddSchedule_repeat_detail : Fragment() {
                         anim.duration = 400
                         anim.fillAfter = true
                         monthsFrame.animation = anim
-                        monthsFrame.visibility = View.VISIBLE
                         monthsViewBoolean = true
+
+                        monthsFrame.visibility = View.VISIBLE
                     }else if(weeksViewBoolean){
                         val anim = TranslateAnimation(0f, 0f, 0f, weeksFrame.height.toFloat())
                         anim.duration = 200
                         anim.fillAfter = true
                         weeksFrame.animation = anim
-                        weeksFrame.visibility = View.GONE
 
                         val anim2 = TranslateAnimation(0f, 0f, monthsFrame.height.toFloat(), 0f)
                         anim2.duration = 200
                         anim2.fillAfter = true
                         monthsFrame.animation = anim2
-                        monthsFrame.visibility = View.VISIBLE
                         monthsViewBoolean = true
                         weeksViewBoolean = false
+
+                        weeksFrame.visibility = View.GONE
+                        monthsFrame.visibility = View.VISIBLE
                     }
                 }
 
