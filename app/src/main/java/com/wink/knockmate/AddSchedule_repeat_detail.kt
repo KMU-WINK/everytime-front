@@ -13,6 +13,7 @@ import java.util.*
 class AddSchedule_repeat_detail : Fragment() {
     private var weeksViewBoolean : Boolean = false
     private var monthsViewBoolean : Boolean = false
+    private var weekInitBoolean : Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,79 +24,89 @@ class AddSchedule_repeat_detail : Fragment() {
         val weeksFrame = view.findViewById<FrameLayout>(R.id.repeat_weeks_frame)
         val monthsFrame = view.findViewById<FrameLayout>(R.id.repeat_month_frame)
 
+        val startCal = AddScheduleInfo.getStartCal()
+        val weekDay = dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK))
+
+        val repeatMonday = view.findViewById<CheckBox>(R.id.repeat_monday)
+        val repeatTuesday = view.findViewById<CheckBox>(R.id.repeat_tuesday)
+        val repeatWednesday = view.findViewById<CheckBox>(R.id.repeat_wednesday)
+        val repeatThursday = view.findViewById<CheckBox>(R.id.repeat_thursday)
+        val repeatFriday = view.findViewById<CheckBox>(R.id.repeat_friday)
+        val repeatSaturday = view.findViewById<CheckBox>(R.id.repeat_saturday)
+        val repeatSunday = view.findViewById<CheckBox>(R.id.repeat_sunday)
+
         val repeatDay = view.findViewById<EditText>(R.id.repeat_day)
         repeatDay.setText((AddScheduleInfo.getStartCal().get(Calendar.DATE)).toString())
+
+        for(i in 0 until AddScheduleInfo.repeatDays.size){
+            if(AddScheduleInfo.repeatDays[i]){
+                weekInitBoolean = AddScheduleInfo.repeatDays[i]
+                if(i==0){
+                    repeatMonday.isChecked = true
+                }else if(i==1){
+                    repeatTuesday.isChecked = true
+                }else if(i==2){
+                    repeatWednesday.isChecked = true
+                }else if(i==3){
+                    repeatThursday.isChecked = true
+                }else if(i==4){
+                    repeatFriday.isChecked = true
+                }else if(i==5){
+                    repeatSaturday.isChecked = true
+                }else if(i==6){
+                    repeatSunday.isChecked = true
+                }
+            }
+        }
+
+        if(!weekInitBoolean){
+            if(weekDay == "월"){
+                repeatMonday.isChecked = true
+            }else if(weekDay == "화"){
+                repeatTuesday.isChecked = true
+            }else if(weekDay == "수"){
+                repeatWednesday.isChecked = true
+            }else if(weekDay == "목"){
+                repeatThursday.isChecked = true
+            }else if(weekDay == "금"){
+                repeatFriday.isChecked = true
+            }else if(weekDay == "토"){
+                repeatSaturday.isChecked = true
+            }else if(weekDay == "일"){
+                repeatSunday.isChecked = true
+            }
+        }
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.repeat_radioGroup)
         radioGroup.setOnCheckedChangeListener{ group, checkedId->
             when(checkedId){
                 R.id.repeat_days_pick->{
                     if(monthsViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, 0f, monthsFrame.height.toFloat())
-                        anim.duration = 400
-                        anim.fillAfter = true
-                        monthsFrame.animation = anim
                         monthsViewBoolean = false
-
                         monthsFrame.visibility = View.GONE
                     }else if(weeksViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, 0f, weeksFrame.height.toFloat())
-                        anim.duration = 400
-                        anim.fillAfter = true
-                        weeksFrame.animation = anim
                         weeksViewBoolean = false
-
                         weeksFrame.visibility = View.GONE
                     }
                 }
                 R.id.repeat_weeks_pick->{
                     if(!weeksViewBoolean && !monthsViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, weeksFrame.height.toFloat(), 0f)
-                        anim.duration = 400
-                        anim.fillAfter = true
-                        weeksFrame.animation = anim
                         weeksViewBoolean = true
-
                         weeksFrame.visibility = View.VISIBLE
                     }else if(monthsViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, 0f, monthsFrame.height.toFloat())
-                        anim.duration = 200
-                        anim.fillAfter = true
-                        monthsFrame.animation = anim
-
-                        val anim2 = TranslateAnimation(0f, 0f, weeksFrame.height.toFloat(), 0f)
-                        anim2.duration = 200
-                        anim2.fillAfter = true
-                        weeksFrame.animation = anim2
                         weeksViewBoolean = true
                         monthsViewBoolean = false
-
                         monthsFrame.visibility = View.GONE
                         weeksFrame.visibility = View.VISIBLE
                     }
                 }
                 R.id.repeat_months_pick->{
                     if(!weeksViewBoolean && !monthsViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, monthsFrame.height.toFloat(), 0f)
-                        anim.duration = 400
-                        anim.fillAfter = true
-                        monthsFrame.animation = anim
                         monthsViewBoolean = true
-
                         monthsFrame.visibility = View.VISIBLE
                     }else if(weeksViewBoolean){
-                        val anim = TranslateAnimation(0f, 0f, 0f, weeksFrame.height.toFloat())
-                        anim.duration = 200
-                        anim.fillAfter = true
-                        weeksFrame.animation = anim
-
-                        val anim2 = TranslateAnimation(0f, 0f, monthsFrame.height.toFloat(), 0f)
-                        anim2.duration = 200
-                        anim2.fillAfter = true
-                        monthsFrame.animation = anim2
                         monthsViewBoolean = true
                         weeksViewBoolean = false
-
                         weeksFrame.visibility = View.GONE
                         monthsFrame.visibility = View.VISIBLE
                     }
@@ -121,10 +132,10 @@ class AddSchedule_repeat_detail : Fragment() {
                 val friCheckBox = view.findViewById<CheckBox>(R.id.repeat_friday).isChecked
                 val satCheckBox = view.findViewById<CheckBox>(R.id.repeat_saturday).isChecked
                 val sunCheckBox = view.findViewById<CheckBox>(R.id.repeat_sunday).isChecked
-                val repeatDays = arrayOf(monCheckBox, tueCheckBox, wedCheckBox, thursCheckBox,
+                val repeatDays = mutableListOf(monCheckBox, tueCheckBox, wedCheckBox, thursCheckBox,
                                             friCheckBox, satCheckBox, sunCheckBox)
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
-                AddScheduleInfo.setRepeatDays(repeatDays)
+                AddScheduleInfo.repeatDays = repeatDays
                 AddScheduleInfo.setRepeatAllCount(repeatCount.toInt())
                 AddScheduleInfo.setRepeatDetailType("Weeks")
             }else if(monthsViewBoolean){
@@ -144,5 +155,18 @@ class AddSchedule_repeat_detail : Fragment() {
         })
 
         return view
+    }
+
+    private fun dayOfWeek(d:Int) : String{
+        return when(d){
+            1-> "일"
+            2-> "월"
+            3-> "화"
+            4-> "수"
+            5-> "목"
+            6-> "금"
+            7-> "토"
+            else -> " "
+        }
     }
 }

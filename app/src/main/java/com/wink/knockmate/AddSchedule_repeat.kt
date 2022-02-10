@@ -19,7 +19,7 @@ class AddSchedule_repeat : Fragment() {
 
         val tempType = AddScheduleInfo.getRepeatType()
         val tempDetailType = AddScheduleInfo.getRepeatDetailType()
-        val tempRepeatDays = AddScheduleInfo.getRepeatDays()
+        val tempRepeatDays = AddScheduleInfo.repeatDays
         val tempRepeatDay = AddScheduleInfo.getRepeatDay()
         val tempRepeatAllCount = AddScheduleInfo.getRepeatAllCount()
         val tempRepeatInterval = AddScheduleInfo.getRepeatInterval()
@@ -141,7 +141,7 @@ class AddSchedule_repeat : Fragment() {
             AddScheduleInfo.setRepeatDetailType(tempDetailType)
             AddScheduleInfo.setRepeatDay(tempRepeatDay)
             AddScheduleInfo.setRepeatAllCount(tempRepeatAllCount)
-            AddScheduleInfo.setRepeatDays(tempRepeatDays)
+            AddScheduleInfo.repeatDays = tempRepeatDays
             AddScheduleInfo.setRepeatInterval(tempRepeatInterval)
             parentFragment?.childFragmentManager
                 ?.beginTransaction()

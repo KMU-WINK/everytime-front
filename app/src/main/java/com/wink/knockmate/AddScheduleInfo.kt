@@ -15,7 +15,7 @@ class AddScheduleInfo {
         private var endDay : String = ""
         private var repeatType : String = "반복 안함"
         private var repeatDetailType : String = ""
-        private var repeatDays : Array<Boolean> = arrayOf(false, false, false, false, false, false, false)
+        var repeatDays = mutableListOf<Boolean>(false, false, false, false, false, false, false)
         private var repeatAllCount : Int = 0
         private var repeatInterval : Int = 0
         private var repeatDay : Int = 0
@@ -44,14 +44,6 @@ class AddScheduleInfo {
 
         fun getRepeatType() : String{
             return repeatType
-        }
-
-        fun getRepeatDays():Array<Boolean>{
-            return repeatDays
-        }
-
-        fun setRepeatDays(repeatDays:Array<Boolean>){
-            this.repeatDays = repeatDays
         }
 
         fun setRepeatAllCount(repeatAllCount:Int){

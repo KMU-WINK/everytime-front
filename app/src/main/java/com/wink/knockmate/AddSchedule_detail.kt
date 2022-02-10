@@ -126,15 +126,15 @@ class AddSchedule_detail : Fragment() {
         title.setOnFocusChangeListener(object:View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if(hasFocus){
-                    if (!titleClick || AddScheduleInfo.getTitle() == null){
+                    if (!titleClick || AddScheduleInfo.getTitle() == "일정 제목"){
                         title.text = null
                     }
                     titleClick = true
                     startPicker.visibility = View.GONE
                     endPicker.visibility = View.GONE
                 }else{
-                    if(AddScheduleInfo.getTitle() != null){
-                        title.setText("일정 제목")
+                    if(AddScheduleInfo.getTitle() != null || AddScheduleInfo.getTitle() == "일정 제목"){
+                        title.setText(AddScheduleInfo.getTitle())
                     }
                 }
             }
@@ -237,7 +237,8 @@ class AddSchedule_detail : Fragment() {
         // 저장 버튼
         val saveButton = view.findViewById<TextView>(R.id.save_button)
         saveButton.setOnClickListener {
-            //
+            AddScheduleInfo.setTitle(title.text.toString())
+            AddScheduleInfo.setMemo(memo.text.toString())
         }
 
 
