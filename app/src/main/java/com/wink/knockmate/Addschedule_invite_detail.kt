@@ -75,7 +75,8 @@ class Addschedule_invite_detail : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initInvitedRecycler(){
-        invitedAdapter = Addschedule_invited_item_Adapter(requireContext())
+        invitedAdapter = Addschedule_invited_item_Adapter(requireParentFragment().requireContext())
+        invited_recycler.layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
         invited_recycler.adapter = invitedAdapter
         inviteList.apply {
             for(i in 0 until followerList.size){
@@ -91,8 +92,8 @@ class Addschedule_invite_detail : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initFollowerRecycler(){
-        itemAdapter = Addschedule_invite_detail_Follower_Adapter(requireContext())
-        knockmate_recycler.layoutManager = LinearLayoutManager(requireContext())
+        itemAdapter = Addschedule_invite_detail_Follower_Adapter(requireParentFragment().requireActivity().applicationContext)
+        knockmate_recycler.layoutManager = LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
         knockmate_recycler.adapter = itemAdapter
 
         val client = OkHttpClient().newBuilder()
