@@ -192,6 +192,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/alarmSettingButton"/>
 
+            <!--
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -251,13 +252,15 @@
 
             </FrameLayout>
 
+            -->
+
             <View
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
                 android:background="#EEEEEE"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout4" />
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <FrameLayout
                 android:id="@+id/frameLayout5"

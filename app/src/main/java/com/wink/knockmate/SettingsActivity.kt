@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity() {
     }
     //private val email by lazy{
     //    pref.getString("email", "")
-    //} // login branch와 merge하면 추가
+    //} // TODO login branch와 merge하면 추가
 
     private val profileImage : ImageView by lazy{
         findViewById(R.id.profileImage)
@@ -46,6 +46,14 @@ class SettingsActivity : AppCompatActivity() {
 
     private val editPasswordButton : Button by lazy{
         findViewById(R.id.changePassword)
+    }
+
+    private val alarmSettingButton : ToggleButton by lazy{
+        findViewById(R.id.alarmSettingButton)
+    }
+
+    private val searchSettingButton : ToggleButton by lazy{
+        findViewById(R.id.searchSettingButton)
     }
 
     private val logoutButton : Button by lazy{
@@ -80,6 +88,70 @@ class SettingsActivity : AppCompatActivity() {
 
         deleteAccountButton.setOnClickListener {
             initDeleteAccountButton()
+        }
+
+        alarmSettingButton.setOnCheckedChangeListener { _, isChecked ->
+            // TODO
+        }
+
+        searchSettingButton.setOnCheckedChangeListener { _, isChecked ->
+            val email = "yoonsw0532@naver.com" // TODO 임시 테스트용
+            val client = OkHttpClient()
+            if(isChecked){
+                // 검색 허용
+                val body = FormBody.Builder()
+                    .add("email", email)
+                    .add("searchable", "1")
+                    .build()
+                val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchable").put(body).build()
+
+                client.newCall(request).enqueue(object: Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "검색 설정 도중 인터넷 연결 불안정")
+                        runOnUiThread {
+                            Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if(response.code() == 200){
+                            Log.d("성공", "검색 허용으로 변경 성공")
+                        } else{
+                            Log.d("log", "검색 설정 도중 인터넷 연결 불안정")
+                            runOnUiThread {
+                                Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+            } else{
+                // 검색 제한
+                val body = FormBody.Builder()
+                    .add("email", email)
+                    .add("searchable", "0")
+                    .build()
+                val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchable").put(body).build()
+
+                client.newCall(request).enqueue(object: Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "검색 설정 도중 인터넷 연결 불안정")
+                        runOnUiThread {
+                            Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if(response.code() == 200){
+                            Log.d("성공", "검색 제한으로 변경 성공")
+                        } else{
+                            Log.d("log", "검색 설정 도중 인터넷 연결 불안정")
+                            runOnUiThread {
+                                Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+            }
         }
     }
 
