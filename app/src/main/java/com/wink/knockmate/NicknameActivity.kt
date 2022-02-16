@@ -15,34 +15,34 @@ import java.io.IOException
 
 class NicknameActivity : AppCompatActivity() {
 
-    lateinit var email : String
-    lateinit var password : String
+    lateinit var email: String
+    lateinit var password: String
 
-    private val backButton : ImageButton by lazy{
+    private val backButton: ImageButton by lazy {
         findViewById(R.id.backButton)
     }
 
-    private val editNickname : EditText by lazy{
+    private val editNickname: EditText by lazy {
         findViewById(R.id.editNickname)
     }
 
-    private val nextButton : Button by lazy{
+    private val nextButton: Button by lazy {
         findViewById(R.id.nextButton)
     }
 
-    private val message : TextView by lazy{
+    private val message: TextView by lazy {
         findViewById(R.id.message)
     }
 
-    private val short : TextView by lazy{
+    private val short: TextView by lazy {
         findViewById(R.id.nicknameShort)
     }
 
-    private val long : TextView by lazy{
+    private val long: TextView by lazy {
         findViewById(R.id.nicknameLong)
     }
 
-    private val wrong : TextView by lazy{
+    private val wrong: TextView by lazy {
         findViewById(R.id.nicknameFormWrong)
     }
 
@@ -58,38 +58,38 @@ class NicknameActivity : AppCompatActivity() {
         }
 
         editNickname.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            if(!hasFocus){
-                if (editNickname.text.toString().isNotEmpty()){
+            if (!hasFocus) {
+                if (editNickname.text.toString().isNotEmpty()) {
                     short.isVisible = false
                     long.isVisible = false
                     wrong.isVisible = false
                     message.isVisible = true
                     activateButton()
-                } else{
+                } else {
                     inactivateButton()
                 }
             }
         }
     }
 
-    private fun checkNickname() : String { // 닉네임이 유효한지 검사
+    private fun checkNickname(): String { // 닉네임이 유효한지 검사
         val nickname = editNickname.text.toString()
-        if(!isValid(nickname)){ // 닉네임 형식이 유효하지 않으면
+        if (!isValid(nickname)) { // 닉네임 형식이 유효하지 않으면
             return "Wrong"
-        } else if(nickname.length < 2){
+        } else if (nickname.length < 2) {
             return "Short"
-        } else if(nickname.length > 12) {
+        } else if (nickname.length > 12) {
             return "Long"
         } else {
             return "OK"
         }
     }
 
-    private fun isValid(str : String) : Boolean{ // 닉네임이 한글, 영어, 숫자로만 이루어져있는지 확인
+    private fun isValid(str: String): Boolean { // 닉네임이 한글, 영어, 숫자로만 이루어져있는지 확인
         var i = 0
-        while(i < str.length){
+        while (i < str.length) {
             val c = str.codePointAt(i)
-            if(c in 0xAC00..0xD800 || c in 0x0041..0x005A || c in 0x0061..0x007A || c in 0x0030..0x0039){
+            if (c in 0xAC00..0xD800 || c in 0x0041..0x005A || c in 0x0061..0x007A || c in 0x0030..0x0039) {
                 i += Character.charCount(c)
             } else {
                 return false
@@ -98,10 +98,11 @@ class NicknameActivity : AppCompatActivity() {
         return true
     }
 
-    private fun activateButton(){
-        nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
+    private fun activateButton() {
+        nextButton.background =
+            this.resources.getDrawable(R.drawable.signupbutton_background_orange)
         nextButton.setOnClickListener {
-            if(checkNickname() == "OK") {
+            if (checkNickname() == "OK") {
                 val client = OkHttpClient()
                 val body = FormBody.Builder()
                     .add("email", email)
@@ -152,15 +153,15 @@ class NicknameActivity : AppCompatActivity() {
                         }.run()
                     }
                 })
-            } else if(checkNickname() == "Wrong"){
+            } else if (checkNickname() == "Wrong") {
                 message.isVisible = false
                 wrong.isVisible = true
                 inactivateButton()
-            } else if(checkNickname() == "Short"){
+            } else if (checkNickname() == "Short") {
                 message.isVisible = false
                 short.isVisible = true
                 inactivateButton()
-            } else if(checkNickname() == "Long"){
+            } else if (checkNickname() == "Long") {
                 message.isVisible = false
                 long.isVisible = true
                 inactivateButton()
@@ -168,7 +169,7 @@ class NicknameActivity : AppCompatActivity() {
         }
     }
 
-    private fun inactivateButton(){
+    private fun inactivateButton() {
         nextButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_gray)
         nextButton.setOnClickListener {}
     }
