@@ -17,7 +17,7 @@ import java.io.IOException
 
 class Addschedule_invite_detail_group_Adapter(private val context: Context):RecyclerView.Adapter<Addschedule_invite_detail_group_Adapter.ViewHolder>(){
 
-    private var datas = mutableListOf<FollowData>()
+    private var datas = mutableListOf<UserModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.addschedule_invite_detail_itme, parent, false)
         return ViewHolder(view)
@@ -30,7 +30,7 @@ class Addschedule_invite_detail_group_Adapter(private val context: Context):Recy
         private val groupImage = itemView.findViewById<ImageView>(R.id.profile_image)
         private val groupName = itemView.findViewById<TextView>(R.id.profile_name)
 
-        fun bind(item: FollowData){
+        fun bind(item: UserModel){
             if(item.nickname != null){
                 groupName.text = item.nickname
             }else{

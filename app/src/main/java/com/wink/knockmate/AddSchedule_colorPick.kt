@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 
 class AddSchedule_colorPick : Fragment() {
     override fun onCreateView(
@@ -45,31 +47,45 @@ class AddSchedule_colorPick : Fragment() {
         val color11 = view.findViewById<ConstraintLayout>(R.id.color11)
         val color12 = view.findViewById<ConstraintLayout>(R.id.color12)
 
+        val icon = view.findViewById<ImageView>(R.id.yellow_icon)
+
 
         if(AddScheduleInfo.color == 1){
             color1Check.isChecked = true
+            Glide.with(this).load(R.drawable.color1).into(icon)
         }else if(AddScheduleInfo.color == 2){
             color2Check.isChecked = true
+            Glide.with(this).load(R.drawable.color2).into(icon)
         }else if(AddScheduleInfo.color == 3){
             color3Check.isChecked = true
+            Glide.with(this).load(R.drawable.color3).into(icon)
         }else if(AddScheduleInfo.color == 4){
             color4Check.isChecked = true
+            Glide.with(this).load(R.drawable.color4).into(icon)
         }else if(AddScheduleInfo.color == 5){
             color5Check.isChecked = true
+            Glide.with(this).load(R.drawable.color5).into(icon)
         }else if(AddScheduleInfo.color == 6){
             color6Check.isChecked = true
+            Glide.with(this).load(R.drawable.color6).into(icon)
         }else if(AddScheduleInfo.color == 7){
             color7Check.isChecked = true
+            Glide.with(this).load(R.drawable.color7).into(icon)
         }else if(AddScheduleInfo.color == 8){
             color8Check.isChecked = true
+            Glide.with(this).load(R.drawable.color8).into(icon)
         }else if(AddScheduleInfo.color == 9){
             color9Check.isChecked = true
+            Glide.with(this).load(R.drawable.color9).into(icon)
         }else if(AddScheduleInfo.color == 10){
             color10Check.isChecked = true
+            Glide.with(this).load(R.drawable.color10).into(icon)
         }else if(AddScheduleInfo.color == 11){
             color11Check.isChecked = true
+            Glide.with(this).load(R.drawable.color11).into(icon)
         }else{
             color12Check.isChecked = true
+            Glide.with(this).load(R.drawable.color12).into(icon)
         }
 
         fun initFalse(){

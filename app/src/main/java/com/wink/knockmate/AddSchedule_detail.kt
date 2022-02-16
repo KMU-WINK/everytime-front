@@ -220,7 +220,6 @@ class AddSchedule_detail : Fragment() {
         val colorIcon = view.findViewById<ImageView>(R.id.color_icon)
         colorName.text = "색상" + AddScheduleInfo.color.toString()
         colorSetting(colorIcon)
-        Glide.with(this)
         to_colorPick_button.setOnClickListener(View.OnClickListener {
             startPicker.visibility = View.GONE
             endPicker.visibility = View.GONE

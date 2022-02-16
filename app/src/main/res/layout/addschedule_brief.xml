@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/yellow_icon"
+        android:id="@+id/icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="16dp"
@@ -54,7 +54,7 @@
         android:textStyle="bold"
         android:translationY="-0.4sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/yellow_icon"
+        app:layout_constraintStart_toEndOf="@id/icon"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout

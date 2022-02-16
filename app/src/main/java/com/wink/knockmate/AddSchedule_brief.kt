@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import java.util.*
 
 class AddSchedule_brief : Fragment() {
@@ -25,6 +27,7 @@ class AddSchedule_brief : Fragment() {
         val endTimeText_brief = view.findViewById<TextView>(R.id.brief_end_time)
         val startCal = AddScheduleInfo.getStartCal()
         val endCal = AddScheduleInfo.getEndCal()
+        val icon = view.findViewById<ImageView>(R.id.icon)
 
         startDateText_brief.text = (startCal.get(Calendar.MONTH)+1).toString() + "." + startCal.get(
             Calendar.DATE).toString() + " " + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + "요일"
@@ -64,6 +67,8 @@ class AddSchedule_brief : Fragment() {
             }
         })
 
+        colorSetting(icon)
+
         return view
     }
 
@@ -77,6 +82,34 @@ class AddSchedule_brief : Fragment() {
             6-> "금"
             7-> "토"
             else -> " "
+        }
+    }
+
+    private fun colorSetting(v: ImageView){
+        if(AddScheduleInfo.color == 1){
+            Glide.with(this).load(R.drawable.color1).into(v)
+        }else if(AddScheduleInfo.color == 2){
+            Glide.with(this).load(R.drawable.color2).into(v)
+        }else if(AddScheduleInfo.color == 3){
+            Glide.with(this).load(R.drawable.color3).into(v)
+        }else if(AddScheduleInfo.color == 4){
+            Glide.with(this).load(R.drawable.color4).into(v)
+        }else if(AddScheduleInfo.color == 5){
+            Glide.with(this).load(R.drawable.color5).into(v)
+        }else if(AddScheduleInfo.color == 6){
+            Glide.with(this).load(R.drawable.color6).into(v)
+        }else if(AddScheduleInfo.color == 7){
+            Glide.with(this).load(R.drawable.color7).into(v)
+        }else if(AddScheduleInfo.color == 8){
+            Glide.with(this).load(R.drawable.color8).into(v)
+        }else if(AddScheduleInfo.color == 9){
+            Glide.with(this).load(R.drawable.color9).into(v)
+        }else if(AddScheduleInfo.color == 10){
+            Glide.with(this).load(R.drawable.color10).into(v)
+        }else if(AddScheduleInfo.color == 11){
+            Glide.with(this).load(R.drawable.color11).into(v)
+        }else if(AddScheduleInfo.color == 12){
+            Glide.with(this).load(R.drawable.color12).into(v)
         }
     }
 }
