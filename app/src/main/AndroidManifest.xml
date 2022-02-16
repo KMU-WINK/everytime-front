@@ -3,6 +3,9 @@
     package="com.wink.knockmate">
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +15,7 @@
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SignUpActivity"
+            android:name=".SettingsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,6 +26,11 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".TermsActivity"/>
         <activity android:name=".NicknameActivity"/>
+        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".LogInActivity"/>
+        <activity android:name=".EditProfileActivity"/>
+        <activity android:name=".EditEmailActivity"/>
+        <activity android:name=".EditPasswordActivity"/>
     </application>
 
 </manifest>

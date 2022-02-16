@@ -18,48 +18,64 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:text="닉네임 설정"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="25dp"
+        android:text="프로필 수정"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+        <ImageButton
+            android:id="@+id/profileImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/default_profile" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginStart="35dp"
+            android:src="@drawable/camera_icon" />
+
+    </FrameLayout>
 
     <EditText
         android:id="@+id/editNickname"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:drawableStart="@drawable/human_icon"
-        android:drawablePadding="10dp"
         android:hint="닉네임을 입력해주세요"
         android:inputType="text"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <TextView
-        android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="회원가입 후 설정에서 수정이 가능합니다."
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editNickname" />
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout7"
+        tools:text="윤상원" />
 
     <TextView
         android:id="@+id/nicknameShort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="닉네임은 2자 이상 입력해주세요."
+        android:text="닉네임은 2자 이상 입력해주세요"
         android:textColor="#D75750"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="닉네임은 12자 이하로 입력해주세요."
+        android:text="닉네임은 12자 이하로 입력해주세요"
         android:textColor="#D75750"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,19 +97,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="닉네임은 띄어쓰기 없이 한글, 영문, 숫자만 가능해요."
+        android:text="닉네임은 띄어쓰기 없이 한글, 영문, 숫자만 가능해요"
         android:textColor="#D75750"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editNickname" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/nextButton"
+        android:id="@+id/completeButton"
         android:layout_width="100dp"
         android:layout_height="36dp"
         android:layout_marginBottom="28dp"
-        android:background="@drawable/signupbutton_background_gray"
-        android:text="끝내기"
+        android:background="@drawable/signupbutton_background_orange"
+        android:text="완료"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
