@@ -91,7 +91,63 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         alarmSettingButton.setOnCheckedChangeListener { _, isChecked ->
-            // TODO
+            val email = "yoonsw0532@naver.com" // TODO 임시 테스트용
+            val client = OkHttpClient()
+            if(isChecked){
+                // 검색 허용
+                val body = FormBody.Builder()
+                    .add("email", email)
+                    .add("notifable", "1")
+                    .build()
+                val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/notifable").put(body).build()
+
+                client.newCall(request).enqueue(object: Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "알림 설정 도중 인터넷 연결 불안정")
+                        runOnUiThread {
+                            Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if(response.code() == 200){
+                            Log.d("성공", "알림 허용으로 변경 성공")
+                        } else{
+                            Log.d("log", "알림 설정 도중 인터넷 연결 불안정")
+                            runOnUiThread {
+                                Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+            } else{
+                // 검색 제한
+                val body = FormBody.Builder()
+                    .add("email", email)
+                    .add("notifable", "0")
+                    .build()
+                val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/notifable").put(body).build()
+
+                client.newCall(request).enqueue(object: Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "알림 설정 도중 인터넷 연결 불안정")
+                        runOnUiThread {
+                            Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        if(response.code() == 200){
+                            Log.d("성공", "알림 끄기로 변경 성공")
+                        } else{
+                            Log.d("log", "알림 설정 도중 인터넷 연결 불안정")
+                            runOnUiThread {
+                                Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                })
+            }
         }
 
         searchSettingButton.setOnCheckedChangeListener { _, isChecked ->
@@ -184,12 +240,13 @@ class SettingsActivity : AppCompatActivity() {
         })
 
         // 프로필에 닉네임, 이메일 보여주기
+        // 토글 버튼 초기 상태 설정하기
         email = "yoonsw0532@naver.com" // TODO 임시 테스트용
-        val userInfoRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/searchuser?query=${email}").build()
+        val userInfoRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/user?query=${email}").build()
 
         client.newCall(userInfoRequest).enqueue(object: Callback{
             override fun onFailure(call: Call, e: IOException) {
-                Log.d("log", "닉네임, 이메일 정보 수신 도중 인터넷 연결 불안정")
+                Log.d("log", "유저 정보 수신 도중 인터넷 연결 불안정")
                 runOnUiThread {
                     Toast.makeText(this@SettingsActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                 }
@@ -197,7 +254,7 @@ class SettingsActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 if(response.code() == 200){
-                    Log.d("log", "닉네임 정보 수신 성공")
+                    Log.d("log", "유저 정보 수신 성공")
                     // TODO json 빈거 예외처리
                     val jsonObject = JSONObject(response.body()?.string())
                     val jsonArray = jsonObject.getJSONArray("data")
@@ -206,8 +263,20 @@ class SettingsActivity : AppCompatActivity() {
                         userName.text = targetObject.getString("nickname")
                         userEmail.text = email
                     }
+                    Log.d("searchable", targetObject.getInt("searchable").toString())
+                    if(targetObject.getInt("searchable") == 1){
+                        runOnUiThread {
+                            searchSettingButton.isChecked = true
+                        }
+                    }
+                    Log.d("notifable", (targetObject.getInt("notifable")==1).toString())
+                    if(targetObject.getInt("notifable") == 1){
+                        runOnUiThread {
+                            alarmSettingButton.isChecked = true
+                        }
+                    }
                 } else{
-                    Log.d("log", "닉네임 정보 다운로드 실패")
+                    Log.d("log", "유저 정보 다운로드 실패")
                 }
             }
         })
