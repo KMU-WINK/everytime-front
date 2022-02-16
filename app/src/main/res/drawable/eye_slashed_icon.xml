@@ -4,30 +4,29 @@
     android:viewportWidth="24"
     android:viewportHeight="24">
   <path
-      android:pathData="M6.8726,17.129C5.0276,15.819 3.5676,14.115 2.7426,13.039C2.512,12.742 2.3867,12.3766 2.3867,12.0005C2.3867,11.6244 2.512,11.259 2.7426,10.962C4.2356,9.013 7.8176,5 11.9996,5C13.8756,5 15.6296,5.807 17.1296,6.874"
+      android:pathData="M12,13.5V16"
       android:strokeLineJoin="round"
-      android:strokeWidth="2"
+      android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="M14.129,9.8865C13.8513,9.6042 13.5204,9.3796 13.1555,9.2258C12.7906,9.072 12.3988,8.9919 12.0028,8.9903C11.6068,8.9886 11.2144,9.0654 10.8482,9.2161C10.482,9.3669 10.1492,9.5887 9.8692,9.8687C9.5891,10.1487 9.3673,10.4813 9.2164,10.8475C9.0655,11.2137 8.9887,11.6061 8.9903,12.0021C8.9918,12.3981 9.0718,12.7899 9.2255,13.1549C9.3793,13.5198 9.6037,13.8507 9.886,14.1285"
+      android:pathData="M5.2265,12.1232L4.0006,14.1232"
       android:strokeLineJoin="round"
-      android:strokeWidth="2"
+      android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="M4,20L20,4"
+      android:pathData="M19.0001,12.1232L20.226,14.1232"
       android:strokeLineJoin="round"
-      android:strokeWidth="2"
+      android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="M10,18.704C10.6492,18.8972 11.3227,18.9969 12,19C16.182,19 19.764,14.987 21.257,13.038C21.4876,12.7407 21.6127,12.3751 21.6125,11.9988C21.6124,11.6226 21.4869,11.2571 21.256,10.96C20.7313,10.2755 20.1684,9.6211 19.57,9"
-      android:strokeLineJoin="round"
-      android:strokeWidth="2"
+      android:pathData="M2,8C3.3077,10.0757 5.6106,11.2983 7.7271,12.0141C10.8073,13.0558 14.1785,12.9643 17.253,11.9059C19.5776,11.1057 21.9224,9.8473 23,8"
+      android:strokeWidth="1.5"
       android:fillColor="#00000000"
       android:strokeColor="#000000"
       android:strokeLineCap="round"/>
