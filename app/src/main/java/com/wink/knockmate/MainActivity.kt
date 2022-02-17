@@ -1,24 +1,29 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.google.android.material.navigation.NavigationView
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: DayAdapter
     lateinit var datas: MutableList<DayAdapter.DateData>
@@ -27,6 +32,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        setSupportActionBar(findViewById(R.id.main_layout_toolbar)) // 툴바를 액티비티의 앱바로 지정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // 드로어를 꺼낼 홈 버튼 활성화
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.back_icon) // 홈버튼 이미지 변경
+        supportActionBar?.setDisplayShowTitleEnabled(false) // 툴바에 타이틀 안보이게
+        findViewById<NavigationView>(R.id.main_navigationView).setNavigationItemSelectedListener(
+            this@MainActivity
+        )
+
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)
@@ -74,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<ImageButton>(R.id.main_hamburger).setOnClickListener {
+            findViewById<DrawerLayout>(R.id.main_drawer_layout).openDrawer(GravityCompat.START)
         }
 
         findViewById<ImageButton>(R.id.main_datedropdown).setOnClickListener {
@@ -82,6 +98,25 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.main_add_cancel).setOnClickListener {
             findViewById<ConstraintLayout>(R.id.main_add).visibility = View.GONE
+        }
+
+        findViewById<ImageButton>(R.id.main_search).setOnClickListener {
+            //val intent = Intent(this, SearchView::class.java)
+            //startActivity(intent)
+        }
+
+        findViewById<ImageButton>(R.id.main_noti).setOnClickListener {
+            val intent = Intent(this, NotationActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<ImageButton>(R.id.main_floating).setOnClickListener {
+            AddScheduleInfo.resetStartCal()
+            val bottomSheetDialogFragment = AddSchedule()
+            val args = Bundle()
+            args.putString("ScheduleType", "ADD") // 일정 추가인지, 처음부터 노크인지, 일정 수정인지 판별
+            bottomSheetDialogFragment.arguments = args
+            bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
         }
 
         findViewById<TextView>(R.id.main_add_ok).setOnClickListener {
@@ -106,6 +141,35 @@ class MainActivity : AppCompatActivity() {
             resetDayRecycler(1)
             findViewById<ConstraintLayout>(R.id.main_add).visibility = View.GONE
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            android.R.id.home -> { // 메뉴 버튼
+                findViewById<DrawerLayout>(R.id.main_drawer_layout).openDrawer(GravityCompat.START)    // 네비게이션 드로어 열기
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if (findViewById<DrawerLayout>(R.id.main_drawer_layout).isDrawerOpen(GravityCompat.START)) {
+            findViewById<DrawerLayout>(R.id.main_drawer_layout).closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this, "back btn clicked", Toast.LENGTH_SHORT).show()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.account -> Toast.makeText(this, "account clicked", Toast.LENGTH_SHORT).show()
+            R.id.item2 -> Toast.makeText(this, "item2 clicked", Toast.LENGTH_SHORT).show()
+            R.id.item3 -> Toast.makeText(this, "item3 clicked", Toast.LENGTH_SHORT).show()
+        }
+        return false
     }
 
     private fun DatePicker.getDate(): Calendar {

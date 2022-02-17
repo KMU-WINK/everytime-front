@@ -4,23 +4,37 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_create_group.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editemail.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editpassword.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editprofile.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_login.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.14" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_nickname.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_notation.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_settings.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_signup.xml" value="0.1540020263424519" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_terms.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/checked_profile_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/edit_profileimage_bottom_sheet.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/invite_profile_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/knock_notation_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_day_recycler.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_drawer_header.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_toolbar.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/nock_notation_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_disable_users_item.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_group_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_invited_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_user_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/settings_dialog.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/testpage.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/menu/main_drawer_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/custom_checkbox.xml" value="0.14814814814814814" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/email.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />

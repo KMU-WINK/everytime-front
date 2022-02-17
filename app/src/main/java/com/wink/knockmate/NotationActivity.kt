@@ -5,9 +5,9 @@ import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_notation.*
-import kotlinx.android.synthetic.main.nock_notation_item.*
+import androidx.recyclerview.widget.RecyclerView
 
 class NotationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +27,8 @@ class NotationActivity : AppCompatActivity() {
             KnockNotationAdapter.KnockList("shinba",3,10,16,30,18,30,"팀플"),
             KnockNotationAdapter.KnockList("shinba",3,19,16,30,18,30,"팀플")
         )
+        val recyclerKnockNotation = findViewById<RecyclerView>(R.id.recyclerKnockNotation)
+        val recyclerFollowNotation = findViewById<RecyclerView>(R.id.recyclerFollowNotation)
         recyclerKnockNotation.layoutManager=LinearLayoutManager(this)
         recyclerKnockNotation.adapter = KnockNotationAdapter(knockList)
         recyclerKnockNotation.visibility = View.GONE
@@ -34,6 +36,10 @@ class NotationActivity : AppCompatActivity() {
         recyclerFollowNotation.layoutManager = LinearLayoutManager(this)
         recyclerFollowNotation.adapter=FollowInfoAdapter(followList)
 
+        val btNotationKnock = findViewById<Button>(R.id.btNotationKnock)
+        val btNotationFollow = findViewById<Button>(R.id.btNotationFollow)
+        val btNotationFollowUnder = findViewById<Button>(R.id.btNotationFollowUnder)
+        val btNotationKnockUnder = findViewById<Button>(R.id.btNotationKnockUnder)
 
         btNotationKnock.setOnClickListener {
             btNotationKnock.setTextColor(rgb(255, 122, 83))
