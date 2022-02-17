@@ -17,12 +17,12 @@ class AddSchedule_repeat : Fragment() {
     ): View? {
         val view = inflater!!.inflate(R.layout.addschedule_repeat, container, false)
 
-        val tempType = AddScheduleInfo.getRepeatType()
-        val tempDetailType = AddScheduleInfo.getRepeatDetailType()
+        val tempType = AddScheduleInfo.repeatType
+        val tempDetailType = AddScheduleInfo.repeatDetailType
         val tempRepeatDays = AddScheduleInfo.repeatDays
-        val tempRepeatDay = AddScheduleInfo.getRepeatDay()
-        val tempRepeatAllCount = AddScheduleInfo.getRepeatAllCount()
-        val tempRepeatInterval = AddScheduleInfo.getRepeatInterval()
+        val tempRepeatDay = AddScheduleInfo.repeatDay
+        val tempRepeatAllCount = AddScheduleInfo.repeatAllCount
+        val tempRepeatInterval = AddScheduleInfo.repeatInterval
 
         val noRepeat = view.findViewById<ConstraintLayout>(R.id.repeat_no)
         val everyDay = view.findViewById<ConstraintLayout>(R.id.repeat_everyday)
@@ -41,15 +41,15 @@ class AddSchedule_repeat : Fragment() {
         val everyYearCheck = view.findViewById<CheckBox>(R.id.repeat_everyyear_check)
         val customCheck = view.findViewById<CheckBox>(R.id.repeat_custom_check)
 
-        if(AddScheduleInfo.getRepeatType() == "반복 안함" || AddScheduleInfo.getRepeatType() == ""){
+        if(AddScheduleInfo.repeatType == "반복 안함" || AddScheduleInfo.repeatType == ""){
             noRepeatCheck.isChecked = true
-        }else if(AddScheduleInfo.getRepeatType() == "매일"){
+        }else if(AddScheduleInfo.repeatType == "매일"){
             everyDayCheck.isChecked = true
-        }else if(AddScheduleInfo.getRepeatType() == "매주"){
+        }else if(AddScheduleInfo.repeatType == "매주"){
             everyWeekCheck.isChecked = true
-        }else if(AddScheduleInfo.getRepeatType() == "매월"){
+        }else if(AddScheduleInfo.repeatType == "매월"){
             everyMonthCheck.isChecked = true
-        }else if(AddScheduleInfo.getRepeatType() == "매년"){
+        }else if(AddScheduleInfo.repeatType == "매년"){
             everyYearCheck.isChecked = true
         }else{
             customCheck.isChecked = true
@@ -65,32 +65,32 @@ class AddSchedule_repeat : Fragment() {
         }
 
         noRepeat.setOnClickListener {
-            AddScheduleInfo.setRepeatType("반복 안함")
+            AddScheduleInfo.repeatType = "반복 안함"
             initFalse()
             noRepeatCheck.isChecked = true
         }
         everyDay.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매일")
+            AddScheduleInfo.repeatType = "매일"
             initFalse()
             everyDayCheck.isChecked = true
         }
         everyWeek.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매주")
+            AddScheduleInfo.repeatType = "매주"
             initFalse()
             everyWeekCheck.isChecked = true
         }
         everyMonth.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매월")
+            AddScheduleInfo.repeatType = "매월"
             initFalse()
             everyMonthCheck.isChecked = true
         }
         everyYear.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매년")
+            AddScheduleInfo.repeatType = "매년"
             initFalse()
             everyYearCheck.isChecked = true
         }
         custom.setOnClickListener {
-            AddScheduleInfo.setRepeatType("맞춤 설정")
+            AddScheduleInfo.repeatType = "맞춤 설정"
             initFalse()
             customCheck.isChecked = true
 
@@ -101,32 +101,32 @@ class AddSchedule_repeat : Fragment() {
                 ?.commit()
         }
         noRepeatCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("반복 안함")
+            AddScheduleInfo.repeatType = "반복 안함"
             initFalse()
             noRepeatCheck.isChecked = true
         }
         everyDayCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매일")
+            AddScheduleInfo.repeatType = "매일"
             initFalse()
             everyDayCheck.isChecked = true
         }
         everyWeekCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매주")
+            AddScheduleInfo.repeatType = "매주"
             initFalse()
             everyWeekCheck.isChecked = true
         }
         everyMonthCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매월")
+            AddScheduleInfo.repeatType = "매월"
             initFalse()
             everyMonthCheck.isChecked = true
         }
         everyYearCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("매년")
+            AddScheduleInfo.repeatType = "매년"
             initFalse()
             everyYearCheck.isChecked = true
         }
         customCheck.setOnClickListener {
-            AddScheduleInfo.setRepeatType("맞춤 설정")
+            AddScheduleInfo.repeatType = "맞춤 설정"
             initFalse()
             customCheck.isChecked = true
 
@@ -137,12 +137,12 @@ class AddSchedule_repeat : Fragment() {
                 ?.commit()
         }
         backButton.setOnClickListener {
-            AddScheduleInfo.setRepeatType(tempType)
-            AddScheduleInfo.setRepeatDetailType(tempDetailType)
-            AddScheduleInfo.setRepeatDay(tempRepeatDay)
-            AddScheduleInfo.setRepeatAllCount(tempRepeatAllCount)
+            AddScheduleInfo.repeatType = tempType
+            AddScheduleInfo.repeatDetailType = tempDetailType
+            AddScheduleInfo.repeatDay = tempRepeatDay
+            AddScheduleInfo.repeatAllCount = tempRepeatAllCount
             AddScheduleInfo.repeatDays = tempRepeatDays
-            AddScheduleInfo.setRepeatInterval(tempRepeatInterval)
+            AddScheduleInfo.repeatInterval = tempRepeatInterval
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())

@@ -1,6 +1,8 @@
 package com.wink.knockmate
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +27,8 @@ class AddSchedule_brief : Fragment() {
         val startDateText_brief = view.findViewById<TextView>(R.id.brief_date)
         val startTimeText_brief = view.findViewById<TextView>(R.id.brief_start_time)
         val endTimeText_brief = view.findViewById<TextView>(R.id.brief_end_time)
-        val startCal = AddScheduleInfo.getStartCal()
-        val endCal = AddScheduleInfo.getEndCal()
+        val startCal = AddScheduleInfo.startCal
+        val endCal = AddScheduleInfo.startCal
         val icon = view.findViewById<ImageView>(R.id.icon)
 
         startDateText_brief.text = (startCal.get(Calendar.MONTH)+1).toString() + "." + startCal.get(
@@ -38,8 +40,8 @@ class AddSchedule_brief : Fragment() {
             Calendar.MINUTE).toString() + "분"
         else "오후" + " " + endCal.get(Calendar.HOUR).toString() + "시 " + endCal.get(Calendar.MINUTE).toString() + "분"
 
-        AddScheduleInfo.setStartDay(dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)))
-        AddScheduleInfo.setEndDay(dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK)))
+        AddScheduleInfo.startDay = dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK))
+        AddScheduleInfo.endDay = dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK))
 
         brief_setting.setOnClickListener {
             parentFragment?.childFragmentManager
@@ -55,15 +57,25 @@ class AddSchedule_brief : Fragment() {
         title.setOnFocusChangeListener(object:View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if(hasFocus){
-                    if (!titleClick || AddScheduleInfo.getTitle() == null){
+                    if (!titleClick || AddScheduleInfo.title == null){
                         title.text = null
                     }
                     titleClick = true
                 }else{
-                    if(AddScheduleInfo.getTitle() != null){
+                    if(AddScheduleInfo.title != null){
                         title.setText("일정 제목")
                     }
                 }
+            }
+        })
+
+        title.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+            override fun afterTextChanged(s: Editable?) {
+                AddScheduleInfo.title = title.text.toString()
             }
         })
 

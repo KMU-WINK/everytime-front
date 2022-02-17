@@ -30,8 +30,8 @@ class AddSchedule_detail : Fragment() {
         val startTimeText = view.findViewById<TextView>(R.id.detail_start_time)
         val endDateText = view.findViewById<TextView>(R.id.detail_end_date)
         val endTimeText = view.findViewById<TextView>(R.id.detail_end_time)
-        val startCal = AddScheduleInfo.getStartCal()
-        val endCal = AddScheduleInfo.getEndCal()
+        val startCal = AddScheduleInfo.startCal
+        val endCal = AddScheduleInfo.endCal
 
         startDateText.text = (startCal.get(Calendar.MONTH)+1).toString() + "월" + startCal.get(
             Calendar.DATE).toString() + "일 (" + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + ")"
@@ -44,8 +44,8 @@ class AddSchedule_detail : Fragment() {
             Calendar.MINUTE).toString()
             else "오후" + " " + endCal.get(Calendar.HOUR).toString() + ":" + endCal.get(Calendar.MINUTE).toString()
 
-        AddScheduleInfo.setStartDay(dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)))
-        AddScheduleInfo.setEndDay(dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK)))
+        AddScheduleInfo.startDay = dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK))
+        AddScheduleInfo.endDay = dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK))
 
 
         val startView = view.findViewById<LinearLayout>(R.id.addschedule_start)
@@ -126,15 +126,15 @@ class AddSchedule_detail : Fragment() {
         title.setOnFocusChangeListener(object:View.OnFocusChangeListener{
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if(hasFocus){
-                    if (!titleClick || AddScheduleInfo.getTitle() == "일정 제목"){
+                    if (!titleClick || AddScheduleInfo.title == "일정 제목"){
                         title.text = null
                     }
                     titleClick = true
                     startPicker.visibility = View.GONE
                     endPicker.visibility = View.GONE
                 }else{
-                    if(AddScheduleInfo.getTitle() != null || AddScheduleInfo.getTitle() == "일정 제목"){
-                        title.setText(AddScheduleInfo.getTitle())
+                    if(AddScheduleInfo.title != null || AddScheduleInfo.title == "일정 제목"){
+                        title.setText(AddScheduleInfo.title)
                     }
                 }
             }
@@ -145,7 +145,7 @@ class AddSchedule_detail : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
             override fun afterTextChanged(s: Editable?) {
-                AddScheduleInfo.setTitle(title.text.toString())
+                AddScheduleInfo.title = title.text.toString()
             }
         })
 
@@ -168,7 +168,7 @@ class AddSchedule_detail : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
             override fun afterTextChanged(s: Editable?) {
-                AddScheduleInfo.setMemo(memo.text.toString())
+                AddScheduleInfo.memo = memo.text.toString()
             }
         })
 
@@ -199,7 +199,7 @@ class AddSchedule_detail : Fragment() {
 
         // 반복 일정으로 넘어가는 버튼
         val repeatText = view.findViewById<TextView>(R.id.repeat_text)
-        repeatText.text = AddScheduleInfo.getRepeatType()
+        repeatText.text = AddScheduleInfo.repeatType
         val to_repeat_button = view.findViewById<ConstraintLayout>(R.id.to_repeat_button)
         to_repeat_button.setOnClickListener(View.OnClickListener {
             startPicker.visibility = View.GONE
@@ -236,8 +236,8 @@ class AddSchedule_detail : Fragment() {
         // 저장 버튼
         val saveButton = view.findViewById<TextView>(R.id.save_button)
         saveButton.setOnClickListener {
-            AddScheduleInfo.setTitle(title.text.toString())
-            AddScheduleInfo.setMemo(memo.text.toString())
+            AddScheduleInfo.title = title.text.toString()
+            AddScheduleInfo.memo = memo.text.toString()
         }
 
 

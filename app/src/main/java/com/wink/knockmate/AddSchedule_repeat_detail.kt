@@ -24,8 +24,7 @@ class AddSchedule_repeat_detail : Fragment() {
         val weeksFrame = view.findViewById<FrameLayout>(R.id.repeat_weeks_frame)
         val monthsFrame = view.findViewById<FrameLayout>(R.id.repeat_month_frame)
 
-        val startCal = AddScheduleInfo.getStartCal()
-        val weekDay = dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK))
+        val weekDay = AddScheduleInfo.startDay
 
         val repeatMonday = view.findViewById<CheckBox>(R.id.repeat_monday)
         val repeatTuesday = view.findViewById<CheckBox>(R.id.repeat_tuesday)
@@ -36,7 +35,7 @@ class AddSchedule_repeat_detail : Fragment() {
         val repeatSunday = view.findViewById<CheckBox>(R.id.repeat_sunday)
 
         val repeatDay = view.findViewById<EditText>(R.id.repeat_day)
-        repeatDay.setText((AddScheduleInfo.getStartCal().get(Calendar.DATE)).toString())
+        repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
 
         for(i in 0 until AddScheduleInfo.repeatDays.size){
             if(AddScheduleInfo.repeatDays[i]){
@@ -121,9 +120,9 @@ class AddSchedule_repeat_detail : Fragment() {
             if(!weeksViewBoolean&&!monthsViewBoolean){
                 val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval).text
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text
-                AddScheduleInfo.setRepeatInterval(repeatInterval.toString().toInt())
-                AddScheduleInfo.setRepeatAllCount(repeatCount.toString().toInt())
-                AddScheduleInfo.setRepeatDetailType("Days")
+                AddScheduleInfo.repeatInterval = repeatInterval.toString().toInt()
+                AddScheduleInfo.repeatAllCount = repeatCount.toString().toInt()
+                AddScheduleInfo.repeatDetailType = "Days"
             }else if(weeksViewBoolean){
                 val monCheckBox = view.findViewById<CheckBox>(R.id.repeat_monday).isChecked
                 val tueCheckBox = view.findViewById<CheckBox>(R.id.repeat_tuesday).isChecked
@@ -136,16 +135,16 @@ class AddSchedule_repeat_detail : Fragment() {
                                             friCheckBox, satCheckBox, sunCheckBox)
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
                 AddScheduleInfo.repeatDays = repeatDays
-                AddScheduleInfo.setRepeatAllCount(repeatCount.toInt())
-                AddScheduleInfo.setRepeatDetailType("Weeks")
+                AddScheduleInfo.repeatAllCount = repeatCount.toInt()
+                AddScheduleInfo.repeatDetailType = "Weeks"
             }else if(monthsViewBoolean){
                 val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval).text.toString()
                 val repeatDay = view.findViewById<EditText>(R.id.repeat_day).text.toString()
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
-                AddScheduleInfo.setRepeatDetailType("Months")
-                AddScheduleInfo.setRepeatInterval(repeatInterval.toInt())
-                AddScheduleInfo.setRepeatAllCount(repeatCount.toInt())
-                AddScheduleInfo.setRepeatDay(repeatDay.toInt())
+                AddScheduleInfo.repeatDetailType = "Months"
+                AddScheduleInfo.repeatInterval = repeatInterval.toInt()
+                AddScheduleInfo.repeatAllCount = repeatCount.toInt()
+                AddScheduleInfo.repeatDay = repeatDay.toInt()
             }
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
