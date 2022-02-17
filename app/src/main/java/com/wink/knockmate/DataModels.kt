@@ -6,6 +6,8 @@ data class UserModel(
     var user: Boolean = false,
     var email: String? = null,
     var invite: Boolean = false,
+    var searchAble: Boolean = true,
+    var follow: Boolean = false,
 )
 
 data class GroupModel(

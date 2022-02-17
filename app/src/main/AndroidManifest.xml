@@ -42,6 +42,7 @@
         <activity android:name=".EditEmailActivity"/>
         <activity android:name=".EditPasswordActivity"/>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".Search"/>
 
     </application>
 

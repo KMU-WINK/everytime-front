@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.GestureDetector
 import android.view.MenuItem
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
@@ -41,6 +43,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         findViewById<NavigationView>(R.id.main_navigationView).setNavigationItemSelectedListener(
             this@MainActivity
         )
+
+        findViewById<NavigationView>(R.id.main_navigationView).getHeaderView(0)
+            .findViewById<ImageButton>(R.id.drawer_setting)
+            .setOnClickListener {
+                Log.d("DYD", "D")
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
 
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
         val snapHelper: SnapHelper = PagerSnapHelper()
@@ -101,14 +111,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         findViewById<ImageButton>(R.id.main_search).setOnClickListener {
-            //val intent = Intent(this, SearchView::class.java)
-            //startActivity(intent)
+            val intent = Intent(this, Search::class.java)
+            startActivity(intent)
         }
 
         findViewById<ImageButton>(R.id.main_noti).setOnClickListener {
             val intent = Intent(this, NotationActivity::class.java)
             startActivity(intent)
         }
+
 
         findViewById<ImageButton>(R.id.main_floating).setOnClickListener {
             AddScheduleInfo.resetStartCal()
