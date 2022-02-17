@@ -3,14 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.46510416666666665" />
-        <entry key="app/src/main/res/layout/activity_create_group.xml" value="0.2234375" />
-        <entry key="app/src/main/res/layout/activity_invite_group_mem.xml" value="0.2875905797101449" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.44895833333333335" />
-        <entry key="app/src/main/res/layout/activity_notation.xml" value="0.22186002696626794" />
-        <entry key="app/src/main/res/layout/invite_profile_item.xml" value="0.2234375" />
-        <entry key="app/src/main/res/layout/knock_notation_item.xml" value="0.44299949304964603" />
-        <entry key="app/src/main/res/layout/nock_notation_item.xml" value="0.7255960924343141" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/custom_checkbox.xml" value="0.14814814814814814" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/email.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/lock_icon.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_gray.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_orange.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_gray.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_nickname.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_signup.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
       </map>
     </option>
   </component>
