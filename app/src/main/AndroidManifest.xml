@@ -22,6 +22,12 @@
             android:name=".CreateGroupActivity"
             android:exported="true" />
         <activity
+            android:name=".InviteGroupMemActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
 
