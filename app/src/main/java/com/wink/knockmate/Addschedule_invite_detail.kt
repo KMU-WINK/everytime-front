@@ -112,8 +112,8 @@ class Addschedule_invite_detail : Fragment() {
                 object : Thread() {
                     @SuppressLint("NotifyDataSetChanged")
                     override fun run() {
-                        if (response.code == 200) {
-                            val res = JSONObject(response.body?.string())
+                        if (response.code() == 200) {
+                            val res = JSONObject(response.body()?.string())
                             val resTemp = res.getJSONArray("data")
                             followerList.apply {
                                 for(i in 0 until resTemp.length()){
@@ -127,7 +127,7 @@ class Addschedule_invite_detail : Fragment() {
                                     )
                                 }
                             }
-                        } else if (response.code == 201) {
+                        } else if (response.code() == 201) {
                         } else {
                         }
                     }

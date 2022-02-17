@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wink.knockmate">
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -27,9 +25,12 @@
         <activity android:name=".NicknameActivity"/>
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".LogInActivity"/>
-        <activity android:name=".EditProfileActivity"/>
+        <activity android:name=".EditProfileActivity">
+        </activity>
         <activity android:name=".EditEmailActivity"/>
         <activity android:name=".EditPasswordActivity"/>
+        <activity android:name=".SettingsActivity"/>
+
     </application>
 
 </manifest>

@@ -49,8 +49,8 @@ class Addschedule_invite_detail_group_Adapter(private val context: Context):Recy
                 override fun onResponse(call: Call, response: Response) {
                     object : Thread(){
                         override fun run() {
-                            if(response.code == 200){
-                                Glide.with(itemView).load(JSONObject(response.body?.string()))
+                            if(response.code() == 200){
+                                Glide.with(itemView).load(JSONObject(response.body()?.string()))
                                     .transform(CenterCrop(), RoundedCorners(20))
                                     .into(groupImage)
                             }else{

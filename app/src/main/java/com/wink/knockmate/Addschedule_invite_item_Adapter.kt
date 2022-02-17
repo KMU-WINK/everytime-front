@@ -53,8 +53,8 @@ class Addschedule_invite_item_Adapter (private val context: Context): RecyclerVi
                 override fun onResponse(call: Call, response: Response) {
                     object : Thread() {
                         override fun run() {
-                            if (response.code == 200) {
-                                Glide.with(itemView).load(JSONObject(response.body?.string()))
+                            if (response.code() == 200) {
+                                Glide.with(itemView).load(JSONObject(response.body()?.string()))
                                     .transform(CenterCrop(), RoundedCorners(20))
                                     .into(image)
                             } else {
@@ -83,8 +83,8 @@ class Addschedule_invite_item_Adapter (private val context: Context): RecyclerVi
                     override fun onResponse(call: Call, response: Response) {
                         object : Thread() {
                             override fun run() {
-                                if (response.code == 200) {
-                                    val res = JSONObject(response.body?.string())
+                                if (response.code() == 200) {
+                                    val res = JSONObject(response.body()?.string())
                                     val resTemp = res.getJSONArray("data")
                                     groupMembers = resTemp.length()
                                 }
