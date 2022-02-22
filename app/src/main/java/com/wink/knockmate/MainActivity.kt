@@ -4,16 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
-import android.view.GestureDetector
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -31,9 +30,98 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var datas: MutableList<DayAdapter.DateData>
     var lastPosition: Int = 0
     lateinit var rows: MutableList<TableRow>
+    lateinit var email: String
+    lateinit var nickname: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
+        email = pref.getString("email", "").toString()
+        nickname = pref.getString("nickname", "").toString()
+        findViewById<TextView>(R.id.main_caltext).text = nickname + "님의 일정"
+
+        val navigationView = findViewById<NavigationView>(R.id.main_navigationView)
+        val menu = navigationView.menu
+
+        val client = OkHttpClient().newBuilder()
+            .build()
+        val request: Request = Request.Builder()
+            .url("http://3.35.146.57:3000/myfollower?email=${email}")
+            .method("GET", null)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "인터넷 연결 불안정")
+            }
+
+            override fun onResponse(call: Call, response1: Response) {
+                object : Thread() {
+                    override fun run() {
+                        if (response1.code() == 200) {
+                            val client = OkHttpClient().newBuilder()
+                                .build()
+                            val request: Request = Request.Builder()
+                                .url("http://3.35.146.57:3000/mygroup?email=${email}")
+                                .method("GET", null)
+                                .build()
+                            client.newCall(request).enqueue(object : Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    Log.d("log", "인터넷 연결 불안정")
+                                }
+
+                                override fun onResponse(call: Call, response2: Response) {
+                                    object : Thread() {
+                                        override fun run() {
+                                            when {
+                                                response2.code() == 200 -> {
+                                                    menu.clear()
+
+                                                    val followerdata =
+                                                        JSONObject(response1.body()?.string())
+                                                    var followerarr =
+                                                        followerdata.getJSONArray("data")
+                                                    for (i: Int in 0 until followerarr.length()) {
+                                                        menu.add(
+                                                            followerarr.getJSONObject(i)
+                                                                .getString("id")
+                                                        )
+                                                            .setOnMenuItemClickListener OnMenuItemClickListener@{
+
+                                                                return@OnMenuItemClickListener false
+                                                            }
+
+                                                    }
+
+                                                    val groupdata =
+                                                        JSONObject(response2.body()?.string())
+                                                    var grouparr =
+                                                        groupdata.getJSONArray("data")
+                                                    for (i: Int in 0 until grouparr.length()) {
+                                                        menu.add(
+                                                            grouparr.getJSONObject(i)
+                                                                .getString("id")
+                                                        )
+                                                            .setOnMenuItemClickListener OnMenuItemClickListener@{
+
+                                                                return@OnMenuItemClickListener false
+                                                            }
+
+                                                    }
+
+
+                                                    navigationView.invalidate()
+                                                }
+                                            }
+                                        }
+                                    }.run()
+                                }
+                            })
+                        }
+                    }
+                }.run()
+            }
+        })
 
 
         setSupportActionBar(findViewById(R.id.main_layout_toolbar)) // 툴바를 액티비티의 앱바로 지정
@@ -44,13 +132,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this@MainActivity
         )
 
-        findViewById<NavigationView>(R.id.main_navigationView).getHeaderView(0)
-            .findViewById<ImageButton>(R.id.drawer_setting)
+        val header = navigationView.getHeaderView(0)
+        header.findViewById<ImageButton>(R.id.drawer_setting)
             .setOnClickListener {
-                Log.d("DYD", "D")
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
             }
+        header.findViewById<TextView>(R.id.userName).text = nickname
+        header.findViewById<TextView>(R.id.userEmail).text = email
 
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
         val snapHelper: SnapHelper = PagerSnapHelper()
@@ -176,9 +265,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.account -> Toast.makeText(this, "account clicked", Toast.LENGTH_SHORT).show()
-            R.id.item2 -> Toast.makeText(this, "item2 clicked", Toast.LENGTH_SHORT).show()
-            R.id.item3 -> Toast.makeText(this, "item3 clicked", Toast.LENGTH_SHORT).show()
+
         }
         return false
     }
@@ -225,7 +312,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .build()
         val request: Request = Request.Builder()
             .url(
-                "http://3.35.146.57:3000/weekly?email=dy@test.com&year=${selected!!.get(Calendar.YEAR)}&month=${
+                "http://3.35.146.57:3000/weekly?email=${email}&year=${selected!!.get(Calendar.YEAR)}&month=${
                     selected!!.get(
                         Calendar.MONTH
                     ) + 1

@@ -90,6 +90,10 @@ class SettingsActivity : AppCompatActivity() {
             initDeleteAccountButton()
         }
 
+        findViewById<ImageButton>(R.id.XButton).setOnClickListener {
+            finish()
+        }
+
         alarmSettingButton.setOnCheckedChangeListener { _, isChecked ->
             val email = "yoonsw0532@naver.com" // TODO 임시 테스트용
             val client = OkHttpClient()

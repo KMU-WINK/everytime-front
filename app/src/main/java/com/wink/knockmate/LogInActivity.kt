@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
@@ -12,31 +13,32 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import okhttp3.*
+import org.json.JSONObject
 import java.io.IOException
 
 class LogInActivity : AppCompatActivity() {
 
-    private val backButton : ImageButton by lazy{
+    private val backButton: ImageButton by lazy {
         findViewById(R.id.backButton)
     }
 
-    private val loginEmail : EditText by lazy{
+    private val loginEmail: EditText by lazy {
         findViewById(R.id.loginEmail)
     }
 
-    private val loginPassword : EditText by lazy{
+    private val loginPassword: EditText by lazy {
         findViewById(R.id.loginPassword)
     }
 
-    private val loginButton : Button by lazy{
+    private val loginButton: Button by lazy {
         findViewById(R.id.loginButton)
     }
 
-    private val slashedEye : ImageButton by lazy {
+    private val slashedEye: ImageButton by lazy {
         findViewById(R.id.slashedEye)
     }
 
-    private val openedEye : ImageButton by lazy{
+    private val openedEye: ImageButton by lazy {
         findViewById(R.id.openedEye)
     }
 
@@ -57,20 +59,21 @@ class LogInActivity : AppCompatActivity() {
         openedEye.setOnClickListener {
             openedEye.isVisible = false
             slashedEye.isVisible = true
-            loginPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            loginPassword.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         }
 
-        loginEmail.onFocusChangeListener = View.OnFocusChangeListener{_, hasFocus ->
-            if(!hasFocus){
+        loginEmail.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
                 changeButton()
             }
         }
 
-        loginPassword.onFocusChangeListener = View.OnFocusChangeListener{_, hasFocus ->
-            if(!hasFocus){
-                if(loginPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD){
+        loginPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                if (loginPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                     slashedEye.isVisible = true
-                } else{
+                } else {
                     openedEye.isVisible = true
                 }
                 changeButton()
@@ -78,11 +81,12 @@ class LogInActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeButton(){
-        if(loginEmail.text.toString().isNotEmpty() && loginPassword.text.toString().isNotEmpty()){
-            loginButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_orange)
-            loginButton.setOnClickListener{
-                Log.d("log","button clicked")
+    private fun changeButton() {
+        if (loginEmail.text.toString().isNotEmpty() && loginPassword.text.toString().isNotEmpty()) {
+            loginButton.background =
+                this.resources.getDrawable(R.drawable.signupbutton_background_orange)
+            loginButton.setOnClickListener {
+                Log.d("log", "button clicked")
                 val email = loginEmail.text.toString()
                 val password = loginPassword.text.toString()
 
@@ -91,22 +95,30 @@ class LogInActivity : AppCompatActivity() {
                     .add("email", email)
                     .add("password", password)
                     .build()
-                val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/signin").post(body).build()
+                val request: Request =
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/signin").post(body).build()
 
                 Log.d("log", "build success")
 
-                client.newCall(request).enqueue(object: Callback {
+                client.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
                         Log.d("log", "인터넷 연결 불안정")
                         runOnUiThread {
-                            Toast.makeText(this@LogInActivity,"인터넷 연결이 불안정합니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this@LogInActivity,
+                                "인터넷 연결이 불안정합니다. 다시 시도해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
 
                     override fun onResponse(call: Call, response: Response) {
-                        object: Thread(){
-                            override fun run(){
-                                if(response.code() == 200){
+                        object : Thread() {
+                            override fun run() {
+                                if (response.code() == 200) {
+
+
                                     Log.d("email", email)
                                     Log.d("password", password)
                                     Log.d("success", "success")
@@ -114,12 +126,54 @@ class LogInActivity : AppCompatActivity() {
                                     // 자동 로그인을 위해 로그인한 이메일과 비밀번호를 preference에 저장
                                     val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
                                     val editor = pref.edit()
-                                    editor.putString("email",email)
-                                    editor.putString("password",password)
+                                    editor.putString("email", email)
+                                    editor.putString("password", password)
                                     editor.apply()
 
+                                    val client = OkHttpClient().newBuilder()
+                                        .build()
+                                    val request: Request = Request.Builder()
+                                        .url("http://3.35.146.57:3000/user?query=${email}")
+                                        .method("GET", null)
+                                        .build()
+                                    client.newCall(request).enqueue(object : Callback {
+                                        override fun onFailure(call: Call, e: IOException) {
+                                            Log.d("log", "인터넷 연결 불안정")
+                                        }
+
+                                        override fun onResponse(call: Call, response: Response) {
+                                            object : Thread() {
+                                                override fun run() {
+                                                    when {
+                                                        response.code() == 200 -> {
+                                                            val data = JSONObject(
+                                                                response.body()?.string()
+                                                            )
+                                                            var arr = data.getJSONArray("data")
+                                                            var nickname = arr.getJSONObject(0)
+                                                                .getString("nickname")
+                                                            editor.putString(
+                                                                "nickname",
+                                                                nickname
+                                                            )
+                                                            editor.apply()
+                                                        }
+                                                        response.code() == 201 -> {
+                                                        }
+                                                        else -> {
+                                                        }
+                                                    }
+                                                }
+                                            }.run()
+                                        }
+                                    })
+
+
+                                    val intent =
+                                        Intent(this@LogInActivity, MainActivity::class.java)
+                                    startActivity(intent)
                                     // TODO 다음 화면으로 이동
-                                } else if(response.code() == 201){
+                                } else if (response.code() == 201) {
                                     Log.d("email", email)
                                     Log.d("password", password)
                                     Log.d("log", "잘못된 이메일 또는 비밀번호")
@@ -129,7 +183,7 @@ class LogInActivity : AppCompatActivity() {
                                             this@LogInActivity.resources.getDrawable(R.drawable.signupbutton_background_gray)
                                         loginButton.setOnClickListener {}
                                     }
-                                } else{
+                                } else {
                                     Log.d("log", "로그인 실패")
                                 }
                             }
@@ -137,8 +191,9 @@ class LogInActivity : AppCompatActivity() {
                     }
                 })
             }
-        } else{
-            loginButton.background = this.resources.getDrawable(R.drawable.signupbutton_background_gray)
+        } else {
+            loginButton.background =
+                this.resources.getDrawable(R.drawable.signupbutton_background_gray)
             loginButton.setOnClickListener {}
         }
     }

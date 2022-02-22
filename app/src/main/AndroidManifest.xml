@@ -27,16 +27,19 @@
             android:name=".MainActivity"
             android:exported="true">
 
+        </activity>
+        <activity android:name=".TermsActivity"/>
+        <activity android:name=".NicknameActivity"/>
+        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".LogInActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TermsActivity"/>
-        <activity android:name=".NicknameActivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".LogInActivity"/>
         <activity android:name=".EditProfileActivity">
         </activity>
         <activity android:name=".EditEmailActivity"/>
