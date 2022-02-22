@@ -82,12 +82,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                                     var followerarr =
                                                         followerdata.getJSONArray("data")
                                                     for (i: Int in 0 until followerarr.length()) {
+                                                        val email =
+                                                            followerarr.getJSONObject(i)
+                                                                .getString("email")
+                                                        val nickname =
+                                                            followerarr.getJSONObject(i)
+                                                                .getString("nickname")
                                                         menu.add(
                                                             followerarr.getJSONObject(i)
                                                                 .getString("id")
                                                         )
                                                             .setOnMenuItemClickListener OnMenuItemClickListener@{
 
+
+                                                                val intt = Intent(
+                                                                    this@MainActivity,
+                                                                    KnockmateActivity::class.java
+                                                                )
+                                                                intt.putExtra(
+                                                                    "email",
+                                                                    email
+                                                                )
+                                                                intt.putExtra(
+                                                                    "nickname",
+                                                                    nickname
+                                                                )
+                                                                startActivity(intt)
                                                                 return@OnMenuItemClickListener false
                                                             }
 
@@ -98,12 +118,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                                                     var grouparr =
                                                         groupdata.getJSONArray("data")
                                                     for (i: Int in 0 until grouparr.length()) {
+                                                        val email =
+                                                            grouparr.getJSONObject(i)
+                                                                .getString("id")
                                                         menu.add(
                                                             grouparr.getJSONObject(i)
                                                                 .getString("id")
                                                         )
                                                             .setOnMenuItemClickListener OnMenuItemClickListener@{
 
+
+                                                                val intt = Intent(
+                                                                    this@MainActivity,
+                                                                    KnockmateActivity::class.java
+                                                                )
+                                                                intt.putExtra(
+                                                                    "email",
+                                                                    email
+                                                                )
+                                                                intt.putExtra(
+                                                                    "nickname",
+                                                                    email
+                                                                )
+                                                                startActivity(intt)
                                                                 return@OnMenuItemClickListener false
                                                             }
 
@@ -146,7 +183,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         snapHelper.attachToRecyclerView(recyclerView)
 
         adapter = DayAdapter(this)
-        adapter.mainActivity = this
         recyclerView.adapter = adapter
 
         val date = Calendar.getInstance()

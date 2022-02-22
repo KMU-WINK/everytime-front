@@ -22,7 +22,6 @@ import org.json.JSONObject
 class DayAdapter(private val context: Context) : RecyclerView.Adapter<DayAdapter.ViewHolder>() {
     var datas = mutableListOf<DateData>()
     var selected: Calendar? = null
-    var mainActivity: MainActivity? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_day_recycler, parent, false)
         return ViewHolder(view)
