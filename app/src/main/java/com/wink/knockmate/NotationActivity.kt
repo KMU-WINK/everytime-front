@@ -4,24 +4,75 @@ import android.graphics.Color.rgb
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NotationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notation)
-        val followList = arrayOf(
-            FollowInfoAdapter.FollowList("shinba"),
-            FollowInfoAdapter.FollowList("sangwon"),
-            FollowInfoAdapter.FollowList("doyeop"),
-            FollowInfoAdapter.FollowList("hyeonji"),
-            FollowInfoAdapter.FollowList("hyeonji")
+
+        val recyclerKnockNotation = findViewById<RecyclerView>(R.id.recyclerKnockNotation)
+        val recyclerFollowNotation = findViewById<RecyclerView>(R.id.recyclerFollowNotation)
+        val pref = getSharedPreferences(
+            "loginInfo",
+            AppCompatActivity.MODE_PRIVATE
         )
+        val followList = ArrayList<FollowInfoAdapter.FollowList>()
+
+        val client = OkHttpClient().newBuilder()
+            .build()
+        val request: Request = Request.Builder()
+            .url(
+                "http://3.35.146.57:3000/notification_follow?email=${
+                    pref.getString("email", "").toString()
+                }"
+            )
+            .method("GET", null)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "인터넷 연결 불안정")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                object : Thread() {
+                    override fun run() {
+                        when {
+                            response.code() == 200 -> {
+                                followList.clear()
+                                val data = JSONObject(response.body()?.string())
+                                val arr = data.getJSONArray("data")
+
+                                for (i: Int in 0 until arr.length()) {
+                                    followList.add(
+                                        FollowInfoAdapter.FollowList(
+                                            arr.getJSONObject(i).getString("nickname"),
+                                            arr.getJSONObject(i).getString("email")
+                                        )
+                                    )
+                                }
+                                recyclerFollowNotation.adapter?.notifyDataSetChanged()
+                            }
+                            response.code() == 201 -> {
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }.run()
+            }
+        })
 
         val knockList = arrayOf(
             KnockNotationAdapter.KnockList("shinba", 3, 3, 15, 30, 16, 30, "놀자"),
@@ -29,14 +80,12 @@ class NotationActivity : AppCompatActivity() {
             KnockNotationAdapter.KnockList("shinba", 3, 10, 16, 30, 18, 30, "팀플"),
             KnockNotationAdapter.KnockList("shinba", 3, 19, 16, 30, 18, 30, "팀플")
         )
-        val recyclerKnockNotation = findViewById<RecyclerView>(R.id.recyclerKnockNotation)
-        val recyclerFollowNotation = findViewById<RecyclerView>(R.id.recyclerFollowNotation)
         recyclerKnockNotation.layoutManager = LinearLayoutManager(this)
         recyclerKnockNotation.adapter = KnockNotationAdapter(knockList)
         recyclerKnockNotation.visibility = View.GONE
 
         recyclerFollowNotation.layoutManager = LinearLayoutManager(this)
-        recyclerFollowNotation.adapter = FollowInfoAdapter(followList)
+        recyclerFollowNotation.adapter = FollowInfoAdapter(followList, this)
 
         val btNotationKnock = findViewById<Button>(R.id.btNotationKnock)
         val btNotationFollow = findViewById<Button>(R.id.btNotationFollow)
