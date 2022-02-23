@@ -5,99 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NotationActivity">
-    <LinearLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/notation_header"
         android:layout_width="0dp"
         android:layout_height="56dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
         <ImageButton
             android:id="@+id/btNotationBack"
-            android:layout_width="20dp"
-            android:layout_height="14dp"
-            android:layout_marginStart="23dp"
-            android:layout_marginTop="21dp"
-            android:background="@null"
-            android:scaleType="fitCenter"
-            android:src="@drawable/page_back" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
+            android:src="@drawable/back_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
-            android:layout_marginTop="14dp"
+            android:fontFamily="@font/spoqahansansneo_bold"
             android:text="알림"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <ScrollView
-        android:id="@+id/scrollView2"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/btNotationBack"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/notification_main_selector"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notation_header">
+        android:layout_height="43dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notation_header">
+
+        <Button
+            android:id="@+id/btNotationKnock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="?android:selectableItemBackground"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="노크 알림"
+            android:textColor="#A1A1A1"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btNotationFollow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:background="?android:selectableItemBackground"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="팔로우 알림"
+            android:textColor="#FF7A53"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_main_selector">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
+            android:layout_height="2dp">
+
+            <ImageView
+                android:id="@+id/btNotationKnockUnder"
                 android:layout_width="match_parent"
-                android:layout_height="43dp">
-                <Button
-                    android:id="@+id/btNotationKnock"
-                    android:layout_width="match_parent"
-                    android:layout_weight="5"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:text="노크 알림"
-                    android:textColor="#A1A1A1" />
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@color/white" />
 
-                <Button
-                    android:id="@+id/btNotationFollow"
-                    android:layout_width="match_parent"
-                    android:layout_weight="5"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:text="팔로우 알림"
-                    android:textColor="#FF7A53"/>
-
-            </LinearLayout>
-            <LinearLayout
+            <ImageView
+                android:id="@+id/btNotationFollowUnder"
                 android:layout_width="match_parent"
-                android:layout_height="2dp">
-                <Button
-                    android:id="@+id/btNotationKnockUnder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:background="@color/white" />
-
-                <Button
-                    android:id="@+id/btNotationFollowUnder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:background="#FF7A53" />
-
-            </LinearLayout>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerKnockNotation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerFollowNotation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="#FF7A53" />
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerKnockNotation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    </ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFollowNotation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

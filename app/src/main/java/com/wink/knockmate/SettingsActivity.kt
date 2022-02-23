@@ -20,9 +20,9 @@ class SettingsActivity : AppCompatActivity() {
     private val pref by lazy{
         getSharedPreferences("loginInfo", MODE_PRIVATE)
     }
-    //private val email by lazy{
-    //    pref.getString("email", "")
-    //} // TODO login branch와 merge하면 추가
+    private val email by lazy{
+        pref.getString("email", "")
+    } // TODO login branch와 merge하면 추가
 
     private val profileImage : ImageView by lazy{
         findViewById(R.id.profileImage)
@@ -95,7 +95,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         alarmSettingButton.setOnCheckedChangeListener { _, isChecked ->
-            val email = "yoonsw0532@naver.com" // TODO 임시 테스트용
             val client = OkHttpClient()
             if(isChecked){
                 // 검색 허용
@@ -155,7 +154,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         searchSettingButton.setOnCheckedChangeListener { _, isChecked ->
-            val email = "yoonsw0532@naver.com" // TODO 임시 테스트용
             val client = OkHttpClient()
             if(isChecked){
                 // 검색 허용
@@ -216,7 +214,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initViews(){
-        var email = "yoonsw0532@naver.com" // TODO 임시 테스트용
         val client = OkHttpClient()
         val request : Request = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/picture/${email}").build()
 
@@ -245,7 +242,6 @@ class SettingsActivity : AppCompatActivity() {
 
         // 프로필에 닉네임, 이메일 보여주기
         // 토글 버튼 초기 상태 설정하기
-        email = "yoonsw0532@naver.com" // TODO 임시 테스트용
         val userInfoRequest = Request.Builder().addHeader("Content-Type","application/x-www-form-urlencoded").url("http://3.35.146.57:3000/user?query=${email}").build()
 
         client.newCall(userInfoRequest).enqueue(object: Callback{
@@ -355,7 +351,6 @@ class SettingsActivity : AppCompatActivity() {
         }
         positiveButton.text = "확인"
         positiveButton.setOnClickListener {
-            val email = "iandr0805@gmail.com" // 임시 테스트용 이메일
 
             val client = OkHttpClient()
             val body = FormBody.Builder()
@@ -375,7 +370,6 @@ class SettingsActivity : AppCompatActivity() {
                     object: Thread(){
                         override fun run(){
                             if(response.code() == 200){
-                                Log.d("email", email)
                                 Log.d("delete", "success")
 
                                 // 회원 탈퇴 후 자동 로그인을 위해 저장했던 preference의 이메일, 비밀번호 정보 초기화
@@ -397,7 +391,6 @@ class SettingsActivity : AppCompatActivity() {
                                 startActivity(intent)
 
                             } else if(response.code() == 201){
-                                Log.d("email", email)
                                 Log.d("log", "존재하지 않는 이메일")
                                 runOnUiThread {
                                     Toast.makeText(this@SettingsActivity, "계정 삭제에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()

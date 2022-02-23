@@ -47,7 +47,7 @@ class LogInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         backButton.setOnClickListener {
-            // TODO 뒤로가기
+            finish()
         }
 
         slashedEye.setOnClickListener {
