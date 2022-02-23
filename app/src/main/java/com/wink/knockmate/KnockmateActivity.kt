@@ -31,7 +31,7 @@ class KnockmateActivity : AppCompatActivity() {
         email = intent.extras?.getString("email").toString()
         nickname = intent.extras?.getString("nickname").toString()
 
-        findViewById<TextView>(R.id.main_caltext).text = nickname + "님의 일정"
+        //findViewById<TextView>(R.id.main_caltext).text = nickname + "님의 일정"
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)

@@ -6,124 +6,134 @@
     android:layout_height="wrap_content"
     android:background="#F6F9FB">
 
-    <TextView
-        android:id="@+id/textKnockNotationFrom"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/spoqahansansneo_regular"
-        android:text="xxxsss_님에게 노크가 도착했습니다."
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/knock_noti_item"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="?android:selectableItemBackground">
 
-    <ImageView
-        android:id="@+id/imgKnockNotation"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/notation_profile"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textKnockNotationFrom" />
+        <TextView
+            android:id="@+id/textKnockNotationFrom"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/spoqahansansneo_regular"
+            android:text="xxxsss_님에게 노크가 도착했습니다."
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textKnockNotationSchedule"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/spoqahansansneo_bold"
-        android:text="8월 7일 오후 7시 30분 - 9시 15분"
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@id/textKnockNotationContents"
-        app:layout_constraintLeft_toRightOf="@id/imgKnockNotation"
-        app:layout_constraintTop_toTopOf="@id/imgKnockNotation" />
+        <ImageView
+            android:id="@+id/imgKnockNotation"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/notation_profile"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textKnockNotationFrom" />
 
-    <TextView
-        android:id="@+id/textKnockNotationContents"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:fontFamily="@font/spoqahansansneo_regular"
-        android:text="그날 저녁 약속 어때?"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/imgKnockNotation"
-        app:layout_constraintLeft_toRightOf="@id/imgKnockNotation"
-        app:layout_constraintTop_toBottomOf="@id/textKnockNotationSchedule" />
+        <TextView
+            android:id="@+id/textKnockNotationSchedule"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="8월 7일 오후 7시 30분 - 9시 15분"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/textKnockNotationContents"
+            app:layout_constraintLeft_toRightOf="@id/imgKnockNotation"
+            app:layout_constraintTop_toTopOf="@id/imgKnockNotation" />
 
-    <ImageButton
-        android:id="@+id/btKnockNotationNext"
-        android:layout_width="7dp"
-        android:layout_height="14dp"
-        android:layout_marginRight="16dp"
-        android:background="?android:selectableItemBackground"
-        android:scaleType="fitCenter"
-        android:src="@drawable/next"
-        app:layout_constraintBottom_toBottomOf="@id/imgKnockNotation"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgKnockNotation" />
+        <TextView
+            android:id="@+id/textKnockNotationContents"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/spoqahansansneo_regular"
+            android:text="그날 저녁 약속 어때?"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/imgKnockNotation"
+            app:layout_constraintLeft_toRightOf="@id/imgKnockNotation"
+            app:layout_constraintTop_toBottomOf="@id/textKnockNotationSchedule" />
+
+        <ImageButton
+            android:id="@+id/btKnockNotationNext"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_marginRight="16dp"
+            android:background="?android:selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/next"
+            app:layout_constraintBottom_toBottomOf="@id/imgKnockNotation"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/imgKnockNotation" />
 
 
-    <ImageButton
-        android:id="@+id/btKnockNotationDecline"
-        android:layout_width="156dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/bt_border"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/btKnockNotationAccept"
-        app:layout_constraintTop_toBottomOf="@id/imgKnockNotation"
-        app:tint="#DFE9EF" />
+        <ImageButton
+            android:id="@+id/btKnockNotationDecline"
+            android:layout_width="156dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/bt_border"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/btKnockNotationAccept"
+            app:layout_constraintTop_toBottomOf="@id/imgKnockNotation"
+            app:tint="#DFE9EF" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansansneo_bold"
-        android:text="거절"
-        android:textColor="#7A7A7A"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/btKnockNotationDecline"
-        app:layout_constraintLeft_toLeftOf="@id/btKnockNotationDecline"
-        app:layout_constraintRight_toRightOf="@id/btKnockNotationDecline"
-        app:layout_constraintTop_toTopOf="@id/btKnockNotationDecline" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="거절"
+            android:textColor="#7A7A7A"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/btKnockNotationDecline"
+            app:layout_constraintLeft_toLeftOf="@id/btKnockNotationDecline"
+            app:layout_constraintRight_toRightOf="@id/btKnockNotationDecline"
+            app:layout_constraintTop_toTopOf="@id/btKnockNotationDecline" />
 
-    <ImageButton
-        android:id="@+id/btKnockNotationAccept"
-        android:layout_width="156dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="16dp"
-        android:background="?android:selectableItemBackground"
-        android:src="@drawable/bt_border"
-        app:layout_constraintLeft_toRightOf="@id/btKnockNotationDecline"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgKnockNotation"
-        app:tint="#FF7A53" />
+        <ImageButton
+            android:id="@+id/btKnockNotationAccept"
+            android:layout_width="156dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/bt_border"
+            app:layout_constraintLeft_toRightOf="@id/btKnockNotationDecline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgKnockNotation"
+            app:tint="#FF7A53" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/spoqahansansneo_bold"
-        android:text="수락"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@id/btKnockNotationAccept"
-        app:layout_constraintLeft_toLeftOf="@id/btKnockNotationAccept"
-        app:layout_constraintRight_toRightOf="@id/btKnockNotationAccept"
-        app:layout_constraintTop_toTopOf="@id/btKnockNotationAccept" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="수락"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/btKnockNotationAccept"
+            app:layout_constraintLeft_toLeftOf="@id/btKnockNotationAccept"
+            app:layout_constraintRight_toRightOf="@id/btKnockNotationAccept"
+            app:layout_constraintTop_toTopOf="@id/btKnockNotationAccept" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:layout_marginTop="24dp"
-        android:background="#EEEEEE"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btKnockNotationAccept" />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="24dp"
+            android:background="#EEEEEE"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btKnockNotationAccept" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

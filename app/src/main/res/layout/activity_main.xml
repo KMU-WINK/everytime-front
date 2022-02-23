@@ -101,13 +101,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/main_caltext"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="4dp"
+            android:text="imimimimimim님의 일정"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/main_topbar" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_copy"
+            app:layout_constraintBottom_toTopOf="@id/main_calendar_view"
+            app:layout_constraintLeft_toRightOf="@id/main_caltext"
+            app:layout_constraintTop_toBottomOf="@id/main_topbar" />
+
+
         <include
+            android:id="@+id/main_calendar_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             layout="@layout/layout_main_calendar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_topbar" />
+            app:layout_constraintTop_toBottomOf="@id/main_caltext" />
 
         <ImageButton
             android:id="@+id/main_floating"

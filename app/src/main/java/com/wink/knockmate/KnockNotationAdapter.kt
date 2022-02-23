@@ -1,11 +1,15 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.provider.ContactsContract
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Text
 
@@ -48,8 +52,15 @@ class KnockNotationAdapter(val knockList: Array<KnockList>) :
                 ).endMinute
             }분 "
         holder.comment.text = knockList.get(position).comment
+        holder.detail.setOnClickListener {
+            holder.detail.context.startActivity(
+                Intent(
+                    holder.detail.context,
+                    KnockmateActivity::class.java
+                )
+            )
+        }
     }
-
 
     override fun getItemCount(): Int {
         return knockList.size
@@ -59,8 +70,6 @@ class KnockNotationAdapter(val knockList: Array<KnockList>) :
         val nickname = itemView.findViewById<TextView>(R.id.textKnockNotationFrom)
         val schedule = itemView.findViewById<TextView>(R.id.textKnockNotationSchedule)
         val comment = itemView.findViewById<TextView>(R.id.textKnockNotationContents)
-
+        val detail = itemView.findViewById<ConstraintLayout>(R.id.knock_noti_item)
     }
-
-
 }

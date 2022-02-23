@@ -4,26 +4,173 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/knockmate_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/knockmate_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:background="?android:selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="10dp"
-        android:src="@drawable/back_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+            android:id="@+id/knockmate_backbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp"
+            android:src="@drawable/back_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="님의 노크"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/knockmate_backbutton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/knockmate_datetext"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:fontFamily="@font/spoqahansansneo_bold"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:text="2021년 11월"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/knockmate_topbar" />
 
     <include
+        layout="@layout/layout_main_calendar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        layout="@layout/layout_main_calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/knockmate_backbutton"/>
+        app:layout_constraintTop_toBottomOf="@id/knockmate_datetext" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/knock_noti_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/knock_msg_layout"
+            android:layout_width="328dp"
+            android:layout_height="112dp"
+            android:layout_marginTop="16dp"
+            android:background="#F6F9FB"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/knock_msg_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/spoqahansansneo_bold"
+                android:text="노크 메시지"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/knock_msg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
+                android:paddingHorizontal="10dp"
+                android:text="세줄로 고정하면 될것같습니다. 쓸수 있는 글자수를 제한을걸어두면될것같아요! 어짜피 몇줄이상 쓸 사람도,,없을것ㄱ,,,같기 때문에 일단은 그정도로 마무리 해두시죠..! 세줄을 채우고자 적업,"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/knock_msg_header" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
+                android:text="0000.00.00 00시 전송"
+                android:textColor="#CCCCCC"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageButton
+            android:id="@+id/knock_decline"
+            android:layout_width="156dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/bt_border"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/knock_accept"
+            app:layout_constraintTop_toBottomOf="@id/knock_msg_layout"
+            app:tint="#DFE9EF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="거절"
+            android:textColor="#7A7A7A"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/knock_decline"
+            app:layout_constraintLeft_toLeftOf="@id/knock_decline"
+            app:layout_constraintRight_toRightOf="@id/knock_decline"
+            app:layout_constraintTop_toTopOf="@id/knock_decline" />
+
+        <ImageButton
+            android:id="@+id/knock_accept"
+            android:layout_width="156dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="16dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/bt_border"
+            app:layout_constraintLeft_toRightOf="@id/knock_decline"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/knock_msg_layout"
+            app:tint="#FF7A53" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/spoqahansansneo_bold"
+            android:text="수락"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/knock_accept"
+            app:layout_constraintLeft_toLeftOf="@id/knock_accept"
+            app:layout_constraintRight_toRightOf="@id/knock_accept"
+            app:layout_constraintTop_toTopOf="@id/knock_accept" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
