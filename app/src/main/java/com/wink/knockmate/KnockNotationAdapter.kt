@@ -69,11 +69,17 @@ class KnockNotationAdapter(val knockList: ArrayList<KnockList>, val activity: Ap
             }분 "
         holder.comment.text = knockList.get(position).memo
         holder.detail.setOnClickListener {
+            val intent = Intent(
+                holder.detail.context,
+                KnockmateActivity::class.java
+            )
+            intent.putExtra("email", knockList[pos].email)
+            intent.putExtra("calendarid", knockList[pos].id)
+            intent.putExtra("start", knockList[pos].start)
+            intent.putExtra("memo", knockList[pos].memo)
+            intent.putExtra("mode", 1)
             holder.detail.context.startActivity(
-                Intent(
-                    holder.detail.context,
-                    KnockmateActivity::class.java
-                )
+                intent
             )
         }
         val pref = holder.accept.context.getSharedPreferences(

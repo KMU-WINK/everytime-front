@@ -17,7 +17,7 @@ import java.io.IOException
 
 class Addschedule_invite_detail_group_Adapter(private val context: Context):RecyclerView.Adapter<Addschedule_invite_detail_group_Adapter.ViewHolder>(){
 
-    private var datas = mutableListOf<UserModel>()
+    public var datas = mutableListOf<UserModel>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.addschedule_invite_detail_itme, parent, false)
         return ViewHolder(view)

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,9 @@ class KnockmateActivity : AppCompatActivity() {
     lateinit var adapter: DayAdapter
     lateinit var datas: MutableList<DayAdapter.DateData>
     lateinit var email: String
+    lateinit var memo: String
+    var calendarid: Int = 0
+    var mode: Int = 0
     lateinit var nickname: String
     var lastPosition: Int = 0
     lateinit var rows: MutableList<TableRow>
@@ -29,9 +34,16 @@ class KnockmateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_knockmate)
         email = intent.extras?.getString("email").toString()
+        calendarid = intent.extras!!.getInt("calendarid")
+        mode = intent.extras!!.getInt("mode")
         nickname = intent.extras?.getString("nickname").toString()
+        memo = intent.extras?.getString("memo").toString()
 
-        //findViewById<TextView>(R.id.main_caltext).text = nickname + "님의 일정"
+        if (mode == 1)
+            findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
+        else
+            findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 일정"
+
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)
@@ -43,17 +55,7 @@ class KnockmateActivity : AppCompatActivity() {
         date.set(Calendar.DAY_OF_WEEK, 1)
         datas = mutableListOf<DayAdapter.DateData>()
         rows = mutableListOf()
-        datas.apply {
-            date.add(Calendar.WEEK_OF_YEAR, -1)
-            add(DayAdapter.DateData(date.clone() as Calendar))
-            date.add(Calendar.WEEK_OF_YEAR, 1)
-            add(DayAdapter.DateData(date.clone() as Calendar))
-            date.add(Calendar.WEEK_OF_YEAR, 1)
-            add(DayAdapter.DateData(date.clone() as Calendar))
 
-            adapter.datas = datas
-            adapter.notifyDataSetChanged()
-        }
         lastPosition = RecyclerView.NO_POSITION
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -80,6 +82,26 @@ class KnockmateActivity : AppCompatActivity() {
         findViewById<ImageButton>(R.id.knockmate_backbutton).setOnClickListener {
             finish()
         }
+
+
+        val cal = intent.extras!!.getSerializable("start") as Calendar
+        cal.add(Calendar.DATE, -(cal.get(Calendar.DAY_OF_WEEK) - 1))
+
+        datas.clear()
+        datas.apply {
+            cal.add(Calendar.WEEK_OF_YEAR, -1)
+            add(DayAdapter.DateData(cal.clone() as Calendar))
+            cal.add(Calendar.WEEK_OF_YEAR, 1)
+            add(DayAdapter.DateData(cal.clone() as Calendar))
+            cal.add(Calendar.WEEK_OF_YEAR, 1)
+            add(DayAdapter.DateData(cal.clone() as Calendar))
+
+            adapter.datas = datas
+            adapter.notifyDataSetChanged()
+        }
+
+        recyclerView.scrollToPosition(1)
+        resetDayRecycler(1)
     }
 
 

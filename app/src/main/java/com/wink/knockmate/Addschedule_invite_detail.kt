@@ -17,14 +17,17 @@ import org.json.JSONObject
 import java.io.IOException
 
 class Addschedule_invite_detail : Fragment() {
-    lateinit var itemAdapter : Addschedule_invite_detail_Follower_Adapter
+    lateinit var itemAdapter: Addschedule_invite_detail_Follower_Adapter
     var followerList = mutableListOf<UserModel>()
-    lateinit var knockmate_recycler : RecyclerView
-    // follower, group 하나도 없는 경우도 만들어야 함
+    lateinit var knockmate_recycler: RecyclerView
+
+    lateinit var groupAdapter: Addschedule_invite_detail_group_Adapter
+    var groupList = mutableListOf<UserModel>()
+    lateinit var group_recycler: RecyclerView
 
     lateinit var invitedAdapter: Addschedule_invited_item_Adapter
     var inviteList = mutableListOf<UserModel>()
-    lateinit var invited_recycler : RecyclerView
+    lateinit var invited_recycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +39,7 @@ class Addschedule_invite_detail : Fragment() {
         val okButton = view.findViewById<TextView>(R.id.invite_ok_button)
         knockmate_recycler = view.findViewById(R.id.invite_knockmate_recycler)
         invited_recycler = view.findViewById(R.id.to_invite_users)
+        group_recycler = view.findViewById(R.id.invite_group_member_recycler)
 
         okButton.setOnClickListener {
             parentFragment?.childFragmentManager
@@ -45,20 +49,24 @@ class Addschedule_invite_detail : Fragment() {
                 ?.commit()
         }
 
+        initInvitedRecycler()
         initFollowerRecycler()
-        itemAdapter.setOnCheckBoxClickListener(object : Addschedule_invite_detail_Follower_Adapter.OnCheckBoxClickListener{
+        initGroupRecycler()
+
+        itemAdapter.setOnCheckBoxClickListener(object :
+            Addschedule_invite_detail_Follower_Adapter.OnCheckBoxClickListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onCheckClick(v: CheckBox, data: UserModel, pos: Int) {
                 //초대할 명단 추가하기
                 followerList[pos].invite = v.isChecked
-                if(followerList[pos].invite){
+                if (followerList[pos].invite) {
                     AddScheduleInfo.invitersNumber++
                     inviteList.apply {
                         inviteList.add(followerList[pos])
                         invitedAdapter.datas = inviteList
                         invitedAdapter.notifyDataSetChanged()
                     }
-                }else{
+                } else {
                     AddScheduleInfo.invitersNumber--
                     inviteList.apply {
                         inviteList.remove(followerList[pos])
@@ -74,13 +82,27 @@ class Addschedule_invite_detail : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun initInvitedRecycler(){
+    private fun initGroupRecycler() {
+        groupAdapter = Addschedule_invite_detail_group_Adapter(requireParentFragment().requireContext())
+        group_recycler.layoutManager =
+            LinearLayoutManager(requireParentFragment().requireContext())
+        group_recycler.adapter = invitedAdapter
+        groupList.apply {
+
+            groupAdapter.datas = inviteList
+            groupAdapter.notifyDataSetChanged()
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun initInvitedRecycler() {
         invitedAdapter = Addschedule_invited_item_Adapter(requireParentFragment().requireContext())
-        invited_recycler.layoutManager = LinearLayoutManager(requireParentFragment().requireContext())
+        invited_recycler.layoutManager =
+            LinearLayoutManager(requireParentFragment().requireContext())
         invited_recycler.adapter = invitedAdapter
         inviteList.apply {
-            for(i in 0 until followerList.size){
-                if(followerList[i].invite){
+            for (i in 0 until followerList.size) {
+                if (followerList[i].invite) {
                     inviteList.add(followerList[i])
                 }
             }
@@ -91,9 +113,11 @@ class Addschedule_invite_detail : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun initFollowerRecycler(){
-        itemAdapter = Addschedule_invite_detail_Follower_Adapter(requireParentFragment().requireActivity().applicationContext)
-        knockmate_recycler.layoutManager = LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
+    private fun initFollowerRecycler() {
+        itemAdapter =
+            Addschedule_invite_detail_Follower_Adapter(requireParentFragment().requireActivity().applicationContext)
+        knockmate_recycler.layoutManager =
+            LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
         knockmate_recycler.adapter = itemAdapter
 
         val client = OkHttpClient().newBuilder()
@@ -116,7 +140,7 @@ class Addschedule_invite_detail : Fragment() {
                             val res = JSONObject(response.body()?.string())
                             val resTemp = res.getJSONArray("data")
                             followerList.apply {
-                                for(i in 0 until resTemp.length()){
+                                for (i in 0 until resTemp.length()) {
                                     followerList.add(
                                         UserModel(
                                             resTemp.getJSONObject(i).getString("id"),
