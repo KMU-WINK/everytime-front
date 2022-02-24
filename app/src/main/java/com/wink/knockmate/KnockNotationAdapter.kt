@@ -75,6 +75,7 @@ class KnockNotationAdapter(val knockList: ArrayList<KnockList>, val activity: Ap
             )
             intent.putExtra("email", knockList[pos].email)
             intent.putExtra("calendarid", knockList[pos].id)
+            intent.putExtra("nickname", knockList[pos].nickname)
             intent.putExtra("start", knockList[pos].start)
             intent.putExtra("memo", knockList[pos].memo)
             intent.putExtra("mode", 1)

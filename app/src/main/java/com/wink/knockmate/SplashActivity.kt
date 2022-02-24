@@ -17,37 +17,13 @@ class SplashActivity : AppCompatActivity() {
 
     @UiThread
     private fun splashAnimation() {
-        val down = AnimationUtils.loadAnimation(this, R.anim.splash_down)
         val up = AnimationUtils.loadAnimation(this, R.anim.splash_up)
         val mole = findViewById<ImageView>(R.id.splash_mole)
-        mole.startAnimation(down)
-        var count = 0
-        down.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationEnd(animation: Animation) {
-                if (count >= 4) {
-                    startActivity(Intent(this@SplashActivity, TempActivity::class.java))
-                    finish()
-                    return
-                }
-                count += 1
-                mole.startAnimation(up)
-            }
-
-            override fun onAnimationStart(p0: Animation?) {
-            }
-
-            override fun onAnimationRepeat(p0: Animation?) {
-            }
-        })
+        mole.startAnimation(up)
         up.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationEnd(animation: Animation) {
-                if (count >= 4) {
-                    startActivity(Intent(this@SplashActivity, TempActivity::class.java))
-                    finish()
-                    return
-                }
-                count += 1
-                mole.startAnimation(down)
+                startActivity(Intent(this@SplashActivity, TempActivity::class.java))
+                finish()
             }
 
             override fun onAnimationStart(p0: Animation?) {
