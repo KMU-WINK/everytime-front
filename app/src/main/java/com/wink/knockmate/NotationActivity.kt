@@ -28,6 +28,9 @@ class NotationActivity : AppCompatActivity() {
             "loginInfo",
             AppCompatActivity.MODE_PRIVATE
         )
+
+        val email = pref.getString("email", "").toString()
+
         val followList = ArrayList<FollowInfoAdapter.FollowList>()
 
         val client = OkHttpClient().newBuilder()
@@ -35,7 +38,7 @@ class NotationActivity : AppCompatActivity() {
         val request: Request = Request.Builder()
             .url(
                 "http://3.35.146.57:3000/notification_follow?email=${
-                    pref.getString("email", "").toString()
+                    email
                 }"
             )
             .method("GET", null)
@@ -74,14 +77,109 @@ class NotationActivity : AppCompatActivity() {
             }
         })
 
-        val knockList = arrayOf(
-            KnockNotationAdapter.KnockList("shinba", 3, 3, 15, 30, 16, 30, "놀자"),
-            KnockNotationAdapter.KnockList("shinba", 3, 5, 16, 30, 18, 30, "팀플"),
-            KnockNotationAdapter.KnockList("shinba", 3, 10, 16, 30, 18, 30, "팀플"),
-            KnockNotationAdapter.KnockList("shinba", 3, 19, 16, 30, 18, 30, "팀플")
-        )
+        val knockList = ArrayList<KnockNotationAdapter.KnockList>()
+
+        client.newCall(
+            Request.Builder()
+                .url(
+                    "http://3.35.146.57:3000/notification_knock?email=${
+                        email
+                    }"
+                )
+                .method("GET", null)
+                .build()
+        ).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d("log", "인터넷 연결 불안정")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                object : Thread() {
+                    override fun run() {
+                        when {
+                            response.code() == 200 -> {
+                                knockList.clear()
+                                val data = JSONObject(response.body()?.string())
+                                val arr = data.getJSONArray("data")
+                                for (i: Int in 0 until arr.length()) {
+                                    val start = Calendar.getInstance()
+                                    val end = Calendar.getInstance()
+                                    start.set(
+                                        Calendar.HOUR,
+                                        arr.getJSONObject(i).getString("startDate")
+                                            .split(' ')[1].split(':')[0].toInt()
+                                    )
+                                    start.set(
+                                        Calendar.MINUTE,
+                                        arr.getJSONObject(i).getString("startDate")
+                                            .split(' ')[1].split(':')[1].toInt()
+                                    )
+                                    start.set(
+                                        Calendar.DAY_OF_MONTH,
+                                        arr.getJSONObject(i).getString("startDate")
+                                            .split(' ')[0].split('-')[2].toInt()
+                                    )
+                                    start.set(
+                                        Calendar.MONTH,
+                                        arr.getJSONObject(i).getString("startDate")
+                                            .split(' ')[0].split('-')[1].toInt() - 1
+                                    )
+                                    start.set(
+                                        Calendar.YEAR,
+                                        arr.getJSONObject(i).getString("startDate")
+                                            .split(' ')[0].split('-')[0].toInt()
+                                    )
+                                    end.set(
+                                        Calendar.HOUR,
+                                        arr.getJSONObject(i).getString("endDate")
+                                            .split(' ')[1].split(':')[0].toInt()
+                                    )
+                                    end.set(
+                                        Calendar.MINUTE,
+                                        arr.getJSONObject(i).getString("endDate")
+                                            .split(' ')[1].split(':')[1].toInt()
+                                    )
+                                    end.set(
+                                        Calendar.DAY_OF_MONTH,
+                                        arr.getJSONObject(i).getString("endDate")
+                                            .split(' ')[0].split('-')[2].toInt()
+                                    )
+                                    end.set(
+                                        Calendar.MONTH,
+                                        arr.getJSONObject(i).getString("endDate")
+                                            .split(' ')[0].split('-')[1].toInt() - 1
+                                    )
+                                    end.set(
+                                        Calendar.YEAR,
+                                        arr.getJSONObject(i).getString("endDate")
+                                            .split(' ')[0].split('-')[0].toInt()
+                                    )
+
+                                    knockList.add(
+                                        KnockNotationAdapter.KnockList(
+                                            arr.getJSONObject(i).getString("nickname"),
+                                            arr.getJSONObject(i).getString("email"),
+                                            arr.getJSONObject(i).getInt("calendarid"),
+                                            start,
+                                            end,
+                                            arr.getJSONObject(i).getString("memo")
+                                        )
+                                    )
+                                }
+                                recyclerKnockNotation.adapter?.notifyDataSetChanged()
+                            }
+                            response.code() == 201 -> {
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }.run()
+            }
+        })
+
         recyclerKnockNotation.layoutManager = LinearLayoutManager(this)
-        recyclerKnockNotation.adapter = KnockNotationAdapter(knockList)
+        recyclerKnockNotation.adapter = KnockNotationAdapter(knockList, this)
         recyclerKnockNotation.visibility = View.GONE
 
         recyclerFollowNotation.layoutManager = LinearLayoutManager(this)

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wink.knockmate">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,40 +13,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
+        <activity android:name=".TempActivity" />
+        <activity android:name=".NotationActivity" />
+        <activity android:name=".InviteGroupMemActivity" />
+        <activity android:name=".CreateGroupActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".TermsActivity" />
+        <activity android:name=".NicknameActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".LogInActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".EditEmailActivity" />
+        <activity android:name=".EditPasswordActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".Search" />
+        <activity android:name=".KnockmateActivity" />
         <activity
-            android:name=".NotationActivity"
-            android:exported="true" />
-        <activity
-            android:name=".InviteGroupMemActivity"
-            android:exported="true" />
-        <activity
-            android:name=".CreateGroupActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-
-        </activity>
-        <activity android:name=".TermsActivity"/>
-        <activity android:name=".NicknameActivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".LogInActivity"
-            android:exported="true">
-
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EditProfileActivity">
-        </activity>
-        <activity android:name=".EditEmailActivity"/>
-        <activity android:name=".EditPasswordActivity"/>
-        <activity android:name=".SettingsActivity"/>
-        <activity android:name=".Search"/>
-        <activity android:name=".KnockmateActivity"/>
-
     </application>
 
 </manifest>
