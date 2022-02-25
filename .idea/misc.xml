@@ -63,6 +63,8 @@
         <entry key="app/src/main/res/layout/activity_invite_group_mem.xml" value="0.3027080064696513" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="app/src/main/res/layout/invite_profile_item.xml" value="0.4792514239218877" />
+        <entry key="app/src/main/res/layout/search.xml" value="0.20177353325240122" />
+        <entry key="app/src/main/res/layout/search_follower_item.xml" value="0.25213954759680707" />
       </map>
     </option>
   </component>
