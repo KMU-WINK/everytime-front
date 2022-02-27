@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/cell_rectangle.xml" value="0.2455" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/default_profile.xml" value="0.1775" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_create_group.xml" value="0.36666666666666664" />
@@ -39,6 +40,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_invited_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_user_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search_follower_item.xml" value="0.9" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/settings_dialog.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/testpage.xml" value="0.28125" />

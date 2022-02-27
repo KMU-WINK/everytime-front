@@ -7,7 +7,8 @@ data class UserModel(
     var email: String? = null,
     var invite: Boolean = false,
     var searchAble: Boolean = true,
-    var follow: Boolean = false,
+    var follow: Int = 0,
+    var isFav: Int = 0,
 )
 
 data class GroupModel(

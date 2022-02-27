@@ -40,6 +40,7 @@
         android:drawableStart="@drawable/email_icon"
         android:drawablePadding="10dp"
         android:hint="이메일 주소"
+        android:text="dy@test.com"
         android:inputType="text"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +63,7 @@
             android:drawableStart="@drawable/lock_icon"
             android:drawablePadding="10dp"
             android:hint="비밀번호"
+            android:text="dy"
             android:inputType="textPassword"
             android:textSize="14sp" />
 

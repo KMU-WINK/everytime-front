@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class Search_Item_Adapter(private val context: Context): RecyclerView.Adapter<Search_Item_Adapter.ViewHolder>() {
+class Search_Item_Adapter(private val context: Context) :
+    RecyclerView.Adapter<Search_Item_Adapter.ViewHolder>() {
     var datas = mutableListOf<UserModel>()
 
     interface OnCheckBoxClickListener {
-        fun onCheckBoxClick(v: CheckBox, data: UserModel, pos: Int)
+        fun onCheckBoxClick(v: ImageButton, data: UserModel, pos: Int)
     }
 
     private var listener: OnCheckBoxClickListener? = null
@@ -38,9 +40,17 @@ class Search_Item_Adapter(private val context: Context): RecyclerView.Adapter<Se
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val followerImage = itemView.findViewById<ImageView>(R.id.profile_image)
         private val followerName = itemView.findViewById<TextView>(R.id.profile_name)
-        private val checkBox = itemView.findViewById<CheckBox>(R.id.isFollow)
+        private val followButton = itemView.findViewById<ImageButton>(R.id.search_item_follow)
+        private val followView = itemView.findViewById<ImageView>(R.id.search_item_follow_back)
+        private val followText = itemView.findViewById<TextView>(R.id.search_item_follow_text)
+
 
         fun bind(item: UserModel) {
+            itemView.findViewById<ImageView>(R.id.to_detail).visibility = View.GONE
+            followButton.visibility = View.VISIBLE
+            followView.visibility = View.VISIBLE
+            followText.visibility = View.VISIBLE
+
             if (item.nickname != null) {
                 followerName.text = item.nickname
             } else {
@@ -78,20 +88,20 @@ class Search_Item_Adapter(private val context: Context): RecyclerView.Adapter<Se
             Glide.with(itemView).load(R.drawable.profile_default)
                 .into(followerImage)
 
-            if(item.follow){
-                checkBox.isChecked = true
-                checkBox.text = "Following"
-                checkBox.setTextColor(Color.parseColor("#FF7A53"))
-            }else{
-                checkBox.isChecked = false
-                checkBox.text = "Follow"
-                checkBox.setTextColor(Color.WHITE)
+            if (item.follow > 0) {
+                followText.text = "Following"
+                followText.setTextColor(followText.context.resources.getColor(R.color.brand_main))
+                followView.setColorFilter(followText.context.resources.getColor(R.color.white))
+            } else {
+                followText.text = "Follow"
+                followText.setTextColor(followText.context.resources.getColor(R.color.white))
+                followView.setColorFilter(followText.context.resources.getColor(R.color.brand_main))
             }
 
             val pos = adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
-                checkBox.setOnClickListener {
-                    listener?.onCheckBoxClick(checkBox, item, pos)
+                followButton.setOnClickListener {
+                    listener?.onCheckBoxClick(followButton, item, pos)
                 }
             }
         }
