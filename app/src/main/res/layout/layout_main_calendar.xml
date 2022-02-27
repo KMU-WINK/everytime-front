@@ -382,45 +382,38 @@
                     <TableRow>
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="0"
-                            android:layout_marginStart="2dp" />
+                            android:layout_column="0" />
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="1"
-                            android:layout_marginStart="1dp" />
+                            android:layout_column="1" />
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="2"
-                            android:layout_marginStart="1dp" />
+                            android:layout_column="2" />
 
                         <ImageView
-                            android:layout_width="44dp"
-                            android:layout_column="3"
-                            android:layout_marginStart="1dp" />
+                            android:layout_width="45dp"
+                            android:layout_column="3" />
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="4"
-                            android:layout_marginStart="1dp" />
+                            android:layout_column="4" />
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="5"
-                            android:layout_marginStart="1dp" />
+                            android:layout_column="5" />
 
                         <ImageView
-                            android:layout_width="44dp"
+                            android:layout_width="45dp"
                             android:layout_height="0dp"
-                            android:layout_column="6"
-                            android:layout_marginStart="1dp" />
+                            android:layout_column="6" />
                     </TableRow>
 
                 </TableLayout>

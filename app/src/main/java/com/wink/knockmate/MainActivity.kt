@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val client = OkHttpClient().newBuilder()
             .build()
         val request: Request = Request.Builder()
-            .url("http://3.35.146.57:3000/myfollower?email=${email}")
+            .url("http://3.35.146.57:3000/myfavfollower?email=${email}")
             .method("GET", null)
             .build()
         client.newCall(request).enqueue(object : Callback {
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val client = OkHttpClient().newBuilder()
                                 .build()
                             val request: Request = Request.Builder()
-                                .url("http://3.35.146.57:3000/mygroup?email=${email}")
+                                .url("http://3.35.146.57:3000/myfavgroup?email=${email}")
                                 .method("GET", null)
                                 .build()
                             client.newCall(request).enqueue(object : Callback {
@@ -159,7 +159,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }.run()
             }
         })
-
 
         setSupportActionBar(findViewById(R.id.main_layout_toolbar)) // 툴바를 액티비티의 앱바로 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 드로어를 꺼낼 홈 버튼 활성화
@@ -316,6 +315,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onResume()
 
         recyclerView.scrollToPosition(1)
+        resetDayRecycler(1)
     }
 
     fun resetDayRecycler(position: Int) {
@@ -387,6 +387,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var arr = data.getJSONArray("data")
             for (i: Int in 0 until arr.length()) {
                 val calendar = Calendar.getInstance()
+                val endCalendar = Calendar.getInstance()
+
+                val time = arr.getJSONObject(i).getString("startDate").split(' ')[1].split(':')
+                val endTime = arr.getJSONObject(i).getString("endDate").split(' ')[1].split(':')
                 calendar.set(
                     Calendar.DAY_OF_MONTH,
                     arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[2].toInt()
@@ -400,21 +404,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Calendar.YEAR,
                     arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[0].toInt()
                 )
+                calendar.set(Calendar.HOUR, time[0].toInt())
+                calendar.set(Calendar.MINUTE, time[1].toInt())
+                endCalendar.set(
+                    Calendar.DAY_OF_MONTH,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[2].toInt()
+                )
+                endCalendar.set(
+                    Calendar.MONTH,
+                    arr.getJSONObject(i).getString("endDate")
+                        .split(' ')[0].split('-')[1].toInt() - 1
+                )
+                endCalendar.set(
+                    Calendar.YEAR,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[0].toInt()
+                )
+                endCalendar.set(Calendar.HOUR, endTime[0].toInt())
+                endCalendar.set(Calendar.MINUTE, endTime[1].toInt())
 
-                val time = arr.getJSONObject(i).getString("startDate").split(' ')[1].split(':')
+                val t = (endCalendar.timeInMillis - calendar.timeInMillis) / (1000 * 60)
 
                 val params = TableRow.LayoutParams(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        44F, resources.displayMetrics
+                        45F, resources.displayMetrics
                     ).toInt(),
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        60F,
+                        t.toFloat(),
                         resources.displayMetrics
                     ).toInt()
                 )
                 params.column = calendar.get(Calendar.DAY_OF_WEEK) - 1
+                params.topMargin = time[1].toInt()
 
                 val cell =
                     layoutInflater.inflate(R.layout.calendar_cell, rows[time[0].toInt()], false)

@@ -13,7 +13,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_knockmate.xml" value="0.33" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_login.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_nickname.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_notation.xml" value="0.25" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_settings.xml" value="0.28125" />
@@ -25,6 +25,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell.xml" value="0.9" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/checked_profile_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/edit_profileimage_bottom_sheet.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/invite_profile_item.xml" value="0.36666666666666664" />
