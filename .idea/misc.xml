@@ -5,7 +5,11 @@
       <map>
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/cell_rectangle.xml" value="0.2455" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/default_profile.xml" value="0.1775" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/fab.xml" value="0.241" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_fab.xml" value="0.241" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/signupbutton_background_gray.xml" value="0.241" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/signupbutton_background_orange.xml" value="0.241" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_create_group.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editemail.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editpassword.xml" value="0.28125" />
@@ -13,7 +17,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_knockmate.xml" value="0.33" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_login.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.67" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_nickname.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_notation.xml" value="0.25" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_settings.xml" value="0.28125" />

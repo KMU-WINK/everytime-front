@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
@@ -245,7 +246,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
 
-        findViewById<ImageButton>(R.id.main_floating).setOnClickListener {
+        findViewById<AppCompatButton>(R.id.main_floating).setOnClickListener {
             AddScheduleInfo.resetStartCal()
             val bottomSheetDialogFragment = AddSchedule()
             val args = Bundle()
@@ -311,8 +312,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return calendar
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         recyclerView.scrollToPosition(1)
         resetDayRecycler(1)
