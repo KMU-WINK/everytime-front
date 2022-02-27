@@ -104,15 +104,18 @@ class CharacterChoiceActivity : AppCompatActivity() {
                 isClicked3 -> color = "2"
                 isClicked4 -> color = "3"
             }
-            val client = OkHttpClient()
-            val body = FormBody.Builder()
-                .add("email","dy@test.com")
-                .add("color", "${color}")
-                .build()
-            val request :Request=
-                Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/color").put(body).build()
-            Log.d("color","${color}")
+            if(color!=""){
+                val client = OkHttpClient()
+                val body = FormBody.Builder()
+                    .add("email","dy@test.com")
+                    .add("color", "${color}")
+                    .build()
+                val request :Request=
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/color").put(body).build()
+                Log.d("color","${color}")
+            }
+
         }
     }
 }
