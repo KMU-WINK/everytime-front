@@ -26,6 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/knockmate_titletext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -94,12 +95,11 @@
 
             <TextView
                 android:id="@+id/knock_msg_content"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/spoqahansansneo_regular"
                 android:paddingHorizontal="10dp"
-                android:text="세줄로 고정하면 될것같습니다. 쓸수 있는 글자수를 제한을걸어두면될것같아요! 어짜피 몇줄이상 쓸 사람도,,없을것ㄱ,,,같기 때문에 일단은 그정도로 마무리 해두시죠..! 세줄을 채우고자 적업,"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 app:layout_constraintLeft_toLeftOf="parent"

@@ -48,7 +48,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         backButton.setOnClickListener {
-            //TODO 이전 화면으로 이동
+            finish()
         }
 
         val passwordSlashedEye: ImageButton = findViewById(R.id.passwordSlashedEye)

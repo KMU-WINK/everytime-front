@@ -172,6 +172,7 @@ class LogInActivity : AppCompatActivity() {
                                     val intent =
                                         Intent(this@LogInActivity, MainActivity::class.java)
                                     startActivity(intent)
+                                    finish()
                                     // TODO 다음 화면으로 이동
                                 } else if (response.code() == 201) {
                                     Log.d("email", email)

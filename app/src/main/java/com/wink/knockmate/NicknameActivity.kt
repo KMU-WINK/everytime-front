@@ -134,7 +134,7 @@ class NicknameActivity : AppCompatActivity() {
                                     Log.d("email", email)
                                     Log.d("password", password)
                                     Log.d("nickname", editNickname.text.toString())
-                                    // TODO 다음 화면으로 이동
+                                    startActivity(Intent(this@NicknameActivity, MainActivity::class.java))
                                 } else {
                                     runOnUiThread {
                                         Log.d("response code", response.code().toString())

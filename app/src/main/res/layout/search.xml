@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="9dp"
             android:autofillHints="이메일 또는 아이디 검색"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text="그룹 목록"
+                    android:text="유저 목록"
                     android:textColor="@color/black"
                     android:layout_marginTop="16dp"/>
 
