@@ -14,15 +14,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
 class AddSchedule_invite : Fragment() {
-    lateinit var groupAdapter : Addschedule_invite_item_Adapter
+    lateinit var groupAdapter: Addschedule_invite_item_Adapter
     var groupInviteList = mutableListOf<UserModel>()
-    lateinit var groupInviteView : RecyclerView
+    lateinit var groupInviteView: RecyclerView
     lateinit var userAdapter: Addschedule_invite_item_Adapter
     var userInviteList = mutableListOf<UserModel>()
     lateinit var userInviteView: RecyclerView
-    lateinit var groupFrame:LinearLayout
-    lateinit var userFrame:LinearLayout
+    lateinit var groupFrame: LinearLayout
+    lateinit var userFrame: LinearLayout
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +42,7 @@ class AddSchedule_invite : Fragment() {
         okButton.setOnClickListener {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame,AddSchedule_detail())
+                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
                 ?.addToBackStack(null)
                 ?.commit()
         }
@@ -49,7 +50,7 @@ class AddSchedule_invite : Fragment() {
         inviteButton.setOnClickListener {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame,Addschedule_invite_detail())
+                ?.replace(R.id.addschedule_frame, Addschedule_invite_detail())
                 ?.addToBackStack(null)
                 ?.commit()
 //            childFragmentManager.beginTransaction().replace(R.id.frame,Addschedule_invite_detail()).commit()
@@ -62,7 +63,7 @@ class AddSchedule_invite : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun initGroupInviteList(){
+    private fun initGroupInviteList() {
         groupAdapter = Addschedule_invite_item_Adapter(requireContext())
         userAdapter = Addschedule_invite_item_Adapter(requireContext())
         groupInviteView.adapter = groupAdapter
@@ -70,11 +71,11 @@ class AddSchedule_invite : Fragment() {
         var count1 = 0
         var count2 = 0
 
-        for (i in 0 until AddScheduleInfo.inviteMembers.size){
-            if(AddScheduleInfo.inviteMembers[i].invite){
-                if(AddScheduleInfo.inviteMembers[i].user){
+        for (i in 0 until AddScheduleInfo.inviteMembers.size) {
+            if (AddScheduleInfo.inviteMembers[i].invite) {
+                if (AddScheduleInfo.inviteMembers[i].user) {
                     count1++
-                    if(count1==1){
+                    if (count1 == 1) {
                         userFrame.visibility = View.VISIBLE
                     }
                     userInviteList.apply {
@@ -82,9 +83,9 @@ class AddSchedule_invite : Fragment() {
                         userAdapter.datas = userInviteList
                         userAdapter.notifyDataSetChanged()
                     }
-                }else{
+                } else {
                     count2++
-                    if(count2==1){
+                    if (count2 == 1) {
                         groupFrame.visibility = View.VISIBLE
                     }
                     groupInviteList.apply {

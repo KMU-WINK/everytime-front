@@ -22,46 +22,67 @@ import java.util.*
 
 class AddSchedule : BottomSheetDialogFragment() {
     override fun getTheme(): Int = R.style.BottomSheetDialogTheme
-//    @SuppressLint("CommitPrefEdits")
-//    override fun onStart() {
-//        super.onStart()
-//        val bundle = arguments
-//        AddScheduleInfo()
-//        val args = bundle?.getString("ScheduleType")
-//        if(args == "Add"){
-//            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
-//            val client = OkHttpClient().newBuilder()
-//                .build()
-//            val request: Request = Request.Builder()
-//                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-//                .url("http://3.35.146.57:3000/user?query=dy@${prefUser?.getString("email", "email")}")
-//                .get()
-//                .build()
-//            client.newCall(request).enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    Log.d("log1", e.message.toString())
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    object : Thread() {
-//                        @SuppressLint("NotifyDataSetChanged")
-//                        override fun run() {
-//                            if (response.code == 200) {
-//                                val res = JSONObject(response.body?.string())
-//                                val resTemp = res.getJSONArray("data")
-//                                AddScheduleInfo.userEmail = resTemp.getJSONObject(0).getString("email")
-//                                AddScheduleInfo.userId = resTemp.getJSONObject(0).getString("id")
-//                                AddScheduleInfo.color = resTemp.getJSONObject(0).getInt("color")
-//                            } else {
-//                                dismiss()
-//                                Toast.makeText(context, "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show()
-//                            }
-//                        }
-//                    }.run()
-//                }
-//            })
-//        }
-//    }
+
+    @SuppressLint("CommitPrefEdits")
+    override fun onStart() {
+        super.onStart()
+        val bundle = arguments
+        AddScheduleInfo()
+        val args = bundle?.getString("ScheduleType")
+        if (args == "ADD") {
+            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
+            val client = OkHttpClient().newBuilder()
+                .build()
+            val request: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url(
+                    "http://3.35.146.57:3000/user?query=dy@${
+                        prefUser?.getString(
+                            "email",
+                            "email"
+                        )
+                    }"
+                )
+                .get()
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log1", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                                val res = JSONObject(response.body()?.string())
+                                val resTemp = res.getJSONArray("data")
+                                AddScheduleInfo.userEmail =
+                                    resTemp.getJSONObject(1).getString("email")
+                                AddScheduleInfo.userId = resTemp.getJSONObject(1).getString("id")
+                                AddScheduleInfo.color = resTemp.getJSONObject(1).getInt("color")
+                            } else {
+                                dismiss()
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    .show()
+                            }
+                        }
+                    }.run()
+                }
+            })
+            AddScheduleInfo.resetStartCal()
+            AddScheduleInfo.startDay = dayOfWeek(AddScheduleInfo.startCal.get(Calendar.DAY_OF_WEEK))
+            AddScheduleInfo.endDay = dayOfWeek(AddScheduleInfo.endCal.get(Calendar.DAY_OF_WEEK))
+        } else if (args == "Modify") {
+            //캘린더에서 받아오기
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val bottomSheet = super.onCreateDialog(savedInstanceState)
 
@@ -144,5 +165,17 @@ class AddSchedule : BottomSheetDialogFragment() {
 
 
         return bottomSheet
+    }
+    private fun dayOfWeek(d: Int): String {
+        return when (d) {
+            1 -> "일"
+            2 -> "월"
+            3 -> "화"
+            4 -> "수"
+            5 -> "목"
+            6 -> "금"
+            7 -> "토"
+            else -> " "
+        }
     }
 }

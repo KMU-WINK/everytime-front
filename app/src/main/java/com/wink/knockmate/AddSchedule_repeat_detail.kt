@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,11 @@ import androidx.fragment.app.Fragment
 import java.util.*
 
 class AddSchedule_repeat_detail : Fragment() {
-    private var weeksViewBoolean : Boolean = false
-    private var monthsViewBoolean : Boolean = false
-    private var weekInitBoolean : Boolean = false
+    private var weeksViewBoolean: Boolean = false
+    private var monthsViewBoolean: Boolean = false
+    private var weekInitBoolean: Boolean = false
+
+    @SuppressLint("CutPasteId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,73 +40,73 @@ class AddSchedule_repeat_detail : Fragment() {
         val repeatDay = view.findViewById<EditText>(R.id.repeat_day)
         repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
 
-        for(i in 0 until AddScheduleInfo.repeatDays.size){
-            if(AddScheduleInfo.repeatDays[i]){
+        for (i in 0 until AddScheduleInfo.repeatDays.size) {
+            if (AddScheduleInfo.repeatDays[i]) {
                 weekInitBoolean = AddScheduleInfo.repeatDays[i]
-                if(i==0){
+                if (i == 0) {
                     repeatMonday.isChecked = true
-                }else if(i==1){
+                } else if (i == 1) {
                     repeatTuesday.isChecked = true
-                }else if(i==2){
+                } else if (i == 2) {
                     repeatWednesday.isChecked = true
-                }else if(i==3){
+                } else if (i == 3) {
                     repeatThursday.isChecked = true
-                }else if(i==4){
+                } else if (i == 4) {
                     repeatFriday.isChecked = true
-                }else if(i==5){
+                } else if (i == 5) {
                     repeatSaturday.isChecked = true
-                }else if(i==6){
+                } else if (i == 6) {
                     repeatSunday.isChecked = true
                 }
             }
         }
 
-        if(!weekInitBoolean){
-            if(weekDay == "월"){
+        if (!weekInitBoolean) {
+            if (weekDay == "월") {
                 repeatMonday.isChecked = true
-            }else if(weekDay == "화"){
+            } else if (weekDay == "화") {
                 repeatTuesday.isChecked = true
-            }else if(weekDay == "수"){
+            } else if (weekDay == "수") {
                 repeatWednesday.isChecked = true
-            }else if(weekDay == "목"){
+            } else if (weekDay == "목") {
                 repeatThursday.isChecked = true
-            }else if(weekDay == "금"){
+            } else if (weekDay == "금") {
                 repeatFriday.isChecked = true
-            }else if(weekDay == "토"){
+            } else if (weekDay == "토") {
                 repeatSaturday.isChecked = true
-            }else if(weekDay == "일"){
+            } else if (weekDay == "일") {
                 repeatSunday.isChecked = true
             }
         }
 
         val radioGroup = view.findViewById<RadioGroup>(R.id.repeat_radioGroup)
-        radioGroup.setOnCheckedChangeListener{ group, checkedId->
-            when(checkedId){
-                R.id.repeat_days_pick->{
-                    if(monthsViewBoolean){
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.repeat_days_pick -> {
+                    if (monthsViewBoolean) {
                         monthsViewBoolean = false
                         monthsFrame.visibility = View.GONE
-                    }else if(weeksViewBoolean){
+                    } else if (weeksViewBoolean) {
                         weeksViewBoolean = false
                         weeksFrame.visibility = View.GONE
                     }
                 }
-                R.id.repeat_weeks_pick->{
-                    if(!weeksViewBoolean && !monthsViewBoolean){
+                R.id.repeat_weeks_pick -> {
+                    if (!weeksViewBoolean && !monthsViewBoolean) {
                         weeksViewBoolean = true
                         weeksFrame.visibility = View.VISIBLE
-                    }else if(monthsViewBoolean){
+                    } else if (monthsViewBoolean) {
                         weeksViewBoolean = true
                         monthsViewBoolean = false
                         monthsFrame.visibility = View.GONE
                         weeksFrame.visibility = View.VISIBLE
                     }
                 }
-                R.id.repeat_months_pick->{
-                    if(!weeksViewBoolean && !monthsViewBoolean){
+                R.id.repeat_months_pick -> {
+                    if (!weeksViewBoolean && !monthsViewBoolean) {
                         monthsViewBoolean = true
                         monthsFrame.visibility = View.VISIBLE
-                    }else if(weeksViewBoolean){
+                    } else if (weeksViewBoolean) {
                         monthsViewBoolean = true
                         weeksViewBoolean = false
                         weeksFrame.visibility = View.GONE
@@ -117,13 +120,13 @@ class AddSchedule_repeat_detail : Fragment() {
         val repeatSaveButton = view.findViewById<TextView>(R.id.repeat_save_button)
 
         repeatSaveButton.setOnClickListener(View.OnClickListener {
-            if(!weeksViewBoolean&&!monthsViewBoolean){
+            if (!weeksViewBoolean && !monthsViewBoolean) {
                 val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval).text
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text
                 AddScheduleInfo.repeatInterval = repeatInterval.toString().toInt()
                 AddScheduleInfo.repeatAllCount = repeatCount.toString().toInt()
                 AddScheduleInfo.repeatDetailType = "Days"
-            }else if(weeksViewBoolean){
+            } else if (weeksViewBoolean) {
                 val monCheckBox = view.findViewById<CheckBox>(R.id.repeat_monday).isChecked
                 val tueCheckBox = view.findViewById<CheckBox>(R.id.repeat_tuesday).isChecked
                 val wedCheckBox = view.findViewById<CheckBox>(R.id.repeat_wednesday).isChecked
@@ -131,14 +134,17 @@ class AddSchedule_repeat_detail : Fragment() {
                 val friCheckBox = view.findViewById<CheckBox>(R.id.repeat_friday).isChecked
                 val satCheckBox = view.findViewById<CheckBox>(R.id.repeat_saturday).isChecked
                 val sunCheckBox = view.findViewById<CheckBox>(R.id.repeat_sunday).isChecked
-                val repeatDays = mutableListOf(monCheckBox, tueCheckBox, wedCheckBox, thursCheckBox,
-                                            friCheckBox, satCheckBox, sunCheckBox)
+                val repeatDays = mutableListOf(
+                    monCheckBox, tueCheckBox, wedCheckBox, thursCheckBox,
+                    friCheckBox, satCheckBox, sunCheckBox
+                )
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
                 AddScheduleInfo.repeatDays = repeatDays
                 AddScheduleInfo.repeatAllCount = repeatCount.toInt()
                 AddScheduleInfo.repeatDetailType = "Weeks"
-            }else if(monthsViewBoolean){
-                val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval).text.toString()
+            } else if (monthsViewBoolean) {
+                val repeatInterval =
+                    view.findViewById<EditText>(R.id.repeat_interval).text.toString()
                 val repeatDay = view.findViewById<EditText>(R.id.repeat_day).text.toString()
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
                 AddScheduleInfo.repeatDetailType = "Months"
@@ -148,24 +154,11 @@ class AddSchedule_repeat_detail : Fragment() {
             }
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame,AddSchedule_detail())
+                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
                 ?.addToBackStack(null)
                 ?.commit()
         })
 
         return view
-    }
-
-    private fun dayOfWeek(d:Int) : String{
-        return when(d){
-            1-> "일"
-            2-> "월"
-            3-> "화"
-            4-> "수"
-            5-> "목"
-            6-> "금"
-            7-> "토"
-            else -> " "
-        }
     }
 }
