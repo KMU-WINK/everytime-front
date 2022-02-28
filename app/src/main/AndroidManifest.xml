@@ -16,6 +16,8 @@
         <activity android:name=".CharacterChoiceActivity" />
         <activity android:name=".WorkThroughActivity" />
         <activity android:name=".TempActivity" />
+        <activity android:name=".AppInfoActivity" />
+        <activity android:name=".InquiryActivity" />
         <activity android:name=".NotationActivity" />
         <activity android:name=".InviteGroupMemActivity" />
         <activity android:name=".CreateGroupActivity" />

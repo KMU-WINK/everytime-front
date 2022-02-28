@@ -79,6 +79,20 @@ class LogInActivity : AppCompatActivity() {
                 changeButton()
             }
         }
+
+        checkID()
+    }
+
+    private fun checkID(){
+        val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
+        val email = pref.getString("email", "").toString()
+        val password = pref.getString("password", "").toString()
+
+        if(email != "" && password != ""){
+            Toast.makeText(this, "자동 로그인 되었습니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun changeButton() {
@@ -168,12 +182,11 @@ class LogInActivity : AppCompatActivity() {
                                         }
                                     })
 
-
+                                    // 다음 화면으로 이동
                                     val intent =
                                         Intent(this@LogInActivity, MainActivity::class.java)
                                     startActivity(intent)
                                     finish()
-                                    // TODO 다음 화면으로 이동
                                 } else if (response.code() == 201) {
                                     Log.d("email", email)
                                     Log.d("password", password)

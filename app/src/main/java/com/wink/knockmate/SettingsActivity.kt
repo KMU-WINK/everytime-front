@@ -56,6 +56,14 @@ class SettingsActivity : AppCompatActivity() {
         findViewById(R.id.searchSettingButton)
     }
 
+    private val inquiry : Button by lazy{
+        findViewById(R.id.inquiry)
+    }
+
+    private val appInfo : Button by lazy{
+        findViewById(R.id.appInfo)
+    }
+
     private val logoutButton : Button by lazy{
         findViewById(R.id.logout)
     }
@@ -80,6 +88,14 @@ class SettingsActivity : AppCompatActivity() {
 
         editPasswordButton.setOnClickListener {
             initEditPasswordButton()
+        }
+
+        inquiry.setOnClickListener {
+            initInquiry()
+        }
+
+        appInfo.setOnClickListener {
+            initAppInfo()
         }
 
         logoutButton.setOnClickListener {
@@ -294,6 +310,18 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initEditPasswordButton(){
         val intent = Intent(this,EditPasswordActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initInquiry(){
+        // 문의하기 화면으로 화면 전환
+        val intent = Intent(this, InquiryActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initAppInfo(){
+        // 앱정보 화면으로 화면 전환
+        val intent = Intent(this, AppInfoActivity::class.java)
         startActivity(intent)
     }
 
