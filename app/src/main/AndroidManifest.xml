@@ -14,6 +14,9 @@
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".CharacterChoiceActivity"
+            android:exported="true" />
+        <activity
             android:name=".WorkThroughActivity"
             android:exported="true" />
         <activity android:name=".TempActivity" />

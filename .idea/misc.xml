@@ -64,6 +64,7 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
         <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/bt_border.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/drawable/bt_radius_orange.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/ic_work_through_1p_char.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/ic_work_through_1p_footer.xml" value="0.162" />
@@ -71,6 +72,7 @@
         <entry key="app/src/main/res/drawable/ic_work_through_footer_bt.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/search.xml" value="0.21822916666666667" />
+        <entry key="app/src/main/res/layout/activity_character_choice.xml" value="0.7236363636363636" />
         <entry key="app/src/main/res/layout/activity_create_group.xml" value="0.19078679345157043" />
         <entry key="app/src/main/res/layout/activity_invite_group_mem.xml" value="0.3027080064696513" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
