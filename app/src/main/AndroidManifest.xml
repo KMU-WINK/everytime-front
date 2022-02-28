@@ -14,6 +14,8 @@
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
         <activity android:name=".TempActivity" />
+        <activity android:name=".AppInfoActivity" />
+        <activity android:name=".InquiryActivity" />
         <activity android:name=".NotationActivity" />
         <activity android:name=".InviteGroupMemActivity" />
         <activity android:name=".CreateGroupActivity" />

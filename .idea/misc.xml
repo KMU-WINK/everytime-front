@@ -50,9 +50,13 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_gray.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_orange.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_gray.xml" value="0.38229166666666664" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_appinfo.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_editprofile.xml" value="0.3605128205128205" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_inquiry.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_nickname.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_settings.xml" value="0.3605128205128205" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
         <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />

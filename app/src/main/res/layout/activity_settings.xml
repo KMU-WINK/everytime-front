@@ -193,7 +193,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/alarmSettingButton"/>
 
-            <!--
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -216,11 +215,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginStart="16dp"
-                    android:text="이용 약관"
+                    android:text="문의하기"
                     android:textColor="#000000" />
 
                 <Button
-                    android:id="@+id/termsOfService"
+                    android:id="@+id/inquiry"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
@@ -241,11 +240,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center_vertical"
                     android:layout_marginStart="16dp"
-                    android:text="개인정보 처리 방침"
+                    android:text="앱 정보"
                     android:textColor="#000000" />
 
                 <Button
-                    android:id="@+id/personalInfo"
+                    android:id="@+id/appInfo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/transparent"
@@ -253,15 +252,13 @@
 
             </FrameLayout>
 
-            -->
-
             <View
                 android:id="@+id/view3"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="24dp"
                 android:background="#EEEEEE"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout4" />
 
             <FrameLayout
                 android:id="@+id/frameLayout5"
