@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    tools:context=".WorkThroughActivity">
+    <HorizontalScrollView
+        android:id="@+id/work_through_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="342dp"
+            android:layout_height="423dp"
+            android:layout_marginStart="-20dp"
+            android:src="@drawable/work_through_body"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="136dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="61dp"
+                android:layout_marginStart="-40dp"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_work_through_char_main"
+                    android:scaleType="matrix"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="46.34dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="두더지가 도와줄거에요"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="177dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:text="친구들과 약속도 쉽고 간편하게"
+                        android:layout_marginStart="177dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:text="여러명과 시간 맞추기, 어려워하지 말아요"
+                        android:layout_marginStart="120dp"/>
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+    <ImageView
+        android:id="@+id/work_through_footer_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_work_through_1p_footer"
+        android:layout_marginTop="58.62dp"
+        app:layout_constraintTop_toBottomOf="@id/work_through_body"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintEnd_toEndOf="parent" />
+    <ImageButton
+        android:id="@+id/btWork_through_footer"
+        app:layout_constraintTop_toBottomOf="@id/work_through_footer_img"
+        android:layout_width="100dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/ic_work_through_footer_bt"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
