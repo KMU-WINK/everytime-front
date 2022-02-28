@@ -22,7 +22,7 @@ class SplashActivity : AppCompatActivity() {
         mole.startAnimation(up)
         up.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationEnd(animation: Animation) {
-                startActivity(Intent(this@SplashActivity, TempActivity::class.java))
+                startActivity(Intent(this@SplashActivity, WorkThroughActivity::class.java))
                 finish()
             }
 

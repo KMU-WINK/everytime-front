@@ -13,12 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".CharacterChoiceActivity"
-            android:exported="true" />
-        <activity
-            android:name=".WorkThroughActivity"
-            android:exported="true" />
+        <activity android:name=".CharacterChoiceActivity" />
+        <activity android:name=".WorkThroughActivity" />
         <activity android:name=".TempActivity" />
         <activity android:name=".NotationActivity" />
         <activity android:name=".InviteGroupMemActivity" />

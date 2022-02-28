@@ -7,9 +7,16 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/default_profile.xml" value="0.1775" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/fab.xml" value="0.241" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_char_choice_bt.xml" value="0.2645" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_char_choice_bt_orange.xml" value="0.2645" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_fab.xml" value="0.241" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_work_through_body_char.xml" value="0.2645" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_work_through_char_main.xml" value="0.2645" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_work_through_footer_bt.xml" value="0.2645" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_work_through_footer_bt2.xml" value="0.2645" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/signupbutton_background_gray.xml" value="0.241" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/signupbutton_background_orange.xml" value="0.241" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_character_choice.xml" value="1.0" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_create_group.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editemail.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editpassword.xml" value="0.28125" />
@@ -25,6 +32,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_splash.xml" value="0.9" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_temp.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_terms.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_work_through.xml" value="1.1" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
@@ -36,6 +44,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/knock_notation_item.xml" value="0.5" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_day_recycler.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_main_calendar.xml" value="0.31666666666666665" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_work_through.xml" value="0.14" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_drawer_header.xml" value="0.4850669412976313" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/main_toolbar.xml" value="0.36666666666666664" />
@@ -64,19 +73,11 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
         <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/bt_border.xml" value="0.21822916666666667" />
-        <entry key="app/src/main/res/drawable/bt_radius_orange.xml" value="0.1225" />
-        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.162" />
-        <entry key="app/src/main/res/drawable/ic_work_through_1p_char.xml" value="0.162" />
-        <entry key="app/src/main/res/drawable/ic_work_through_1p_footer.xml" value="0.162" />
-        <entry key="app/src/main/res/drawable/ic_work_through_char_main.xml" value="0.12681494140624996" />
-        <entry key="app/src/main/res/drawable/ic_work_through_footer_bt.xml" value="0.162" />
         <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/search.xml" value="0.21822916666666667" />
-        <entry key="app/src/main/res/layout/activity_character_choice.xml" value="0.7236363636363636" />
         <entry key="app/src/main/res/layout/activity_create_group.xml" value="0.19078679345157043" />
         <entry key="app/src/main/res/layout/activity_invite_group_mem.xml" value="0.3027080064696513" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
-        <entry key="app/src/main/res/layout/activity_work_through.xml" value="0.1" />
         <entry key="app/src/main/res/layout/invite_profile_item.xml" value="0.4792514239218877" />
         <entry key="app/src/main/res/layout/search.xml" value="0.20177353325240122" />
         <entry key="app/src/main/res/layout/search_follower_item.xml" value="0.25213954759680707" />
