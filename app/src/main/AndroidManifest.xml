@@ -30,7 +30,7 @@
         <activity android:name=".EditEmailActivity" />
         <activity android:name=".EditPasswordActivity" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".Search" />
+        <activity android:name=".SearchActivity" />
         <activity android:name=".KnockmateActivity" />
         <activity
             android:name=".SplashActivity"

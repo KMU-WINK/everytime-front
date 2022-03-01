@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,9 +16,8 @@ import androidx.recyclerview.widget.RecyclerView
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-import java.util.*
 
-class Search : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
     var email = ""
     lateinit var searchEdit: EditText
     lateinit var followerFrame: ConstraintLayout
@@ -39,7 +39,7 @@ class Search : AppCompatActivity() {
     lateinit var toMakeGroup: ConstraintLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.search)
+        setContentView(R.layout.activity_search)
 
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         email = pref.getString("email", "").toString()
@@ -82,12 +82,12 @@ class Search : AppCompatActivity() {
         })
 
         toMakeGroup.setOnClickListener {
-            //그룹만들기로 이동
+            val intent = Intent(this, CreateGroupActivity::class.java)
+            startActivity(intent)
         }
     }
 
     fun refreshLayout() {
-
         val searchMenu = findViewById<ConstraintLayout>(R.id.search_menu)
         val menu_follow = findViewById<TextView>(R.id.search_menu_follow)
         val menu_fav = findViewById<TextView>(R.id.search_menu_fav)

@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -236,7 +235,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         findViewById<ImageButton>(R.id.main_search).setOnClickListener {
-            val intent = Intent(this, Search::class.java)
+            val intent = Intent(this, SearchActivity::class.java)
             startActivity(intent)
         }
 
