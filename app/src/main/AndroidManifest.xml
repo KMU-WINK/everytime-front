@@ -33,7 +33,7 @@
         <activity android:name=".SearchActivity" />
         <activity android:name=".KnockmateActivity" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".TestMain"
             android:exported="true"
             android:noHistory="true">
             <intent-filter>

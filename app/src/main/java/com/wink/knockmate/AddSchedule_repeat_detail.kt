@@ -41,7 +41,6 @@ class AddSchedule_repeat_detail : Fragment() {
         val repeatCount = view.findViewById<EditText>(R.id.repeat_count)
 
         val repeatDay = view.findViewById<EditText>(R.id.repeat_day)
-        repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
 
         if (!weekInitBoolean) {
             if (weekDay == "월") {
@@ -72,6 +71,7 @@ class AddSchedule_repeat_detail : Fragment() {
             view.findViewById<RadioButton>(R.id.repeat_days_pick).isChecked = true
             view.findViewById<RadioButton>(R.id.repeat_weeks_pick).isChecked = false
             view.findViewById<RadioButton>(R.id.repeat_months_pick).isChecked = false
+            repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
             if (weekDay == "월") {
                 repeatMonday.isChecked = true
             } else if (weekDay == "화") {
@@ -96,6 +96,7 @@ class AddSchedule_repeat_detail : Fragment() {
             view.findViewById<RadioButton>(R.id.repeat_days_pick).isChecked = false
             view.findViewById<RadioButton>(R.id.repeat_weeks_pick).isChecked = true
             view.findViewById<RadioButton>(R.id.repeat_months_pick).isChecked = false
+            repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
             for (i in 0 until AddScheduleInfo.repeatDays.size) {
                 if (AddScheduleInfo.repeatDays[i]) {
                     weekInitBoolean = AddScheduleInfo.repeatDays[i]

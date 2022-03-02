@@ -24,6 +24,8 @@ class AddScheduleInfo {
         var color: Int = 1
         var brief: Boolean = true
         var followerList = mutableListOf<UserModel>()
+        var priorInviteMembers = mutableListOf<UserModel>()
+        var priorInvitersNumber: Int = 0
 
         fun resetStartCal() {
             startCal = Calendar.getInstance()

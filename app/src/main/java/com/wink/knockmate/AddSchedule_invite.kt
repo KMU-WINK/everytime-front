@@ -57,6 +57,7 @@ class AddSchedule_invite : Fragment() {
         val view = inflater.inflate(R.layout.addschedule_invite, container, false)
 
         val okButton = view.findViewById<TextView>(R.id.invite_ok_button)
+        val backButton = view.findViewById<View>(R.id.back_button)
         val inviteTitle = view.findViewById<TextView>(R.id.invite_title)
         val inviteButton = view.findViewById<LinearLayout>(R.id.invite_button)
         groupInviteView = view.findViewById(R.id.group_recycler)
@@ -67,6 +68,32 @@ class AddSchedule_invite : Fragment() {
         inviteTitle.text = "초대 " + AddScheduleInfo.invitersNumber.toString() + "명"
 
         okButton.setOnClickListener {
+            AddScheduleInfo.priorInviteMembers = AddScheduleInfo.inviteMembers
+            AddScheduleInfo.priorInvitersNumber = AddScheduleInfo.invitersNumber
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
+                ?.addToBackStack(null)
+                ?.commit()
+        }
+
+        backButton.setOnClickListener {
+            AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
+            val tempNumbers = mutableListOf(-1)
+            for (i in 0 until AddScheduleInfo.priorInviteMembers.size) {
+                AddScheduleInfo.priorInviteMembers[i].sequence?.let { it1 ->
+                    tempNumbers.apply {
+                        tempNumbers.add(it1)
+                    }
+                }
+            }
+            for (i in 0 until AddScheduleInfo.followerList.size) {
+                if (AddScheduleInfo.followerList[i].sequence !in tempNumbers) {
+                    AddScheduleInfo.followerList[i].invite = false
+                }
+            }
+            AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
+            AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
@@ -78,11 +105,13 @@ class AddSchedule_invite : Fragment() {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, Addschedule_invite_detail())
+                ?.addToBackStack(null)
                 ?.commit()
         }
 
         Log.v("test", userInviteList.toString())
         Log.v("group", groupInviteList.toString())
+        Log.v("number", AddScheduleInfo.invitersNumber.toString())
 
 
         initGroupInviteList()
