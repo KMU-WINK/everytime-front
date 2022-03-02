@@ -379,6 +379,8 @@ class SearchActivity : AppCompatActivity() {
                 override fun onResponse(call: Call, response1: Response) {
                     object : Thread() {
                         override fun run() {
+
+                            Log.d("DYDY", response1.code().toString())
                             if (response1.code() == 200) {
                                 searchGroupAdapter.datas.clear()
                                 val arr =
