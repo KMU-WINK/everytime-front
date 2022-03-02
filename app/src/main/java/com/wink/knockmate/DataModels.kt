@@ -5,6 +5,7 @@ data class UserModel(
     var nickname: String? = null,
     var user: Boolean = false,
     var email: String? = null,
+    var sequence: Int? = null,
     var invite: Boolean = false,
     var searchAble: Boolean = true,
     var follow: Boolean = false,

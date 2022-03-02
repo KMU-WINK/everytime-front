@@ -55,6 +55,7 @@ class AddSchedule_detail : Fragment() {
                 .toString() + ":" + endCal.get(Calendar.MINUTE).toString()
 
 
+        // startpicker
         val startView = view.findViewById<LinearLayout>(R.id.addschedule_start)
         val startPicker = view.findViewById<ConstraintLayout>(R.id.start_picker)
         val startDatePicker = view.findViewById<NumberPicker>(R.id.start_date_picker)
@@ -63,130 +64,24 @@ class AddSchedule_detail : Fragment() {
         val month_list =
             arrayOf("1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월")
         val day_list1 = arrayOf(
-            "1일",
-            "2일",
-            "3일",
-            "4일",
-            "5일",
-            "6일",
-            "7일",
-            "8일",
-            "9일",
-            "10일",
-            "11일",
-            "12일",
-            "13일",
-            "14일",
-            "15일",
-            "16일",
-            "17일",
-            "18일",
-            "19일",
-            "20일",
-            "21일",
-            "22일",
-            "23일",
-            "24일",
-            "25일",
-            "26일",
-            "27일",
-            "28일",
-            "29일",
-            "30일",
-            "31일"
+            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
+            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
+            "24일", "25일", "26일", "27일", "28일", "29일", "30일", "31일"
         )
         val day_list2 = arrayOf(
-            "1일",
-            "2일",
-            "3일",
-            "4일",
-            "5일",
-            "6일",
-            "7일",
-            "8일",
-            "9일",
-            "10일",
-            "11일",
-            "12일",
-            "13일",
-            "14일",
-            "15일",
-            "16일",
-            "17일",
-            "18일",
-            "19일",
-            "20일",
-            "21일",
-            "22일",
-            "23일",
-            "24일",
-            "25일",
-            "26일",
-            "27일",
-            "28일",
-            "29일",
-            "30일"
+            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
+            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
+            "24일", "25일", "26일", "27일", "28일", "29일", "30일"
         )
         val day_list3 = arrayOf(
-            "1일",
-            "2일",
-            "3일",
-            "4일",
-            "5일",
-            "6일",
-            "7일",
-            "8일",
-            "9일",
-            "10일",
-            "11일",
-            "12일",
-            "13일",
-            "14일",
-            "15일",
-            "16일",
-            "17일",
-            "18일",
-            "19일",
-            "20일",
-            "21일",
-            "22일",
-            "23일",
-            "24일",
-            "25일",
-            "26일",
-            "27일",
-            "28일"
+            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
+            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
+            "24일", "25일", "26일", "27일", "28일"
         )
         val day_list4 = arrayOf(
-            "1일",
-            "2일",
-            "3일",
-            "4일",
-            "5일",
-            "6일",
-            "7일",
-            "8일",
-            "9일",
-            "10일",
-            "11일",
-            "12일",
-            "13일",
-            "14일",
-            "15일",
-            "16일",
-            "17일",
-            "18일",
-            "19일",
-            "20일",
-            "21일",
-            "22일",
-            "23일",
-            "24일",
-            "25일",
-            "26일",
-            "27일",
-            "28일",
-            "29일"
+            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
+            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일",
+            "23일", "24일", "25일", "26일", "27일", "28일", "29일"
         )
         val temp = mutableListOf<String>()
         for (i in month_list) {
@@ -386,6 +281,24 @@ class AddSchedule_detail : Fragment() {
         saveButton.setOnClickListener {
             AddScheduleInfo.title = title.text.toString()
             AddScheduleInfo.memo = memo.text.toString()
+        }
+
+        val knockButton = view.findViewById<TextView>(R.id.knock_button)
+        if (AddScheduleInfo.invitersNumber == 0) {
+            saveButton.visibility = View.VISIBLE
+            knockButton.visibility = View.GONE
+        } else {
+            saveButton.visibility = View.GONE
+            knockButton.visibility = View.VISIBLE
+        }
+        knockButton.setOnClickListener { }
+
+        val backButton = view.findViewById<View>(R.id.back_button)
+        backButton.setOnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
         }
 
 

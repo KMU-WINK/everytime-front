@@ -16,26 +16,29 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 
-class Addschedule_invite_item_Adapter (private val context: Context): RecyclerView.Adapter<Addschedule_invite_item_Adapter.ViewHolder>() {
+class Addschedule_invite_item_Adapter :
+    RecyclerView.Adapter<Addschedule_invite_item_Adapter.ViewHolder>() {
     var datas = mutableListOf<UserModel>()
+    var imageboolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.addschedule_invite_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.addschedule_invite_item, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int = datas.size
 
 
-    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val image = itemView.findViewById<ImageView>(R.id.profile_image)
         private val name = itemView.findViewById<TextView>(R.id.profile_name)
 
-        fun bind(item: UserModel){
-            var tempQuery:String = ""
-            tempQuery = if(item.email==null){
-                item.id+"@naver.com"
-            }else{
+        fun bind(item: UserModel) {
+            var tempQuery = ""
+            tempQuery = if (item.email == null) {
+                item.id + "@naver.com"
+            } else {
                 item.email!!
             }
             val client = OkHttpClient().newBuilder()
@@ -57,18 +60,23 @@ class Addschedule_invite_item_Adapter (private val context: Context): RecyclerVi
                                 Glide.with(itemView).load(JSONObject(response.body()?.string()))
                                     .transform(CenterCrop(), RoundedCorners(20))
                                     .into(image)
+                                imageboolean = true
                             } else {
-                                Glide.with(itemView).load(R.drawable.profile_default)
-                                    .into(image)
+                                imageboolean = false
                             }
                         }
                     }.run()
                 }
             })
-            if(item.user){
-                name.text = item.nickname
+
+            if (!imageboolean) {
+                Glide.with(itemView).load(R.drawable.profile_default)
+                    .into(image)
             }
-            else{
+
+            if (item.user) {
+                name.text = item.nickname
+            } else {
                 var groupMembers = 0
                 val request2: Request = Request.Builder()
                     .addHeader("Content-Type", "application/x-www-form-urlencoded")

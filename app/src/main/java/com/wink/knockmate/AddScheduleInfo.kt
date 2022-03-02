@@ -16,13 +16,14 @@ class AddScheduleInfo {
         var startDay: String = ""
         var endDay: String = ""
         var repeatType: String = "반복 안함"
-        var repeatDetailType: String = ""
+        var repeatDetailType: String = "Days"
         var repeatDays = mutableListOf<Boolean>(false, false, false, false, false, false, false)
-        var repeatAllCount: Int = 0
-        var repeatInterval: Int = 0
+        var repeatAllCount: Int = 1
+        var repeatInterval: Int = 1
         var repeatDay: Int = 0
         var color: Int = 1
         var brief: Boolean = true
+        var followerList = mutableListOf<UserModel>()
 
         fun resetStartCal() {
             startCal = Calendar.getInstance()
@@ -63,6 +64,28 @@ class AddScheduleInfo {
                 set(Calendar.SECOND, 0)
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
+        }
+
+        fun reset() {
+            userEmail = ""
+            userId = ""
+            startCal = Calendar.getInstance()
+            endCal = Calendar.getInstance()
+            title = ""
+            memo = ""
+            inviteMembers = mutableListOf<UserModel>()
+            invitersNumber = 0
+            startDay = ""
+            endDay = ""
+            repeatType = "반복 안함"
+            repeatDetailType = "Days"
+            repeatDays = mutableListOf<Boolean>(false, false, false, false, false, false, false)
+            repeatAllCount = 1
+            repeatInterval = 1
+            repeatDay = 0
+            color = 1
+            brief = true
+            followerList = mutableListOf<UserModel>()
         }
     }
 }

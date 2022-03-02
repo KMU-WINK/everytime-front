@@ -24,7 +24,7 @@ class Addschedule_invited_item_Adapter(private val context: Context) :
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context)
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.addschedule_invite_invited_item, parent, false)
         return ViewHolder(view)
     }

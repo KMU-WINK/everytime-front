@@ -38,17 +38,17 @@ class AddSchedule_brief : Fragment() {
                 Calendar.DATE
             ).toString() + " " + AddScheduleInfo.startDay + "요일"
         startTimeText_brief.text =
-            if (startCal.get(Calendar.AM_PM) === 0) "오전" + " " + startCal.get(
+            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + startCal.get(
                 Calendar.HOUR
             ).toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
             else "오후" + " " + startCal.get(Calendar.HOUR)
                 .toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
         endTimeText_brief.text =
-            if (endCal.get(Calendar.AM_PM) === 0) "오전" + " " + endCal.get(Calendar.HOUR)
+            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + (endCal.get(Calendar.HOUR) + 1)
                 .toString() + "시 " + endCal.get(
                 Calendar.MINUTE
             ).toString() + "분"
-            else "오후" + " " + endCal.get(Calendar.HOUR)
+            else "오후" + " " + (endCal.get(Calendar.HOUR) + 1)
                 .toString() + "시 " + endCal.get(Calendar.MINUTE).toString() + "분"
 
         brief_setting.setOnClickListener {
@@ -67,20 +67,18 @@ class AddSchedule_brief : Fragment() {
 
         val title = view.findViewById<EditText>(R.id.schedule_title)
         var titleClick = false
-        title.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    if (!titleClick || AddScheduleInfo.title == null) {
-                        title.text = null
-                    }
-                    titleClick = true
-                } else {
-                    if (AddScheduleInfo.title != null) {
-                        title.setText("일정 제목")
-                    }
+        title.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (!titleClick || AddScheduleInfo.title == null) {
+                    title.text = null
+                }
+                titleClick = true
+            } else {
+                if (AddScheduleInfo.title != null) {
+                    title.setText("일정 제목")
                 }
             }
-        })
+        }
 
         title.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -95,6 +93,22 @@ class AddSchedule_brief : Fragment() {
         })
 
         colorSetting(icon)
+
+        val backButton = view.findViewById<View>(R.id.back_button)
+        backButton.setOnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+        }
+
+        val saveButton = view.findViewById<TextView>(R.id.save_button)
+        saveButton.setOnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+        }
 
         return view
     }

@@ -37,31 +37,94 @@ class AddSchedule_repeat_detail : Fragment() {
         val repeatSaturday = view.findViewById<CheckBox>(R.id.repeat_saturday)
         val repeatSunday = view.findViewById<CheckBox>(R.id.repeat_sunday)
 
+        val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval)
+        val repeatCount = view.findViewById<EditText>(R.id.repeat_count)
+
         val repeatDay = view.findViewById<EditText>(R.id.repeat_day)
         repeatDay.setText((AddScheduleInfo.startCal.get(Calendar.DATE)).toString())
 
-        for (i in 0 until AddScheduleInfo.repeatDays.size) {
-            if (AddScheduleInfo.repeatDays[i]) {
-                weekInitBoolean = AddScheduleInfo.repeatDays[i]
-                if (i == 0) {
-                    repeatMonday.isChecked = true
-                } else if (i == 1) {
-                    repeatTuesday.isChecked = true
-                } else if (i == 2) {
-                    repeatWednesday.isChecked = true
-                } else if (i == 3) {
-                    repeatThursday.isChecked = true
-                } else if (i == 4) {
-                    repeatFriday.isChecked = true
-                } else if (i == 5) {
-                    repeatSaturday.isChecked = true
-                } else if (i == 6) {
-                    repeatSunday.isChecked = true
-                }
+        if (!weekInitBoolean) {
+            if (weekDay == "월") {
+                repeatMonday.isChecked = true
+            } else if (weekDay == "화") {
+                repeatTuesday.isChecked = true
+            } else if (weekDay == "수") {
+                repeatWednesday.isChecked = true
+            } else if (weekDay == "목") {
+                repeatThursday.isChecked = true
+            } else if (weekDay == "금") {
+                repeatFriday.isChecked = true
+            } else if (weekDay == "토") {
+                repeatSaturday.isChecked = true
+            } else if (weekDay == "일") {
+                repeatSunday.isChecked = true
             }
         }
 
-        if (!weekInitBoolean) {
+        repeatInterval.setText(AddScheduleInfo.repeatInterval.toString())
+        repeatCount.setText(AddScheduleInfo.repeatAllCount.toString())
+
+        if (AddScheduleInfo.repeatDetailType == "Days") {
+            monthsViewBoolean = false
+            monthsFrame.visibility = View.GONE
+            weeksViewBoolean = false
+            weeksFrame.visibility = View.GONE
+            view.findViewById<RadioButton>(R.id.repeat_days_pick).isChecked = true
+            view.findViewById<RadioButton>(R.id.repeat_weeks_pick).isChecked = false
+            view.findViewById<RadioButton>(R.id.repeat_months_pick).isChecked = false
+            if (weekDay == "월") {
+                repeatMonday.isChecked = true
+            } else if (weekDay == "화") {
+                repeatTuesday.isChecked = true
+            } else if (weekDay == "수") {
+                repeatWednesday.isChecked = true
+            } else if (weekDay == "목") {
+                repeatThursday.isChecked = true
+            } else if (weekDay == "금") {
+                repeatFriday.isChecked = true
+            } else if (weekDay == "토") {
+                repeatSaturday.isChecked = true
+            } else if (weekDay == "일") {
+                repeatSunday.isChecked = true
+            }
+            weekInitBoolean = false
+        } else if (AddScheduleInfo.repeatDetailType == "Weeks") {
+            weeksViewBoolean = true
+            monthsViewBoolean = false
+            monthsFrame.visibility = View.GONE
+            weeksFrame.visibility = View.VISIBLE
+            view.findViewById<RadioButton>(R.id.repeat_days_pick).isChecked = false
+            view.findViewById<RadioButton>(R.id.repeat_weeks_pick).isChecked = true
+            view.findViewById<RadioButton>(R.id.repeat_months_pick).isChecked = false
+            for (i in 0 until AddScheduleInfo.repeatDays.size) {
+                if (AddScheduleInfo.repeatDays[i]) {
+                    weekInitBoolean = AddScheduleInfo.repeatDays[i]
+                    if (i == 0) {
+                        repeatMonday.isChecked = true
+                    } else if (i == 1) {
+                        repeatTuesday.isChecked = true
+                    } else if (i == 2) {
+                        repeatWednesday.isChecked = true
+                    } else if (i == 3) {
+                        repeatThursday.isChecked = true
+                    } else if (i == 4) {
+                        repeatFriday.isChecked = true
+                    } else if (i == 5) {
+                        repeatSaturday.isChecked = true
+                    } else if (i == 6) {
+                        repeatSunday.isChecked = true
+                    }
+                }
+            }
+        } else {
+            monthsViewBoolean = true
+            weeksViewBoolean = false
+            weeksFrame.visibility = View.GONE
+            monthsFrame.visibility = View.VISIBLE
+            view.findViewById<RadioButton>(R.id.repeat_days_pick).isChecked = false
+            view.findViewById<RadioButton>(R.id.repeat_weeks_pick).isChecked = false
+            view.findViewById<RadioButton>(R.id.repeat_months_pick).isChecked = true
+            weekInitBoolean = false
             if (weekDay == "월") {
                 repeatMonday.isChecked = true
             } else if (weekDay == "화") {
@@ -121,22 +184,14 @@ class AddSchedule_repeat_detail : Fragment() {
 
         repeatSaveButton.setOnClickListener(View.OnClickListener {
             if (!weeksViewBoolean && !monthsViewBoolean) {
-                val repeatInterval = view.findViewById<EditText>(R.id.repeat_interval).text
-                val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text
-                AddScheduleInfo.repeatInterval = repeatInterval.toString().toInt()
-                AddScheduleInfo.repeatAllCount = repeatCount.toString().toInt()
+                AddScheduleInfo.repeatInterval = repeatInterval.text.toString().toInt()
+                AddScheduleInfo.repeatAllCount = repeatCount.text.toString().toInt()
                 AddScheduleInfo.repeatDetailType = "Days"
             } else if (weeksViewBoolean) {
-                val monCheckBox = view.findViewById<CheckBox>(R.id.repeat_monday).isChecked
-                val tueCheckBox = view.findViewById<CheckBox>(R.id.repeat_tuesday).isChecked
-                val wedCheckBox = view.findViewById<CheckBox>(R.id.repeat_wednesday).isChecked
-                val thursCheckBox = view.findViewById<CheckBox>(R.id.repeat_thursday).isChecked
-                val friCheckBox = view.findViewById<CheckBox>(R.id.repeat_friday).isChecked
-                val satCheckBox = view.findViewById<CheckBox>(R.id.repeat_saturday).isChecked
-                val sunCheckBox = view.findViewById<CheckBox>(R.id.repeat_sunday).isChecked
                 val repeatDays = mutableListOf(
-                    monCheckBox, tueCheckBox, wedCheckBox, thursCheckBox,
-                    friCheckBox, satCheckBox, sunCheckBox
+                    repeatMonday.isChecked, repeatTuesday.isChecked, repeatWednesday.isChecked,
+                    repeatThursday.isChecked, repeatFriday.isChecked, repeatSaturday.isChecked,
+                    repeatSunday.isChecked
                 )
                 val repeatCount = view.findViewById<EditText>(R.id.repeat_count).text.toString()
                 AddScheduleInfo.repeatDays = repeatDays
