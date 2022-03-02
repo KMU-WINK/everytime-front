@@ -41,21 +41,21 @@ class AddSchedule_repeat : Fragment() {
         val everyYearCheck = view.findViewById<CheckBox>(R.id.repeat_everyyear_check)
         val customCheck = view.findViewById<CheckBox>(R.id.repeat_custom_check)
 
-        if(AddScheduleInfo.repeatType == "반복 안함" || AddScheduleInfo.repeatType == ""){
+        if (AddScheduleInfo.repeatType == "반복 안함" || AddScheduleInfo.repeatType == "") {
             noRepeatCheck.isChecked = true
-        }else if(AddScheduleInfo.repeatType == "매일"){
+        } else if (AddScheduleInfo.repeatType == "매일") {
             everyDayCheck.isChecked = true
-        }else if(AddScheduleInfo.repeatType == "매주"){
+        } else if (AddScheduleInfo.repeatType == "매주") {
             everyWeekCheck.isChecked = true
-        }else if(AddScheduleInfo.repeatType == "매월"){
+        } else if (AddScheduleInfo.repeatType == "매월") {
             everyMonthCheck.isChecked = true
-        }else if(AddScheduleInfo.repeatType == "매년"){
+        } else if (AddScheduleInfo.repeatType == "매년") {
             everyYearCheck.isChecked = true
-        }else{
+        } else {
             customCheck.isChecked = true
         }
 
-        fun initFalse(){
+        fun initFalse() {
             noRepeatCheck.isChecked = false
             everyDayCheck.isChecked = false
             everyWeekCheck.isChecked = false

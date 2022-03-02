@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide
 import java.util.*
 
 class AddSchedule_brief : Fragment() {
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,22 +33,33 @@ class AddSchedule_brief : Fragment() {
         val endCal = AddScheduleInfo.startCal
         val icon = view.findViewById<ImageView>(R.id.icon)
 
-        startDateText_brief.text = (startCal.get(Calendar.MONTH)+1).toString() + "." + startCal.get(
-            Calendar.DATE).toString() + " " + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + "요일"
-        startTimeText_brief.text = if(startCal.get(Calendar.AM_PM)===0) "오전" + " " + startCal.get(
-            Calendar.HOUR).toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
-        else "오후" + " " + startCal.get(Calendar.HOUR).toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
-        endTimeText_brief.text = if(endCal.get(Calendar.AM_PM)===0) "오전" + " " + endCal.get(Calendar.HOUR).toString() + "시 " + endCal.get(
-            Calendar.MINUTE).toString() + "분"
-        else "오후" + " " + endCal.get(Calendar.HOUR).toString() + "시 " + endCal.get(Calendar.MINUTE).toString() + "분"
-
-        AddScheduleInfo.startDay = dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK))
-        AddScheduleInfo.endDay = dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK))
+        startDateText_brief.text =
+            (startCal.get(Calendar.MONTH) + 1).toString() + "." + startCal.get(
+                Calendar.DATE
+            ).toString() + " " + AddScheduleInfo.startDay + "요일"
+        startTimeText_brief.text =
+            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + startCal.get(
+                Calendar.HOUR
+            ).toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
+            else "오후" + " " + startCal.get(Calendar.HOUR)
+                .toString() + "시 " + startCal.get(Calendar.MINUTE).toString() + "분"
+        endTimeText_brief.text =
+            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + (endCal.get(Calendar.HOUR) + 1)
+                .toString() + "시 " + endCal.get(
+                Calendar.MINUTE
+            ).toString() + "분"
+            else "오후" + " " + (endCal.get(Calendar.HOUR) + 1)
+                .toString() + "시 " + endCal.get(Calendar.MINUTE).toString() + "분"
 
         brief_setting.setOnClickListener {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
-                ?.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                ?.setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
                 ?.addToBackStack(null)
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
                 ?.commit()
@@ -54,26 +67,26 @@ class AddSchedule_brief : Fragment() {
 
         val title = view.findViewById<EditText>(R.id.schedule_title)
         var titleClick = false
-        title.setOnFocusChangeListener(object:View.OnFocusChangeListener{
-            override fun onFocusChange(v: View?, hasFocus: Boolean) {
-                if(hasFocus){
-                    if (!titleClick || AddScheduleInfo.title == null){
-                        title.text = null
-                    }
-                    titleClick = true
-                }else{
-                    if(AddScheduleInfo.title != null){
-                        title.setText("일정 제목")
-                    }
+        title.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (!titleClick || AddScheduleInfo.title == null) {
+                    title.text = null
+                }
+                titleClick = true
+            } else {
+                if (AddScheduleInfo.title != null) {
+                    title.setText("일정 제목")
                 }
             }
-        })
+        }
 
         title.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
+
             override fun afterTextChanged(s: Editable?) {
                 AddScheduleInfo.title = title.text.toString()
             }
@@ -81,46 +94,49 @@ class AddSchedule_brief : Fragment() {
 
         colorSetting(icon)
 
+        val backButton = view.findViewById<View>(R.id.back_button)
+        backButton.setOnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+        }
+
+        val saveButton = view.findViewById<TextView>(R.id.save_button)
+        saveButton.setOnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+        }
+
         return view
     }
 
-    private fun dayOfWeek(d:Int) : String{
-        return when(d){
-            1-> "일"
-            2-> "월"
-            3-> "화"
-            4-> "수"
-            5-> "목"
-            6-> "금"
-            7-> "토"
-            else -> " "
-        }
-    }
-
-    private fun colorSetting(v: ImageView){
-        if(AddScheduleInfo.color == 1){
+    private fun colorSetting(v: ImageView) {
+        if (AddScheduleInfo.color == 1) {
             Glide.with(this).load(R.drawable.color1).into(v)
-        }else if(AddScheduleInfo.color == 2){
+        } else if (AddScheduleInfo.color == 2) {
             Glide.with(this).load(R.drawable.color2).into(v)
-        }else if(AddScheduleInfo.color == 3){
+        } else if (AddScheduleInfo.color == 3) {
             Glide.with(this).load(R.drawable.color3).into(v)
-        }else if(AddScheduleInfo.color == 4){
+        } else if (AddScheduleInfo.color == 4) {
             Glide.with(this).load(R.drawable.color4).into(v)
-        }else if(AddScheduleInfo.color == 5){
+        } else if (AddScheduleInfo.color == 5) {
             Glide.with(this).load(R.drawable.color5).into(v)
-        }else if(AddScheduleInfo.color == 6){
+        } else if (AddScheduleInfo.color == 6) {
             Glide.with(this).load(R.drawable.color6).into(v)
-        }else if(AddScheduleInfo.color == 7){
+        } else if (AddScheduleInfo.color == 7) {
             Glide.with(this).load(R.drawable.color7).into(v)
-        }else if(AddScheduleInfo.color == 8){
+        } else if (AddScheduleInfo.color == 8) {
             Glide.with(this).load(R.drawable.color8).into(v)
-        }else if(AddScheduleInfo.color == 9){
+        } else if (AddScheduleInfo.color == 9) {
             Glide.with(this).load(R.drawable.color9).into(v)
-        }else if(AddScheduleInfo.color == 10){
+        } else if (AddScheduleInfo.color == 10) {
             Glide.with(this).load(R.drawable.color10).into(v)
-        }else if(AddScheduleInfo.color == 11){
+        } else if (AddScheduleInfo.color == 11) {
             Glide.with(this).load(R.drawable.color11).into(v)
-        }else if(AddScheduleInfo.color == 12){
+        } else if (AddScheduleInfo.color == 12) {
             Glide.with(this).load(R.drawable.color12).into(v)
         }
     }

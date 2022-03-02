@@ -9,20 +9,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class Addschedule_invited_item_Adapter(private val context: Context): RecyclerView.Adapter<Addschedule_invited_item_Adapter.ViewHolder>() {
+class Addschedule_invited_item_Adapter(private val context: Context) :
+    RecyclerView.Adapter<Addschedule_invited_item_Adapter.ViewHolder>() {
     var datas = mutableListOf<UserModel>()
 
-    interface OnDeleteButtonClickListener{
-        fun onDeleteButtonClick(v: TextView, data: UserModel, pos:Int)
+    interface OnDeleteButtonClickListener {
+        fun onDeleteButtonClick(v: TextView, data: UserModel, pos: Int)
     }
-    private var listener : OnDeleteButtonClickListener? = null
-    fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener){
+
+    private var listener: OnDeleteButtonClickListener? = null
+    fun setOnDeleteButtonClickListener(listener: OnDeleteButtonClickListener) {
         this.listener = listener
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.addschedule_invite_invited_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.addschedule_invite_invited_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -31,20 +34,20 @@ class Addschedule_invited_item_Adapter(private val context: Context): RecyclerVi
     }
 
 
-    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val name = itemView.findViewById<TextView>(R.id.invited_member)
         private val x_button = itemView.findViewById<TextView>(R.id.invited_deleteButton)
 
-        fun bind(item: UserModel){
-            if(item.nickname != null){
+        fun bind(item: UserModel) {
+            if (item.nickname != null) {
                 name.text = item.nickname
-            }else{
+            } else {
                 name.text = item.id
             }
             val pos = adapterPosition
-            if(pos!=RecyclerView.NO_POSITION){
+            if (pos != RecyclerView.NO_POSITION) {
                 x_button.setOnClickListener {
-                    listener?.onDeleteButtonClick(x_button,item,pos)
+                    listener?.onDeleteButtonClick(x_button, item, pos)
                 }
             }
         }

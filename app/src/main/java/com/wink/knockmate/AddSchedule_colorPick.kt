@@ -50,45 +50,45 @@ class AddSchedule_colorPick : Fragment() {
         val icon = view.findViewById<ImageView>(R.id.yellow_icon)
 
 
-        if(AddScheduleInfo.color == 1){
+        if (AddScheduleInfo.color == 1) {
             color1Check.isChecked = true
             Glide.with(this).load(R.drawable.color1).into(icon)
-        }else if(AddScheduleInfo.color == 2){
+        } else if (AddScheduleInfo.color == 2) {
             color2Check.isChecked = true
             Glide.with(this).load(R.drawable.color2).into(icon)
-        }else if(AddScheduleInfo.color == 3){
+        } else if (AddScheduleInfo.color == 3) {
             color3Check.isChecked = true
             Glide.with(this).load(R.drawable.color3).into(icon)
-        }else if(AddScheduleInfo.color == 4){
+        } else if (AddScheduleInfo.color == 4) {
             color4Check.isChecked = true
             Glide.with(this).load(R.drawable.color4).into(icon)
-        }else if(AddScheduleInfo.color == 5){
+        } else if (AddScheduleInfo.color == 5) {
             color5Check.isChecked = true
             Glide.with(this).load(R.drawable.color5).into(icon)
-        }else if(AddScheduleInfo.color == 6){
+        } else if (AddScheduleInfo.color == 6) {
             color6Check.isChecked = true
             Glide.with(this).load(R.drawable.color6).into(icon)
-        }else if(AddScheduleInfo.color == 7){
+        } else if (AddScheduleInfo.color == 7) {
             color7Check.isChecked = true
             Glide.with(this).load(R.drawable.color7).into(icon)
-        }else if(AddScheduleInfo.color == 8){
+        } else if (AddScheduleInfo.color == 8) {
             color8Check.isChecked = true
             Glide.with(this).load(R.drawable.color8).into(icon)
-        }else if(AddScheduleInfo.color == 9){
+        } else if (AddScheduleInfo.color == 9) {
             color9Check.isChecked = true
             Glide.with(this).load(R.drawable.color9).into(icon)
-        }else if(AddScheduleInfo.color == 10){
+        } else if (AddScheduleInfo.color == 10) {
             color10Check.isChecked = true
             Glide.with(this).load(R.drawable.color10).into(icon)
-        }else if(AddScheduleInfo.color == 11){
+        } else if (AddScheduleInfo.color == 11) {
             color11Check.isChecked = true
             Glide.with(this).load(R.drawable.color11).into(icon)
-        }else{
+        } else {
             color12Check.isChecked = true
             Glide.with(this).load(R.drawable.color12).into(icon)
         }
 
-        fun initFalse(){
+        fun initFalse() {
             color1Check.isChecked = false
             color2Check.isChecked = false
             color3Check.isChecked = false
