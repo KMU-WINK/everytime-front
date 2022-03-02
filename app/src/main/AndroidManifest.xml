@@ -13,29 +13,68 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CharacterChoiceActivity" />
-        <activity android:name=".WorkThroughActivity" />
-        <activity android:name=".TempActivity" />
-        <activity android:name=".AppInfoActivity" />
-        <activity android:name=".InquiryActivity" />
-        <activity android:name=".NotationActivity" />
-        <activity android:name=".InviteGroupMemActivity" />
-        <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".TermsActivity" />
-        <activity android:name=".NicknameActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".LogInActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".EditEmailActivity" />
-        <activity android:name=".EditPasswordActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".KnockmateActivity" />
+        <activity
+            android:name=".CharacterChoiceActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".WorkThroughActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TempActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AppInfoActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".InquiryActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".NotationActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".InviteGroupMemActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TermsActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".NicknameActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SignUpActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".LogInActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditEmailActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".EditPasswordActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SettingsActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SearchActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".KnockmateActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

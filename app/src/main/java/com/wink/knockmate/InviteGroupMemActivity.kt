@@ -1,5 +1,7 @@
 package com.wink.knockmate
 
+import android.content.Intent
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -7,17 +9,18 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import kotlinx.android.synthetic.main.activity_invite_group_mem.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 
 
 class InviteGroupMemActivity : AppCompatActivity() {
-
     var uri: Uri = Uri.parse("android.resource://com.wink.knockmate/drawable/profile_pic")
     lateinit var item: MutableList<ProfileInviteAdapter.ProfileData>
 
@@ -29,12 +32,20 @@ class InviteGroupMemActivity : AppCompatActivity() {
         lateinit var instace: InviteGroupMemActivity
     }
 
+    lateinit var nickname: String
+    lateinit var email: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite_group_mem)
+        nickname = intent.extras?.getString("nickname").toString()
         item = mutableListOf()
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
-        var email = pref.getString("email", "").toString()
+        email = pref.getString("email", "").toString()
+
+        invite_group_back.setOnClickListener {
+            finish()
+        }
 
         val client = OkHttpClient().newBuilder()
             .build()
@@ -59,7 +70,8 @@ class InviteGroupMemActivity : AppCompatActivity() {
                                     ProfileInviteAdapter.ProfileData(
                                         arr.getJSONObject(i).getString("nickname"),
                                         arr.getJSONObject(i).getString("email"),
-                                        uri
+                                        uri,
+                                        false
                                     )
                                 )
                             }
@@ -93,22 +105,92 @@ class InviteGroupMemActivity : AppCompatActivity() {
             }
         })
 
-        val chipgroup = findViewById<ChipGroup>(R.id.invite_group_chipgroup)
         (adapter as ProfileInviteAdapter).setOnCheckBoxClickListener(object :
             ProfileInviteAdapter.OnCheckBoxClickListener {
             override fun onCheckBoxClick(pos: Int) {
-                chipgroup.removeAllViews()
-                for (it in item) {
-                    if (it.isChecked) {
-                        val chip =
-                            layoutInflater.inflate(R.layout.chip_invite_group, chipgroup, false)
-                        (chip as Chip).setOnCloseIconClickListener {
-
-                        }
-                        chipgroup.addView(chip)
-                    }
-                }
+                refreshChipGroup()
             }
         })
+        refreshChipGroup()
+    }
+
+    fun refreshChipGroup() {
+        val chipgroup = findViewById<ChipGroup>(R.id.invite_group_chipgroup)
+        chipgroup.removeAllViews()
+        var i = 0
+        var createable = false
+        for (it in item) {
+            var t = i
+            i += 1
+            if (it.isChecked) {
+                createable = true
+                val chip =
+                    layoutInflater.inflate(R.layout.chip_invite_group, chipgroup, false)
+                (chip as Chip).text = it.ProName
+                (chip as Chip).setOnCloseIconClickListener {
+                    item[t] = ProfileInviteAdapter.ProfileData(
+                        item[t].ProName,
+                        item[t].ProEmail,
+                        uri,
+                        false
+                    )
+                    runOnUiThread {
+                        refreshChipGroup()
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    }
+                }
+                chipgroup.addView(chip)
+            }
+        }
+        if (createable) {
+            btInviteMem.backgroundTintList =
+                ColorStateList.valueOf(resources.getColor(R.color.brand_main))
+            btInviteMem.setOnClickListener {
+                val client = OkHttpClient()
+                val body = FormBody.Builder()
+                    .add("nickname", nickname)
+                    .add("userid", email.split('@')[0])
+                for (it in item) {
+                    if (it.isChecked)
+                        body.add("userid", it.ProEmail.split('@')[0])
+                }
+
+                val request: Request =
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/group").post(body.build()).build()
+
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    val intt = Intent(
+                                        this@InviteGroupMemActivity,
+                                        KnockmateActivity::class.java
+                                    )
+                                    intt.putExtra(
+                                        "groupid",
+                                        nickname
+                                    )
+                                    startActivity(intt)
+                                } else {
+                                    Log.d("log", response.message())
+                                }
+                            }
+                        }.run()
+                    }
+                })
+            }
+        } else {
+            btInviteMem.backgroundTintList =
+                ColorStateList.valueOf(resources.getColor(R.color.disabled))
+            btInviteMem.setOnClickListener {
+
+            }
+        }
     }
 }
