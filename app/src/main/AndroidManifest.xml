@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Knockmate"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".TutorialActivity2"
+            android:exported="false" />
+        <activity
+            android:name=".TutorialActivity"
+            android:exported="true" />
         <activity android:name=".TempActivity" />
         <activity android:name=".NotationActivity" />
         <activity android:name=".InviteGroupMemActivity" />
