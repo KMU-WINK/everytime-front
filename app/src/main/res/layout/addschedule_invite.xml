@@ -88,10 +88,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/group_recycler"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/addschedule_invite_detail_itme" />
 
     </LinearLayout>
 
@@ -118,10 +119,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/knockmates_recycler"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/addschedule_invite_detail_itme" />
 
     </LinearLayout>
 
