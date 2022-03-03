@@ -226,7 +226,7 @@ class AddSchedule_colorPick : Fragment() {
             color12Check.isChecked = true
         }
 
-        val backButton = view.findViewById<View>(R.id.back_button)
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
         val saveButton = view.findViewById<TextView>(R.id.color_save_button)
 
         backButton.setOnClickListener {

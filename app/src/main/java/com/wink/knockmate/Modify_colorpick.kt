@@ -223,7 +223,7 @@ class Modify_colorpick : AppCompatActivity() {
             color12Check.isChecked = true
         }
 
-        val backButton = findViewById<View>(R.id.back_button)
+        val backButton = findViewById<ImageView>(R.id.back_button)
         val saveButton = findViewById<TextView>(R.id.color_save_button)
 
         backButton.setOnClickListener {

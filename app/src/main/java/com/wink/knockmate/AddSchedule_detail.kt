@@ -871,7 +871,7 @@ class AddSchedule_detail : Fragment() {
             }
         }
 
-        val backButton = view.findViewById<View>(R.id.back_button)
+        val backButton = view.findViewById<TextView>(R.id.back_button)
         backButton.setOnClickListener {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()?.remove(this)?.commit()

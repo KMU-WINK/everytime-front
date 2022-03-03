@@ -20,6 +20,8 @@ import java.io.IOException
 import java.util.*
 
 class ModifyScheduleActivity : AppCompatActivity() {
+    var calendarId = ""
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,7 @@ class ModifyScheduleActivity : AppCompatActivity() {
 
         if (mod == "modify"){
             AddScheduleInfo.reset()
-            val calendarId = intent.getStringExtra("calendarId")
+            calendarId = intent.getStringExtra("calendarId").toString()
             var startDateArr: List<String>? = null
             var endDateArr: List<String>? = null
 
@@ -514,6 +516,224 @@ class ModifyScheduleActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         })
+
+        // 반복 일정으로 넘어가는 버튼
+        val repeatText = findViewById<TextView>(R.id.repeat_text)
+        repeatText.text = AddScheduleInfo.repeatType
+        val to_repeat_button = findViewById<ConstraintLayout>(R.id.to_repeat_button)
+        to_repeat_button.setOnClickListener(View.OnClickListener {
+            startPicker.visibility = View.GONE
+            endPicker.visibility = View.GONE
+            val intent = Intent(this, Modify_repeat::class.java)
+            startActivity(intent)
+            finish()
+        })
+
+
+        // 일정 색상 선택으로 넘어가는 버튼
+        val to_colorPick_button = findViewById<ConstraintLayout>(R.id.to_colorPick_button)
+        val colorName = findViewById<TextView>(R.id.pick_color_name)
+        val colorIcon = findViewById<ImageView>(R.id.color_icon)
+        colorName.text = "색상" + AddScheduleInfo.color.toString()
+        colorSetting(colorIcon)
+        to_colorPick_button.setOnClickListener(View.OnClickListener {
+            startPicker.visibility = View.GONE
+            endPicker.visibility = View.GONE
+            val intent = Intent(this, Modify_colorpick::class.java)
+            startActivity(intent)
+            finish()
+        })
+
+        val backButton = findViewById<TextView>(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        val saveButton = findViewById<TextView>(R.id.save_button)
+        saveButton.setOnClickListener {
+            val startCalTemp = startCal
+            val endCalTemp = endCal
+            val client = OkHttpClient()
+            val bodyTemp = FormBody.Builder()
+                .add("id", calendarId)
+                .add("title", AddScheduleInfo.title)
+                .add("memo", AddScheduleInfo.memo)
+                .add("color", AddScheduleInfo.color.toString())
+                .add("userid", AddScheduleInfo.userId)
+
+            if (AddScheduleInfo.repeatType == "반복 안함") {
+                val temp = bodyTemp
+                val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                    .add("endDate", saveCalSetting(endCalTemp))
+                    .build()
+                val request: Request =
+                    Request.Builder()
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/calendar").put(body).build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log1", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    Log.v("test", "save success")
+                                } else {
+                                }
+                            }
+                        }.run()
+                    }
+                })
+            } else if (AddScheduleInfo.repeatType == "매일") {
+                for (i in 0 until 366) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                    } else {
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매주") {
+                for (i in 0 until 53) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                    } else {
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 7)
+                }
+            } else if (AddScheduleInfo.repeatType == "매월") {
+                for (i in 0 until 25) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                    } else {
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.MONTH, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매년") {
+                for (i in 0 until 21) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                    } else {
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.YEAR, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "맞춤 설정") {
+                if (AddScheduleInfo.repeatDetailType == "Days") {
+                    for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
+                        val temp = bodyTemp
+                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                            .add("endDate", saveCalSetting(endCalTemp))
+                            .build()
+                        val request: Request =
+                            Request.Builder()
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                                .url("http://3.35.146.57:3000/knock").post(body).build()
+                        client.newCall(request).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                Log.d("log1", e.message.toString())
+                            }
+
+                            override fun onResponse(call: Call, response: Response) {
+                                object : Thread() {
+                                    @SuppressLint("NotifyDataSetChanged")
+                                    override fun run() {
+                                        if (response.code() == 200) {
+                                        } else {
+                                        }
+                                    }
+                                }.run()
+                            }
+                        })
+                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+                    }
+                } else if (AddScheduleInfo.repeatDetailType == "Weeks") {
+//
+                }
+            }
+            finish()
+        }
 
     }
 
