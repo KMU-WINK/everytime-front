@@ -51,7 +51,11 @@ class KnockmateActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.knockmate_datetext).text =
             "${cal.get(Calendar.YEAR)}년 ${cal.get(Calendar.MONTH) + 1}월"
         findViewById<TextView>(R.id.knock_msg_content).text = memo
-        if (mode == 1)
+
+        if (groupid.isNotEmpty()) {
+            findViewById<TextView>(R.id.knockmate_titletext).text = groupid
+            Toast.makeText(this, "그룹이 생성되었습니다!", Toast.LENGTH_SHORT).show()
+        } else if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
         else
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 일정"
@@ -212,8 +216,7 @@ class KnockmateActivity : AppCompatActivity() {
         val request: Request = Request.Builder()
             .url(
                 "http://3.35.146.57:3000/${
-                    if (groupid ==
-                        null
+                    if (groupid.isEmpty()
                     ) "weekly?email=${email}" else "weeklygroup?groupid=${groupid}"
                 }&year=${selected!!.get(Calendar.YEAR)}&month=${
                     selected!!.get(
