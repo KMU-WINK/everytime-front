@@ -54,6 +54,9 @@ class KnockmateActivity : AppCompatActivity() {
 
         if (groupid.isNotEmpty()) {
             findViewById<TextView>(R.id.knockmate_titletext).text = groupid
+            findViewById<ConstraintLayout>(R.id.knock_noti_layout).visibility = View.GONE
+            findViewById<ImageButton>(R.id.knockmate_menu).visibility = View.VISIBLE
+            findViewById<ConstraintLayout>(R.id.knockmate_group_footer_layout).visibility = View.VISIBLE
             Toast.makeText(this, "그룹이 생성되었습니다!", Toast.LENGTH_SHORT).show()
         } else if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"

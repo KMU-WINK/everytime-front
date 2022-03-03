@@ -1,6 +1,7 @@
 package com.wink.knockmate
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,21 @@ class Search_Follower_Adapter(private val context: Context) :
             itemView.findViewById<ImageButton>(R.id.search_item_follow).visibility = View.GONE
             itemView.findViewById<ImageView>(R.id.search_item_follow_back).visibility = View.GONE
             itemView.findViewById<TextView>(R.id.search_item_follow_text).visibility = View.GONE
+
+            itemView.setOnClickListener {
+                val intent = Intent(
+                    itemView.context,
+                    KnockmateActivity::class.java
+                )
+                intent.putExtra("email", item.email)
+                intent.putExtra("calendarid", item.id)
+                intent.putExtra("nickname", item.nickname)
+                intent.putExtra("mode", 1)
+                itemView.context.startActivity(
+                    intent
+                )
+            }
+
 
             if (item.nickname != null) {
                 followerName.text = item.nickname

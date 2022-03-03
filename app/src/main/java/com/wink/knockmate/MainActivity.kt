@@ -11,13 +11,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.addschedule_detail.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -218,6 +221,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val calendarTable = findViewById<TableLayout>(R.id.main_calendar)
         for (i: Int in 1..24) {
             val v = TableRow(applicationContext)
+            v.clipChildren = false
+            v.clipToPadding = false
             rows.add(v)
             calendarTable.addView(v)
         }
@@ -387,17 +392,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         runOnUiThread {
             for (i: Int in 1..24) {
                 rows[i - 1].removeAllViews()
+
+                val p = layoutInflater.inflate(
+                    R.layout.calendar_cell_parent,
+                    rows[i - 1],
+                    false
+                ) as FrameLayout
+
+                p.updateLayoutParams<TableRow.LayoutParams> { width = 0 }
+                p.updateLayoutParams<TableRow.LayoutParams> {
+                    height = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        60F, resources.displayMetrics
+                    ).toInt()
+                }
+                p.updateLayoutParams<TableRow.LayoutParams> { column = 0 }
+
+                rows[i - 1].addView(p)
             }
             var arr = data.getJSONArray("data")
             for (i: Int in 0 until arr.length()) {
-                val calendar = Calendar.getInstance()
-                val endCalendar = Calendar.getInstance()
+                val calendar =
+                    Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+                val endCalendar =
+                    Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
 
                 val time = arr.getJSONObject(i).getString("startDate").split(' ')[1].split(':')
                 val endTime = arr.getJSONObject(i).getString("endDate").split(' ')[1].split(':')
+
                 calendar.set(
-                    Calendar.DAY_OF_MONTH,
-                    arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[2].toInt()
+                    Calendar.YEAR,
+                    arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[0].toInt()
                 )
                 calendar.set(
                     Calendar.MONTH,
@@ -405,14 +430,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .split(' ')[0].split('-')[1].toInt() - 1
                 )
                 calendar.set(
-                    Calendar.YEAR,
-                    arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[0].toInt()
+                    Calendar.DAY_OF_MONTH,
+                    arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[2].toInt()
                 )
                 calendar.set(Calendar.HOUR, time[0].toInt())
                 calendar.set(Calendar.MINUTE, time[1].toInt())
+
                 endCalendar.set(
-                    Calendar.DAY_OF_MONTH,
-                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[2].toInt()
+                    Calendar.YEAR,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[0].toInt()
                 )
                 endCalendar.set(
                     Calendar.MONTH,
@@ -420,31 +446,57 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         .split(' ')[0].split('-')[1].toInt() - 1
                 )
                 endCalendar.set(
-                    Calendar.YEAR,
-                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[0].toInt()
+                    Calendar.DAY_OF_MONTH,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[2].toInt()
                 )
                 endCalendar.set(Calendar.HOUR, endTime[0].toInt())
                 endCalendar.set(Calendar.MINUTE, endTime[1].toInt())
 
                 val t = (endCalendar.timeInMillis - calendar.timeInMillis) / (1000 * 60)
 
-                val params = TableRow.LayoutParams(
-                    TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        45F, resources.displayMetrics
-                    ).toInt(),
-                    TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP,
-                        t.toFloat(),
-                        resources.displayMetrics
-                    ).toInt()
-                )
-                params.column = calendar.get(Calendar.DAY_OF_WEEK) - 1
-                params.topMargin = time[1].toInt()
+                var cellParent: FrameLayout? = null
+
+                if (rows[time[0].toInt()].childCount == 1) {
+                    cellParent = layoutInflater.inflate(
+                        R.layout.calendar_cell_parent,
+                        rows[time[0].toInt()],
+                        false
+                    ) as FrameLayout
+
+                    cellParent.updateLayoutParams<TableRow.LayoutParams> {
+                        column = calendar.get(Calendar.DAY_OF_WEEK)
+                    }
+                    rows[time[0].toInt()].addView(cellParent)
+                } else {
+                    cellParent = rows[time[0].toInt()].getChildAt(1) as FrameLayout
+                    Log.d("DYDY", arr.getJSONObject(i).getString("title"))
+                }
 
                 val cell =
-                    layoutInflater.inflate(R.layout.calendar_cell, rows[time[0].toInt()], false)
-                rows[time[0].toInt()].addView(cell, params)
+                    layoutInflater.inflate(
+                        R.layout.calendar_cell,
+                        cellParent,
+                        false
+                    )
+
+                cellParent.addView(cell)
+
+                val pparams = cell.layoutParams as FrameLayout.LayoutParams
+                pparams.height = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    t.toFloat(),
+                    resources.displayMetrics
+                ).toInt()
+
+                pparams.topMargin =
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        time[1].toFloat(),
+                        resources.displayMetrics
+                    ).toInt()
+
+                cell.layoutParams = pparams
+
                 val img = cell.findViewById<ImageView>(R.id.calendar_cell_image)
                 val unwrappedDrawable =
                     AppCompatResources.getDrawable(baseContext, R.drawable.cell_rectangle)
