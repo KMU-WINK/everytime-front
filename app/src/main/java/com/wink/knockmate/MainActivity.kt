@@ -469,7 +469,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     rows[time[0].toInt()].addView(cellParent)
                 } else {
                     cellParent = rows[time[0].toInt()].getChildAt(1) as FrameLayout
-                    Log.d("DYDY", arr.getJSONObject(i).getString("title"))
                 }
 
                 val cell =
