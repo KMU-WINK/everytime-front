@@ -30,16 +30,13 @@ class AddSchedule : BottomSheetDialogFragment() {
     @SuppressLint("CommitPrefEdits")
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        val pref = activity?.getSharedPreferences("loginInfo", MODE_PRIVATE)
+        val email = pref?.getString("email", "").toString()
         AddScheduleInfo.reset()
         val bundle = arguments
         val args = bundle?.getString("ScheduleType")
         if (args == "ADD") {
-            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
-            val email = prefUser?.getString("email", "email")
-            prefUser?.getString(
-                "email",
-                "email"
-            )?.let { Log.v("test", it) }
             val client = OkHttpClient().newBuilder()
                 .build()
             val request: Request = Request.Builder()
