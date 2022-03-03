@@ -22,11 +22,11 @@ class ProfileInviteAdapter(private val dataset: MutableList<ProfileInviteAdapter
         this.listener = listener
     }
 
-    class ProfileData(ProName: String, ProEmail: String, ProImage: Uri) {
+    class ProfileData(ProName: String, ProEmail: String, ProImage: Uri, isChecked: Boolean) {
         val ProName: String = ProName
         val ProEmail: String = ProEmail
         val ProImage: Uri = ProImage
-        var isChecked: Boolean = false
+        var isChecked: Boolean = isChecked
     }
 
     interface ItemClickListener {
@@ -47,14 +47,15 @@ class ProfileInviteAdapter(private val dataset: MutableList<ProfileInviteAdapter
     override fun onBindViewHolder(holder: ProfileInviteAdapter.CustomViewHolder, position: Int) {
         holder.proName.text = filters[position].ProName
         holder.proImage.setImageURI(filters[position].ProImage)
-
+        holder.proCheck.setBackgroundResource(if (filters[position].isChecked) R.drawable.true_radio else R.drawable.false_radio)
+        val c = holder.proCheck
         val pos: Int = position
-        holder.proCheck.setOnClickListener {
+        holder.itemView.setOnClickListener {
             filters[pos].isChecked = if (filters[pos].isChecked) {
-                (it as ImageButton).setBackgroundResource(R.drawable.false_radio)
+                c.setBackgroundResource(R.drawable.false_radio)
                 false
             } else {
-                (it as ImageButton).setBackgroundResource(R.drawable.true_radio)
+                c.setBackgroundResource(R.drawable.true_radio)
                 true
             }
             listener?.onCheckBoxClick(pos)

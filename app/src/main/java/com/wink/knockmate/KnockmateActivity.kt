@@ -25,6 +25,7 @@ class KnockmateActivity : AppCompatActivity() {
     lateinit var datas: MutableList<DayAdapter.DateData>
     lateinit var email: String
     lateinit var memo: String
+    lateinit var groupid: String
     var calendarid: Int = 0
     var mode: Int = 0
     lateinit var nickname: String
@@ -38,14 +39,17 @@ class KnockmateActivity : AppCompatActivity() {
         mode = intent.extras!!.getInt("mode")
         nickname = intent.extras?.getString("nickname").toString()
         memo = intent.extras?.getString("memo").toString()
+        groupid = intent.extras?.getString("groupid").toString()
 
-        val cal = intent.extras!!.getSerializable("start") as Calendar
-        cal.add(Calendar.DATE, -(cal.get(Calendar.DAY_OF_WEEK) - 1))
+        var cal = intent.extras?.getSerializable("start")
+        cal = cal ?: Calendar.getInstance()
+        (cal as Calendar).add(Calendar.DATE, -((cal as Calendar).get(Calendar.DAY_OF_WEEK) - 1))
 
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         val myemail = pref.getString("email", "").toString()
 
-        findViewById<TextView>(R.id.knockmate_datetext).text = "${cal.get(Calendar.YEAR)}년 ${cal.get(Calendar.MONTH) + 1}월"
+        findViewById<TextView>(R.id.knockmate_datetext).text =
+            "${cal.get(Calendar.YEAR)}년 ${cal.get(Calendar.MONTH) + 1}월"
         findViewById<TextView>(R.id.knock_msg_content).text = memo
         if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
@@ -207,7 +211,11 @@ class KnockmateActivity : AppCompatActivity() {
             .build()
         val request: Request = Request.Builder()
             .url(
-                "http://3.35.146.57:3000/weekly?email=${email}&year=${selected!!.get(Calendar.YEAR)}&month=${
+                "http://3.35.146.57:3000/${
+                    if (groupid ==
+                        null
+                    ) "weekly?email=${email}" else "weeklygroup?groupid=${groupid}"
+                }&year=${selected!!.get(Calendar.YEAR)}&month=${
                     selected!!.get(
                         Calendar.MONTH
                     ) + 1

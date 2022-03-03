@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -312,10 +311,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return calendar
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         recyclerView.scrollToPosition(1)
+        resetDayRecycler(1)
     }
 
     fun resetDayRecycler(position: Int) {
@@ -343,7 +343,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             lastPosition = 1
             recyclerView.scrollToPosition(1)
         }
-
+        findViewById<TextView>(R.id.main_datetext).text = "${selected!!.get(Calendar.YEAR)}년 ${
+            selected!!.get(
+                Calendar.MONTH
+            ) + 1
+        }월"
         val client = OkHttpClient().newBuilder()
             .build()
         val request: Request = Request.Builder()
@@ -387,6 +391,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             var arr = data.getJSONArray("data")
             for (i: Int in 0 until arr.length()) {
                 val calendar = Calendar.getInstance()
+                val endCalendar = Calendar.getInstance()
+
+                val time = arr.getJSONObject(i).getString("startDate").split(' ')[1].split(':')
+                val endTime = arr.getJSONObject(i).getString("endDate").split(' ')[1].split(':')
                 calendar.set(
                     Calendar.DAY_OF_MONTH,
                     arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[2].toInt()
@@ -400,21 +408,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Calendar.YEAR,
                     arr.getJSONObject(i).getString("startDate").split(' ')[0].split('-')[0].toInt()
                 )
+                calendar.set(Calendar.HOUR, time[0].toInt())
+                calendar.set(Calendar.MINUTE, time[1].toInt())
+                endCalendar.set(
+                    Calendar.DAY_OF_MONTH,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[2].toInt()
+                )
+                endCalendar.set(
+                    Calendar.MONTH,
+                    arr.getJSONObject(i).getString("endDate")
+                        .split(' ')[0].split('-')[1].toInt() - 1
+                )
+                endCalendar.set(
+                    Calendar.YEAR,
+                    arr.getJSONObject(i).getString("endDate").split(' ')[0].split('-')[0].toInt()
+                )
+                endCalendar.set(Calendar.HOUR, endTime[0].toInt())
+                endCalendar.set(Calendar.MINUTE, endTime[1].toInt())
 
-                val time = arr.getJSONObject(i).getString("startDate").split(' ')[1].split(':')
+                val t = (endCalendar.timeInMillis - calendar.timeInMillis) / (1000 * 60)
 
                 val params = TableRow.LayoutParams(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        44F, resources.displayMetrics
+                        45F, resources.displayMetrics
                     ).toInt(),
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        60F,
+                        t.toFloat(),
                         resources.displayMetrics
                     ).toInt()
                 )
                 params.column = calendar.get(Calendar.DAY_OF_WEEK) - 1
+                params.topMargin = time[1].toInt()
 
                 val cell =
                     layoutInflater.inflate(R.layout.calendar_cell, rows[time[0].toInt()], false)
