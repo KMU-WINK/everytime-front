@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,6 +31,15 @@ class Addschedule_invite_detail_Follower_Adapter :
         this.listener = listener
     }
 
+    interface OnArrowClickListener {
+        fun onArrowClick(v: ImageView, data: UserModel, pos: Int)
+    }
+
+    private var listener2: OnArrowClickListener? = null
+    fun setOnArrowClickListener(listener: OnArrowClickListener) {
+        this.listener2 = listener2
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.addschedule_invite_detail_itme, parent, false)
@@ -47,11 +57,21 @@ class Addschedule_invite_detail_Follower_Adapter :
         private val checkbox = itemView.findViewById<CheckBox>(R.id.detail_user_check)
         private val arrow = itemView.findViewById<ImageView>(R.id.detail_to_group_arrow)
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: UserModel) {
-            arrow.visibility = View.GONE
-            if (item.nickname != null) {
-                followerName.text = item.nickname
+            if (item.user) {
+                arrow.visibility = View.GONE
             } else {
+                arrow.visibility = View.VISIBLE
+            }
+            if (item.nickname != null && !item.user) {
+                followerName.text = item.nickname + " (" + item.isFav + "명)"
+            } else if (item.nickname == null && !item.user) {
+                followerName.text = item.id + " (" + item.isFav + "명)"
+            }
+            if (item.nickname != null && item.user) {
+                followerName.text = item.nickname
+            } else if (item.nickname == null && item.user) {
                 followerName.text = item.id
             }
 
@@ -70,8 +90,8 @@ class Addschedule_invite_detail_Follower_Adapter :
 //                override fun onResponse(call: Call, response: Response) {
 //                    object : Thread() {
 //                        override fun run() {
-//                            if (response.code == 200) {
-//                                Glide.with(itemView).load(JSONObject(response.body?.string()))
+//                            if (response.code() == 200) {
+//                                Glide.with(itemView).load(JSONObject(response.body()?.string()))
 //                                    .transform(CenterCrop(), RoundedCorners(20))
 //                                    .into(followerImage)
 //                            } else {
@@ -92,6 +112,9 @@ class Addschedule_invite_detail_Follower_Adapter :
             if (pos != RecyclerView.NO_POSITION) {
                 checkbox.setOnClickListener {
                     listener?.onCheckClick(checkbox, item, pos)
+                }
+                arrow.setOnClickListener {
+                    listener2?.onArrowClick(arrow, item, pos)
                 }
             }
         }

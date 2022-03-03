@@ -32,6 +32,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".KnockmateActivity" />
+        <activity android:name=".ModifyScheduleActivity" />
         <activity
             android:name=".TestMain"
             android:exported="true"

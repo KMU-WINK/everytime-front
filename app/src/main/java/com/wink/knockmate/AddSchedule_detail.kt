@@ -39,26 +39,29 @@ class AddSchedule_detail : Fragment() {
         val startCal = AddScheduleInfo.startCal
         val endCal = AddScheduleInfo.endCal
 
-        startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월" + startCal.get(
+        startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
             Calendar.DATE
         ).toString() + "일 (" + AddScheduleInfo.startDay + ")"
         startTimeText.text =
-            if (startCal.get(Calendar.AM_PM) === 0) "오전" + " " + startCal.get(Calendar.HOUR)
-                .toString() + ":" + startCal.get(
-                Calendar.MINUTE
-            ).toString()
-            else "오후" + " " + startCal.get(Calendar.HOUR)
-                .toString() + ":" + startCal.get(Calendar.MINUTE).toString()
+            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " +
+                    calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(startCal.get(Calendar.MINUTE))
+            else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                startCal.get(
+                    Calendar.MINUTE
+                )
+            )
         endDateText.text =
-            (endCal.get(Calendar.MONTH) + 1).toString() + "월" + endCal.get(Calendar.DATE)
+            (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
                 .toString() + "일 (" + AddScheduleInfo.endDay + ")"
         endTimeText.text =
-            if (endCal.get(Calendar.AM_PM) === 0) "오전" + " " + endCal.get(Calendar.HOUR)
-                .toString() + ":" + endCal.get(
-                Calendar.MINUTE
-            ).toString()
-            else "오후" + " " + endCal.get(Calendar.HOUR)
-                .toString() + ":" + endCal.get(Calendar.MINUTE).toString()
+            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                endCal.get(Calendar.MINUTE)
+            )
+            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                endCal.get(
+                    Calendar.MINUTE
+                )
+            )
 
 
         // startpicker
@@ -212,13 +215,21 @@ class AddSchedule_detail : Fragment() {
 
         // 참석자초대로 넘어가는 버튼
         val inviters = view.findViewById<TextView>(R.id.inviters)
-        if (AddScheduleInfo.invitersNumber == 0) {
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text = ""
-        } else if (AddScheduleInfo.invitersNumber == 1) {
+        } else if (AddScheduleInfo.invitersNumber == 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text = AddScheduleInfo.inviteMembers[0].nickname
-        } else {
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 1) {
+            inviters.text = AddScheduleInfo.inviteGroups[0].nickname
+        } else if (AddScheduleInfo.invitersNumber > 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text =
                 AddScheduleInfo.inviteMembers[0].nickname + " 외 " + (AddScheduleInfo.invitersNumber - 1).toString() + "명"
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber > 1) {
+            inviters.text =
+                AddScheduleInfo.inviteGroups[0].nickname + " 외 " + (AddScheduleInfo.allGroupMembersNumber - AddScheduleInfo.inviteGroups[0].isFav).toString() + "명"
+        } else {
+            inviters.text =
+                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + ((AddScheduleInfo.invitersNumber - 1) + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
         }
         val to_invite_button = view.findViewById<ConstraintLayout>(R.id.to_invite_button)
         to_invite_button.setOnClickListener(View.OnClickListener {
@@ -565,7 +576,7 @@ class AddSchedule_detail : Fragment() {
         }
 
         val knockButton = view.findViewById<TextView>(R.id.knock_button)
-        if (AddScheduleInfo.invitersNumber == 0) {
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             saveButton.visibility = View.VISIBLE
             knockButton.visibility = View.GONE
         } else {
@@ -587,6 +598,10 @@ class AddSchedule_detail : Fragment() {
 
             for (i in 0 until AddScheduleInfo.inviteMembers.size) {
                 bodyTemp.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
+            }
+
+            for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+                bodyTemp.add("userid", AddScheduleInfo.inviteGroups[i].id!!)
             }
 
             if (AddScheduleInfo.repeatType == "반복 안함") {

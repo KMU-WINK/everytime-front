@@ -23,8 +23,7 @@ class Addschedule_invite_detail : Fragment() {
     lateinit var itemAdapter: Addschedule_invite_detail_Follower_Adapter
     lateinit var knockmate_recycler: RecyclerView
 
-    lateinit var groupAdapter: Addschedule_invite_detail_group_Adapter
-    private var groupList = mutableListOf<UserModel>()
+    lateinit var groupAdapter: Addschedule_invite_detail_Follower_Adapter
     lateinit var group_recycler: RecyclerView
 
     lateinit var invitedAdapter: Addschedule_invited_item_Adapter
@@ -158,6 +157,42 @@ class Addschedule_invite_detail : Fragment() {
             }
         })
 
+        groupAdapter.setOnCheckBoxClickListener(object :
+            Addschedule_invite_detail_Follower_Adapter.OnCheckBoxClickListener {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onCheckClick(v: CheckBox, data: UserModel, pos: Int) {
+                if (v.isChecked) {
+                    AddScheduleInfo.groupList[pos].invite = v.isChecked
+                    AddScheduleInfo.inviteGroupsNumber++
+                    AddScheduleInfo.inviteGroups.add(AddScheduleInfo.groupList[pos].copy())
+                    inviteList.apply {
+                        inviteList.add(AddScheduleInfo.groupList[pos])
+                    }
+                    if (inviteList.size >= 1) {
+                        invitedBoolean = true
+                    }
+                    Log.v("test7", tempInvitedList.toString())
+                } else {
+                    AddScheduleInfo.inviteGroupsNumber--
+                    inviteList.apply {
+                        AddScheduleInfo.inviteGroups.remove(AddScheduleInfo.groupList[pos].copy())
+                        inviteList.remove(AddScheduleInfo.groupList[pos])
+                    }
+                    if (inviteList.size == 0) {
+                        invitedBoolean = false
+                    }
+                    AddScheduleInfo.groupList[pos].invite = v.isChecked
+                }
+                if (invitedBoolean) {
+                    invited_recycler.visibility = View.VISIBLE
+                } else {
+                    invited_recycler.visibility = View.GONE
+                }
+                invitedAdapter.datas = inviteList
+                invitedAdapter.notifyDataSetChanged()
+            }
+        })
+
         invitedAdapter.setOnDeleteButtonClickListener(object :
             Addschedule_invited_item_Adapter.OnDeleteButtonClickListener {
             @SuppressLint("NotifyDataSetChanged")
@@ -183,14 +218,12 @@ class Addschedule_invite_detail : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initGroupRecycler() {
         groupAdapter =
-            Addschedule_invite_detail_group_Adapter(requireParentFragment().requireActivity().applicationContext)
+            Addschedule_invite_detail_Follower_Adapter()
         group_recycler.layoutManager =
             LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
         group_recycler.adapter = groupAdapter
-        groupList.apply {
-            groupAdapter.datas = groupList
-            groupAdapter.notifyDataSetChanged()
-        }
+        groupAdapter.datas = AddScheduleInfo.groupList
+        groupAdapter.notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -198,14 +231,17 @@ class Addschedule_invite_detail : Fragment() {
         invitedAdapter =
             Addschedule_invited_item_Adapter(requireParentFragment().requireActivity().applicationContext)
         invited_recycler.adapter = invitedAdapter
-        if (AddScheduleInfo.invitersNumber == 0) {
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             invited_recycler.visibility = View.GONE
         } else {
             invited_recycler.visibility = View.VISIBLE
         }
         inviteList.apply {
             for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-                inviteList.add(AddScheduleInfo.followerList[i])
+                inviteList.add(AddScheduleInfo.inviteMembers[i])
+            }
+            for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+                inviteList.add(AddScheduleInfo.inviteGroups[i])
             }
             invitedAdapter.datas = inviteList
             invitedAdapter.notifyDataSetChanged()

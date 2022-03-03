@@ -12,6 +12,8 @@ class AddScheduleInfo {
         var title: String = ""
         var memo: String = ""
         var inviteMembers = mutableListOf<UserModel>()
+        var inviteGroups = mutableListOf<UserModel>()
+        var inviteGroupsNumber: Int = 0
         var invitersNumber: Int = 0
         var startDay: String = ""
         var endDay: String = ""
@@ -24,8 +26,12 @@ class AddScheduleInfo {
         var color: Int = 1
         var brief: Boolean = true
         var followerList = mutableListOf<UserModel>()
+        var groupList = mutableListOf<UserModel>()
+        var priorInviteGroups = mutableListOf<UserModel>()
         var priorInviteMembers = mutableListOf<UserModel>()
         var priorInvitersNumber: Int = 0
+        var priorInviteGroupsNumber: Int = 0
+        var allGroupMembersNumber: Int = 0
 
         fun resetStartCal() {
             startCal = Calendar.getInstance()
@@ -76,6 +82,8 @@ class AddScheduleInfo {
             title = ""
             memo = ""
             inviteMembers = mutableListOf<UserModel>()
+            inviteGroups = mutableListOf<UserModel>()
+            inviteGroupsNumber = 0
             invitersNumber = 0
             startDay = ""
             endDay = ""
@@ -88,6 +96,12 @@ class AddScheduleInfo {
             color = 1
             brief = true
             followerList = mutableListOf<UserModel>()
+            groupList = mutableListOf<UserModel>()
+            priorInviteGroups = mutableListOf<UserModel>()
+            priorInviteMembers = mutableListOf<UserModel>()
+            priorInvitersNumber = 0
+            priorInviteGroupsNumber = 0
+            allGroupMembersNumber = 0
         }
     }
 }
