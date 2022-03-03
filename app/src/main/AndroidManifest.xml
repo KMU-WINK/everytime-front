@@ -71,7 +71,10 @@
             android:name=".KnockmateActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ModifyScheduleActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TestMain"
             android:exported="true"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize">

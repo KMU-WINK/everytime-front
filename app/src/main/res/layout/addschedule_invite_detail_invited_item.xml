@@ -15,47 +15,39 @@
     <TextView
         android:id="@+id/detail_profile_name"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="14sp"
         android:text="그룹 (10명)"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/detail_profile_image"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/detail_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:text="노크 대기"
+        android:textColor="#7A7A7A"
+        app:layout_constraintTop_toBottomOf="@id/detail_profile_name"
+        app:layout_constraintStart_toEndOf="@id/detail_profile_image"
         android:layout_marginStart="12dp"/>
 
     <ImageView
-        android:id="@+id/detail_to_group_arrow"
-        app:layout_constraintStart_toEndOf="@id/detail_profile_name"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="21dp"
-        android:background="@drawable/search_group_detail_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <CheckBox
-        android:id="@+id/detail_user_check"
+        android:id="@+id/detail_user_more"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:button="@null"
-        android:background="@drawable/addschedule_invite_check"
+        android:background="@drawable/search_detail"
         android:layout_marginTop="16dp"/>
 
     <ImageView
-        android:id="@+id/detail_user_checked"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:button="@null"
-        android:background="@drawable/addschedule_invited_check"
-        android:layout_marginTop="16dp"
-        android:visibility="gone"/>
-
-    <ImageView
-        android:id="@+id/detail_to_group_arrow2"
+        android:id="@+id/detail_to_group_arrow"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +56,5 @@
         android:background="@drawable/search_arrow"
         android:layout_marginTop="16dp"
         android:visibility="gone"/>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

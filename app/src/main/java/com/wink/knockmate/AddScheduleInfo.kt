@@ -32,6 +32,7 @@ class AddScheduleInfo {
         var priorInvitersNumber: Int = 0
         var priorInviteGroupsNumber: Int = 0
         var allGroupMembersNumber: Int = 0
+        var invitedMembers = mutableListOf<UserModel>()
 
         fun resetStartCal() {
             startCal = Calendar.getInstance()
@@ -81,27 +82,28 @@ class AddScheduleInfo {
             endCal = Calendar.getInstance()
             title = ""
             memo = ""
-            inviteMembers = mutableListOf<UserModel>()
-            inviteGroups = mutableListOf<UserModel>()
+            inviteMembers = mutableListOf()
+            inviteGroups = mutableListOf()
             inviteGroupsNumber = 0
             invitersNumber = 0
             startDay = ""
             endDay = ""
             repeatType = "반복 안함"
             repeatDetailType = "Days"
-            repeatDays = mutableListOf<Boolean>(false, false, false, false, false, false, false)
+            repeatDays = mutableListOf(false, false, false, false, false, false, false)
             repeatAllCount = 1
             repeatInterval = 1
             repeatDay = 0
             color = 1
             brief = true
-            followerList = mutableListOf<UserModel>()
-            groupList = mutableListOf<UserModel>()
-            priorInviteGroups = mutableListOf<UserModel>()
-            priorInviteMembers = mutableListOf<UserModel>()
+            followerList = mutableListOf()
+            groupList = mutableListOf()
+            priorInviteGroups = mutableListOf()
+            priorInviteMembers = mutableListOf()
             priorInvitersNumber = 0
             priorInviteGroupsNumber = 0
             allGroupMembersNumber = 0
+            invitedMembers = mutableListOf()
         }
     }
 }

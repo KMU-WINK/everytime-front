@@ -84,6 +84,19 @@
         app:layout_constraintTop_toBottomOf="@id/back_button" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/to_invited_users"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:scrollbars="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/invite_title" />
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/to_invite_users"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -91,9 +104,10 @@
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:scrollbars="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/invite_title" />
+        app:layout_constraintTop_toBottomOf="@id/to_invited_users" />
 
 
     <TextView

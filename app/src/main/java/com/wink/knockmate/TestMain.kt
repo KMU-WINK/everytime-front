@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class TestMain : AppCompatActivity(){
+class TestMain : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.testpage)
@@ -31,8 +31,9 @@ class TestMain : AppCompatActivity(){
         })
 
         button2.setOnClickListener {
-            val intent = Intent(this, ModifyScheduleActivity::class.java)
+            val intent = Intent(this@TestMain, ModifyScheduleActivity::class.java)
             intent.putExtra("calendarId", "30")
+            intent.putExtra("type", "modify")
             startActivity(intent)
         }
 

@@ -324,9 +324,10 @@ class AddSchedule_detail : Fragment() {
                             @SuppressLint("NotifyDataSetChanged")
                             override fun run() {
                                 if (response.code() == 200) {
-                                    Log.v("test", "save success")
                                     saveState = true
+                                    Log.v("test", "save success")
                                 } else {
+                                    Log.v("test2", "fail")
                                     saveState = false
                                     Toast
                                         .makeText(
@@ -566,13 +567,10 @@ class AddSchedule_detail : Fragment() {
 //                    }
                 }
             }
-            Log.v("test", saveState.toString())
-            if (saveState) {
-                parentFragment?.childFragmentManager
-                    ?.beginTransaction()?.remove(this)?.commit()
-                parentFragment?.requireActivity()?.supportFragmentManager
-                    ?.beginTransaction()?.remove(requireParentFragment())?.commit()
-            }
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
         }
 
         val knockButton = view.findViewById<TextView>(R.id.knock_button)
