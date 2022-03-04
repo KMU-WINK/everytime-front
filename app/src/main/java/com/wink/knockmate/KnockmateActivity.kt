@@ -1,16 +1,17 @@
 package com.wink.knockmate
 
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.util.TypedValue
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -20,10 +21,12 @@ import org.json.JSONObject
 import java.io.IOException
 import java.util.*
 
+
 class KnockmateActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: DayAdapter
     lateinit var datas: MutableList<DayAdapter.DateData>
+    lateinit var knocks: MutableList<Pair<Int, Int>>
     lateinit var email: String
     lateinit var memo: String
     lateinit var groupid: String
@@ -41,13 +44,76 @@ class KnockmateActivity : AppCompatActivity() {
         nickname = intent.extras?.getString("nickname").toString()
         memo = intent.extras?.getString("memo").toString()
         groupid = intent.extras?.getString("groupid").toString()
-
+        knocks = mutableListOf()
         var cal = intent.extras?.getSerializable("start")
         cal = cal ?: Calendar.getInstance()
         (cal as Calendar).add(Calendar.DATE, -((cal as Calendar).get(Calendar.DAY_OF_WEEK) - 1))
 
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         val myemail = pref.getString("email", "").toString()
+
+        findViewById<FrameLayout>(R.id.main_calendar_frame).setOnTouchListener(OnTouchListener { v, event ->
+
+            val duration = event.eventTime - event.downTime
+            if (event.action == MotionEvent.ACTION_UP && duration < 100) {
+                var x = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    45f,
+                    resources.displayMetrics
+                ).toInt()
+                var y = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    60f,
+                    resources.displayMetrics
+                ).toInt()
+                var xx = (event.x / x).toInt() + 1
+                var yy = (event.y / y).toInt()
+
+                knocks.forEachIndexed { index, pair ->
+                    if (pair.first == xx && pair.second == yy) {
+                        knocks.removeAt(index)
+                        (rows[yy].getChildAt(xx) as FrameLayout).removeViewAt(
+                            (rows[yy].getChildAt(
+                                xx
+                            ) as FrameLayout).childCount - 1
+                        )
+                        return@OnTouchListener true
+                    }
+                }
+
+                var cellParent: FrameLayout? = null
+
+                if (rows[yy].childCount == 1) {
+                    for (k: Int in 1..7) {
+                        cellParent = layoutInflater.inflate(
+                            R.layout.calendar_cell_parent,
+                            rows[yy],
+                            false
+                        ) as FrameLayout
+
+                        cellParent.updateLayoutParams<TableRow.LayoutParams> {
+                            column = k
+                        }
+                        rows[yy].addView(cellParent)
+                    }
+                }
+                cellParent =
+                    rows[yy].getChildAt(xx) as FrameLayout
+
+                Log.d("DDY", "${xx} : ${yy}")
+                knocks.add(Pair(xx, yy))
+
+                val cell =
+                    layoutInflater.inflate(
+                        R.layout.calendar_cell_knock,
+                        cellParent,
+                        false
+                    )
+
+                cellParent.addView(cell)
+            }
+            true
+        })
 
         findViewById<TextView>(R.id.knockmate_datetext).text =
             "${cal.get(Calendar.YEAR)}년 ${cal.get(Calendar.MONTH) + 1}월"
@@ -57,8 +123,11 @@ class KnockmateActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.knockmate_titletext).text = groupid
             findViewById<ConstraintLayout>(R.id.knock_noti_layout).visibility = View.GONE
             findViewById<ImageButton>(R.id.knockmate_menu).visibility = View.VISIBLE
-            findViewById<ConstraintLayout>(R.id.knockmate_group_footer_layout).visibility = View.VISIBLE
+            findViewById<ConstraintLayout>(R.id.knockmate_group_footer_layout).visibility =
+                View.VISIBLE
             Toast.makeText(this, "그룹이 생성되었습니다!", Toast.LENGTH_SHORT).show()
+        } else if (mode == 2) {
+
         } else if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
         else
@@ -324,19 +393,21 @@ class KnockmateActivity : AppCompatActivity() {
                 var cellParent: FrameLayout? = null
 
                 if (rows[time[0].toInt()].childCount == 1) {
-                    cellParent = layoutInflater.inflate(
-                        R.layout.calendar_cell_parent,
-                        rows[time[0].toInt()],
-                        false
-                    ) as FrameLayout
+                    for (k: Int in 1..7) {
+                        cellParent = layoutInflater.inflate(
+                            R.layout.calendar_cell_parent,
+                            rows[time[0].toInt()],
+                            false
+                        ) as FrameLayout
 
-                    cellParent.updateLayoutParams<TableRow.LayoutParams> {
-                        column = calendar.get(Calendar.DAY_OF_WEEK)
+                        cellParent.updateLayoutParams<TableRow.LayoutParams> {
+                            column = k
+                        }
+                        rows[time[0].toInt()].addView(cellParent)
                     }
-                    rows[time[0].toInt()].addView(cellParent)
-                } else {
-                    cellParent = rows[time[0].toInt()].getChildAt(1) as FrameLayout
                 }
+                cellParent =
+                    rows[time[0].toInt()].getChildAt(calendar.get(Calendar.DAY_OF_WEEK)) as FrameLayout
 
                 val cell =
                     layoutInflater.inflate(

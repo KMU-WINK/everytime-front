@@ -363,7 +363,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
+                android:id="@+id/main_calendar_frame"
                 android:layout_width="330dp"
+                android:focusable="true"
+                android:clickable="true"
                 android:layout_height="wrap_content">
 
                 <ImageView

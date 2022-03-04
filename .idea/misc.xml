@@ -10,6 +10,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_account.xml" value="0.3685" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.3685" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_cell_knock.xml" value="0.2435" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_char1.xml" value="0.3685" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_char_choice_bt.xml" value="0.2645" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_char_choice_bt_orange.xml" value="0.2645" />
@@ -42,7 +43,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editpassword.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editprofile.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.22" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_knockmate.xml" value="0.9" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_knockmate.xml" value="0.45417095777548916" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_login.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_nickname.xml" value="0.28125" />
@@ -58,6 +59,7 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell.xml" value="0.9" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_knock.xml" value="0.67" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_parent.xml" value="0.31666666666666665" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/checked_profile_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/chip_invite_group.xml" value="0.3984375" />

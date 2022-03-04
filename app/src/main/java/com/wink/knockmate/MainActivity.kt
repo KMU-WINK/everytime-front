@@ -457,19 +457,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var cellParent: FrameLayout? = null
 
                 if (rows[time[0].toInt()].childCount == 1) {
-                    cellParent = layoutInflater.inflate(
-                        R.layout.calendar_cell_parent,
-                        rows[time[0].toInt()],
-                        false
-                    ) as FrameLayout
+                    for (k: Int in 1..7) {
+                        cellParent = layoutInflater.inflate(
+                            R.layout.calendar_cell_parent,
+                            rows[time[0].toInt()],
+                            false
+                        ) as FrameLayout
 
-                    cellParent.updateLayoutParams<TableRow.LayoutParams> {
-                        column = calendar.get(Calendar.DAY_OF_WEEK)
+                        cellParent.updateLayoutParams<TableRow.LayoutParams> {
+                            column = k
+                        }
+                        rows[time[0].toInt()].addView(cellParent)
                     }
-                    rows[time[0].toInt()].addView(cellParent)
-                } else {
-                    cellParent = rows[time[0].toInt()].getChildAt(1) as FrameLayout
                 }
+                cellParent =
+                    rows[time[0].toInt()].getChildAt(calendar.get(Calendar.DAY_OF_WEEK)) as FrameLayout
+
 
                 val cell =
                     layoutInflater.inflate(
