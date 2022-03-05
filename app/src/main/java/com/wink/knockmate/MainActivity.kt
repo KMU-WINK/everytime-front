@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         adapter = DayAdapter(this)
         recyclerView.adapter = adapter
 
-        val date = Calendar.getInstance()
+        val date = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         date.set(Calendar.DAY_OF_WEEK, 1)
         datas = mutableListOf<DayAdapter.DateData>()
         rows = mutableListOf()
@@ -311,7 +311,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun DatePicker.getDate(): Calendar {
-        val calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         calendar.set(year, month, dayOfMonth)
         return calendar
     }

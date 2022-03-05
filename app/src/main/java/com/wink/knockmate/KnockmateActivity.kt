@@ -47,16 +47,32 @@ class KnockmateActivity : AppCompatActivity() {
         groupid = intent.extras?.getString("groupid").toString()
         knocks = mutableListOf()
         var cal = intent.extras?.getSerializable("start")
-        cal = cal ?: Calendar.getInstance()
+        cal = cal ?: Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         (cal as Calendar).add(Calendar.DATE, -((cal as Calendar).get(Calendar.DAY_OF_WEEK) - 1))
 
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         val myemail = pref.getString("email", "").toString()
 
         findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).setOnClickListener {
+
+            var calt = intent.extras?.getSerializable("start")
+            calt = calt ?: Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+            (calt as Calendar).add(Calendar.DATE, -((calt as Calendar).get(Calendar.DAY_OF_WEEK) - 1))
+
+            knocks.sortWith(compareBy<Pair<Int, Int>> { it.first }.thenBy { it.second })
+            var startDate = calt.clone() as Calendar
+            startDate.add(Calendar.DATE, knocks[0].first - 1)
+            startDate.set(Calendar.HOUR, knocks[0].second)
+            var endDate = calt.clone() as Calendar
+            endDate.add(Calendar.DATE, knocks[knocks.size - 1].first - 1)
+            endDate.set(Calendar.HOUR, knocks[knocks.size - 1].second)
             val bottomSheetDialogFragment = AddSchedule()
             val args = Bundle()
-            args.putString("ScheduleType", "ADD") // 일정 추가인지, 처음부터 노크인지, 일정 수정인지 판별
+            args.putString("ScheduleType", "KNOCK")
+            args.putString("invite", email)
+            args.putString("inviteType", "user")
+            args.putString("startDate", "${startDate.get(Calendar.YEAR)}-${startDate.get(Calendar.MONTH)}-${startDate.get(Calendar.DAY_OF_MONTH)} ${startDate.get(Calendar.HOUR)}:00:00")
+            args.putString("endDate", "${endDate.get(Calendar.YEAR)}-${endDate.get(Calendar.MONTH)}-${endDate.get(Calendar.DAY_OF_MONTH)} ${endDate.get(Calendar.HOUR)}:00:00")
             bottomSheetDialogFragment.arguments = args
             bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
         }
@@ -81,9 +97,11 @@ class KnockmateActivity : AppCompatActivity() {
                 knocks.forEachIndexed { index, pair ->
                     if (pair.first == xx && pair.second == yy) {
                         knocks.removeAt(index)
-                        if(knocks.size == 0) {
-                            findViewById<TextView>(R.id.knockmate_knock_info_text).visibility = View.VISIBLE
-                            findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility = View.GONE
+                        if (knocks.size == 0) {
+                            findViewById<TextView>(R.id.knockmate_knock_info_text).visibility =
+                                View.VISIBLE
+                            findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility =
+                                View.GONE
                         }
                         (rows[yy].getChildAt(xx) as FrameLayout).removeViewAt(
                             (rows[yy].getChildAt(
@@ -114,7 +132,8 @@ class KnockmateActivity : AppCompatActivity() {
                     rows[yy].getChildAt(xx) as FrameLayout
 
                 findViewById<TextView>(R.id.knockmate_knock_info_text).visibility = View.GONE
-                findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility = View.VISIBLE
+                findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility =
+                    View.VISIBLE
 
                 Log.d("DDY", "${xx} : ${yy}")
                 knocks.add(Pair(xx, yy))
@@ -145,7 +164,8 @@ class KnockmateActivity : AppCompatActivity() {
         } else if (mode == 2) {
             findViewById<ConstraintLayout>(R.id.knock_noti_layout).visibility = View.GONE
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname
-            findViewById<ConstraintLayout>(R.id.knockmate_knock_info_layout).visibility = View.VISIBLE
+            findViewById<ConstraintLayout>(R.id.knockmate_knock_info_layout).visibility =
+                View.VISIBLE
         } else if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
         else
@@ -220,7 +240,7 @@ class KnockmateActivity : AppCompatActivity() {
         adapter = DayAdapter(this)
         recyclerView.adapter = adapter
 
-        val date = Calendar.getInstance()
+        val date = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         date.set(Calendar.DAY_OF_WEEK, 1)
         datas = mutableListOf<DayAdapter.DateData>()
         rows = mutableListOf()

@@ -38,7 +38,7 @@ class DayAdapter(private val context: Context) : RecyclerView.Adapter<DayAdapter
     }
 
     fun resetColorAll(itemView: View, date: Calendar) {
-        val dateNow = Calendar.getInstance()
+        val dateNow = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         for (i: Int in 0..6) {
             val view = ((itemView as ViewGroup).getChildAt(i) as ViewGroup)
             val text = (view.getChildAt(2) as TextView)

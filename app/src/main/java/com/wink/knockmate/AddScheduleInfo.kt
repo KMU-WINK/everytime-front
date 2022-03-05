@@ -7,8 +7,8 @@ class AddScheduleInfo {
     companion object {
         var userEmail: String = ""
         var userId: String = ""
-        var startCal: Calendar = Calendar.getInstance()
-        var endCal: Calendar = Calendar.getInstance()
+        var startCal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+        var endCal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
         var title: String = ""
         var memo: String = ""
         var inviteMembers = mutableListOf<UserModel>()
@@ -35,8 +35,8 @@ class AddScheduleInfo {
         var invitedMembers = mutableListOf<UserModel>()
 
         fun resetStartCal() {
-            startCal = Calendar.getInstance()
-            endCal = Calendar.getInstance()
+            startCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+            endCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
             if (startCal.get(Calendar.MINUTE) > 55) {
                 startCal.add(Calendar.HOUR, 1)
                 endCal.add(Calendar.HOUR, 2)
@@ -67,7 +67,7 @@ class AddScheduleInfo {
 
 
         private fun getIgnoredSecond(time: Long): Long {
-            return Calendar.getInstance().apply {
+            return Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).apply {
                 timeInMillis = time
 
                 set(Calendar.SECOND, 0)
@@ -78,8 +78,8 @@ class AddScheduleInfo {
         fun reset() {
             userEmail = ""
             userId = ""
-            startCal = Calendar.getInstance()
-            endCal = Calendar.getInstance()
+            startCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+            endCal = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
             title = ""
             memo = ""
             inviteMembers = mutableListOf()

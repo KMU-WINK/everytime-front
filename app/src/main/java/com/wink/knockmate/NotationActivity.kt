@@ -102,8 +102,8 @@ class NotationActivity : AppCompatActivity() {
                                 val data = JSONObject(response.body()?.string())
                                 val arr = data.getJSONArray("data")
                                 for (i: Int in 0 until arr.length()) {
-                                    val start = Calendar.getInstance()
-                                    val end = Calendar.getInstance()
+                                    val start = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+                                    val end = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
                                     start.set(
                                         Calendar.HOUR,
                                         arr.getJSONObject(i).getString("startDate")
