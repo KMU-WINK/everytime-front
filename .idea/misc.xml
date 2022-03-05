@@ -3,10 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/bt_border.xml" value="0.352" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/cell_rectangle.xml" value="0.2455" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/default_profile.xml" value="0.1775" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/fab.xml" value="0.241" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/human_icon.xml" value="0.1775" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_account.xml" value="0.3685" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/drawable/ic_android_black_24dp.xml" value="0.3685" />
@@ -42,10 +39,10 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editemail.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editpassword.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_editprofile.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.22" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_knockmate.xml" value="0.33" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_login.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_nickname.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_notation.xml" value="0.25" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_search.xml" value="0.3134057971014493" />
@@ -54,7 +51,6 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_splash.xml" value="1.0" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_temp.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_terms.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_work_through.xml" value="1.1" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.28125" />
@@ -62,9 +58,8 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_knock.xml" value="0.67" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_parent.xml" value="0.31666666666666665" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/checked_profile_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/chip_invite_group.xml" value="0.3984375" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/edit_profileimage_bottom_sheet.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/invite_profile_item.xml" value="0.1" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/invite_profile_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/knock_notation_item.xml" value="0.5" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_day_recycler.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/layout_main_calendar.xml" value="0.31666666666666665" />
@@ -78,13 +73,10 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_invited_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/schedule_edit_user_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search.xml" value="0.28125" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search_follower_item.xml" value="0.9" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/search_item.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/settings_dialog.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/testpage.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/menu/main_drawer_navigation.xml" value="0.36666666666666664" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2645" />
-        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2645" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/custom_checkbox.xml" value="0.14814814814814814" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/email.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/ic_launcher_background.xml" value="0.38229166666666664" />
@@ -92,24 +84,31 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_gray.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_background_orange.xml" value="0.38229166666666664" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/drawable/signupbutton_gray.xml" value="0.38229166666666664" />
-        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_appinfo.xml" value="0.36614583333333334" />
-        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_editprofile.xml" value="0.3605128205128205" />
-        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_inquiry.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_login.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_nickname.xml" value="0.33" />
-        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_settings.xml" value="0.3605128205128205" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invite_knock_button.xml" value="0.1075" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invited_gray_member.xml" value="0.1" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invited_member.xml" value="0.1" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/activity_invite_group_mem.xml" value="0.17760416666666667" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule.xml" value="0.16893115942028986" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_brief.xml" value="0.2786458333333333" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_detail.xml" value="0.2786458333333333" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_colorpick.xml" value="0.25" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_detail.xml" value="0.33" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite.xml" value="0.13551165146909827" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.2463768115942029" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.1" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_gray_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.23641304347826086" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_invited_item.xml" value="0.33" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.33" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_invited_gray_item.xml" value="0.31521739130434784" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.2786458333333333" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_item.xml" value="0.15185185185185185" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat.xml" value="0.2942708333333333" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat_detail.xml" value="0.14311043566362716" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/modify_schedule.xml" value="0.254981884057971" />
         <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/bt_border.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.21822916666666667" />

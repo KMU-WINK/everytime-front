@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,15 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
 import java.net.URL
 import java.util.*
 
 class AddSchedule_detail : Fragment() {
+    private var saveState = false
+
     @SuppressLint("CheckResult", "SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,26 +39,29 @@ class AddSchedule_detail : Fragment() {
         val startCal = AddScheduleInfo.startCal
         val endCal = AddScheduleInfo.endCal
 
-        startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월" + startCal.get(
+        startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
             Calendar.DATE
         ).toString() + "일 (" + AddScheduleInfo.startDay + ")"
         startTimeText.text =
-            if (startCal.get(Calendar.AM_PM) === 0) "오전" + " " + startCal.get(Calendar.HOUR)
-                .toString() + ":" + startCal.get(
-                Calendar.MINUTE
-            ).toString()
-            else "오후" + " " + startCal.get(Calendar.HOUR)
-                .toString() + ":" + startCal.get(Calendar.MINUTE).toString()
+            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " +
+                    calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(startCal.get(Calendar.MINUTE))
+            else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                startCal.get(
+                    Calendar.MINUTE
+                )
+            )
         endDateText.text =
-            (endCal.get(Calendar.MONTH) + 1).toString() + "월" + endCal.get(Calendar.DATE)
+            (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
                 .toString() + "일 (" + AddScheduleInfo.endDay + ")"
         endTimeText.text =
-            if (startCal.get(Calendar.AM_PM) === 0) "오전" + " " + endCal.get(Calendar.HOUR)
-                .toString() + ":" + endCal.get(
-                Calendar.MINUTE
-            ).toString()
-            else "오후" + " " + endCal.get(Calendar.HOUR)
-                .toString() + ":" + endCal.get(Calendar.MINUTE).toString()
+            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                endCal.get(Calendar.MINUTE)
+            )
+            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                endCal.get(
+                    Calendar.MINUTE
+                )
+            )
 
 
         // startpicker
@@ -206,13 +215,21 @@ class AddSchedule_detail : Fragment() {
 
         // 참석자초대로 넘어가는 버튼
         val inviters = view.findViewById<TextView>(R.id.inviters)
-        if (AddScheduleInfo.invitersNumber == 0) {
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text = ""
-        } else if (AddScheduleInfo.invitersNumber == 1) {
+        } else if (AddScheduleInfo.invitersNumber == 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text = AddScheduleInfo.inviteMembers[0].nickname
-        } else {
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 1) {
+            inviters.text = AddScheduleInfo.inviteGroups[0].nickname
+        } else if (AddScheduleInfo.invitersNumber > 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text =
                 AddScheduleInfo.inviteMembers[0].nickname + " 외 " + (AddScheduleInfo.invitersNumber - 1).toString() + "명"
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber > 1) {
+            inviters.text =
+                AddScheduleInfo.inviteGroups[0].nickname + " 외 " + (AddScheduleInfo.allGroupMembersNumber - AddScheduleInfo.inviteGroups[0].isFav).toString() + "명"
+        } else {
+            inviters.text =
+                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + ((AddScheduleInfo.invitersNumber - 1) + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
         }
         val to_invite_button = view.findViewById<ConstraintLayout>(R.id.to_invite_button)
         to_invite_button.setOnClickListener(View.OnClickListener {
@@ -279,21 +296,582 @@ class AddSchedule_detail : Fragment() {
         // 저장 버튼
         val saveButton = view.findViewById<TextView>(R.id.save_button)
         saveButton.setOnClickListener {
-            AddScheduleInfo.title = title.text.toString()
-            AddScheduleInfo.memo = memo.text.toString()
+            val startCalTemp = startCal
+            val endCalTemp = endCal
+            val client = OkHttpClient()
+            val bodyTemp = FormBody.Builder()
+                .add("title", AddScheduleInfo.title)
+                .add("memo", AddScheduleInfo.memo)
+                .add("color", AddScheduleInfo.color.toString())
+                .add("userid", AddScheduleInfo.userId)
+
+            if (AddScheduleInfo.repeatType == "반복 안함") {
+                val temp = bodyTemp
+                val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                    .add("endDate", saveCalSetting(endCalTemp))
+                    .build()
+                val request: Request =
+                    Request.Builder()
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/calendar").post(body).build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log1", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    saveState = true
+                                    Log.v("test", "save success")
+                                } else {
+                                    Log.v("test2", "fail")
+                                    saveState = false
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "오류가 발생햇습니다. 다시 시도해주세요",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
+                                }
+                            }
+                        }.run()
+                    }
+                })
+            } else if (AddScheduleInfo.repeatType == "매일") {
+                for (i in 0 until 366) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매주") {
+                for (i in 0 until 53) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 7)
+                }
+            } else if (AddScheduleInfo.repeatType == "매월") {
+                for (i in 0 until 25) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.MONTH, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매년") {
+                for (i in 0 until 21) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.YEAR, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "맞춤 설정") {
+                if (AddScheduleInfo.repeatDetailType == "Days") {
+                    for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
+                        val temp = bodyTemp
+                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                            .add("endDate", saveCalSetting(endCalTemp))
+                            .build()
+                        val request: Request =
+                            Request.Builder()
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                                .url("http://3.35.146.57:3000/knock").post(body).build()
+                        client.newCall(request).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                Log.d("log1", e.message.toString())
+                            }
+
+                            override fun onResponse(call: Call, response: Response) {
+                                object : Thread() {
+                                    @SuppressLint("NotifyDataSetChanged")
+                                    override fun run() {
+                                        if (response.code() == 200) {
+                                            saveState = true
+                                        } else {
+                                            saveState = false
+                                            Toast
+                                                .makeText(
+                                                    context,
+                                                    "오류가 발생햇습니다. 다시 시도해주세요",
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                .show()
+                                        }
+                                    }
+                                }.run()
+                            }
+                        })
+                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+                    }
+                } else if (AddScheduleInfo.repeatDetailType == "Weeks") {
+//                    var daysTemp = mutableListOf<String>()
+//                    for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
+//                        val temp = bodyTemp
+//                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
+//                            .add("endDate", saveCalSetting(endCalTemp))
+//                            .build()
+//                        val request: Request =
+//                            Request.Builder()
+//                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+//                                .url("http://3.35.146.57:3000/calendar").post(body).build()
+//                        client.newCall(request).enqueue(object : Callback {
+//                            override fun onFailure(call: Call, e: IOException) {
+//                                Log.d("log1", e.message.toString())
+//                            }
+//
+//                            override fun onResponse(call: Call, response: Response) {
+//                                object : Thread() {
+//                                    @SuppressLint("NotifyDataSetChanged")
+//                                    override fun run() {
+//                                        if (response.code() == 200) {
+//                                            saveState = true
+//                                        } else {
+//                                            saveState = false
+//                                            Toast
+//                                                .makeText(
+//                                                    context,
+//                                                    "오류가 발생햇습니다. 다시 시도해주세요",
+//                                                    Toast.LENGTH_LONG
+//                                                )
+//                                                .show()
+//                                        }
+//                                    }
+//                                }.run()
+//                            }
+//                        })
+//                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+//                    }
+                }
+            }
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()?.remove(this)?.commit()
+            parentFragment?.requireActivity()?.supportFragmentManager
+                ?.beginTransaction()?.remove(requireParentFragment())?.commit()
         }
 
         val knockButton = view.findViewById<TextView>(R.id.knock_button)
-        if (AddScheduleInfo.invitersNumber == 0) {
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             saveButton.visibility = View.VISIBLE
             knockButton.visibility = View.GONE
         } else {
             saveButton.visibility = View.GONE
             knockButton.visibility = View.VISIBLE
         }
-        knockButton.setOnClickListener { }
 
-        val backButton = view.findViewById<View>(R.id.back_button)
+        knockButton.setOnClickListener {
+            AddScheduleInfo.title = title.text.toString()
+            AddScheduleInfo.memo = memo.text.toString()
+            val startCalTemp = startCal
+            val endCalTemp = endCal
+            val client = OkHttpClient()
+            val bodyTemp = FormBody.Builder()
+                .add("title", AddScheduleInfo.title)
+                .add("memo", AddScheduleInfo.memo)
+                .add("color", AddScheduleInfo.color.toString())
+                .add("senderid", AddScheduleInfo.userId)
+
+            for (i in 0 until AddScheduleInfo.inviteMembers.size) {
+                bodyTemp.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
+            }
+
+            for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+                bodyTemp.add("userid", AddScheduleInfo.inviteGroups[i].id!!)
+            }
+
+            if (AddScheduleInfo.repeatType == "반복 안함") {
+                val temp = bodyTemp
+                val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                    .add("endDate", saveCalSetting(endCalTemp))
+                    .build()
+                val request: Request =
+                    Request.Builder()
+                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/calendar").post(body).build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log1", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    saveState = true
+                                } else {
+                                    saveState = false
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "오류가 발생햇습니다. 다시 시도해주세요",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
+                                }
+                            }
+                        }.run()
+                    }
+                })
+            } else if (AddScheduleInfo.repeatType == "매일") {
+                for (i in 0 until 366) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매주") {
+                for (i in 0 until 53) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.DATE, 7)
+                }
+            } else if (AddScheduleInfo.repeatType == "매월") {
+                for (i in 0 until 25) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.MONTH, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "매년") {
+                for (i in 0 until 21) {
+                    val temp = bodyTemp
+                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                        .add("endDate", saveCalSetting(endCalTemp))
+                        .build()
+                    val request: Request =
+                        Request.Builder()
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            Log.d("log1", e.message.toString())
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            object : Thread() {
+                                @SuppressLint("NotifyDataSetChanged")
+                                override fun run() {
+                                    if (response.code() == 200) {
+                                        saveState = true
+                                    } else {
+                                        saveState = false
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "오류가 발생햇습니다. 다시 시도해주세요",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                            }.run()
+                        }
+                    })
+                    startCal.add(Calendar.YEAR, 1)
+                }
+            } else if (AddScheduleInfo.repeatType == "맞춤 설정") {
+                if (AddScheduleInfo.repeatDetailType == "Days") {
+                    for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
+                        val temp = bodyTemp
+                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
+                            .add("endDate", saveCalSetting(endCalTemp))
+                            .build()
+                        val request: Request =
+                            Request.Builder()
+                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                                .url("http://3.35.146.57:3000/knock").post(body).build()
+                        client.newCall(request).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+                                Log.d("log1", e.message.toString())
+                            }
+
+                            override fun onResponse(call: Call, response: Response) {
+                                object : Thread() {
+                                    @SuppressLint("NotifyDataSetChanged")
+                                    override fun run() {
+                                        if (response.code() == 200) {
+                                            saveState = true
+                                        } else {
+                                            saveState = false
+                                            Toast
+                                                .makeText(
+                                                    context,
+                                                    "오류가 발생햇습니다. 다시 시도해주세요",
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                .show()
+                                        }
+                                    }
+                                }.run()
+                            }
+                        })
+                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+                    }
+                } else if (AddScheduleInfo.repeatDetailType == "Weeks") {
+//                    var daysTemp = mutableListOf<String>()
+//                    for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
+//                        val temp = bodyTemp
+//                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
+//                            .add("endDate", saveCalSetting(endCalTemp))
+//                            .build()
+//                        val request: Request =
+//                            Request.Builder()
+//                                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+//                                .url("http://3.35.146.57:3000/calendar").post(body).build()
+//                        client.newCall(request).enqueue(object : Callback {
+//                            override fun onFailure(call: Call, e: IOException) {
+//                                Log.d("log1", e.message.toString())
+//                            }
+//
+//                            override fun onResponse(call: Call, response: Response) {
+//                                object : Thread() {
+//                                    @SuppressLint("NotifyDataSetChanged")
+//                                    override fun run() {
+//                                        if (response.code() == 200) {
+//                                            saveState = true
+//                                        } else {
+//                                            saveState = false
+//                                            Toast
+//                                                .makeText(
+//                                                    context,
+//                                                    "오류가 발생햇습니다. 다시 시도해주세요",
+//                                                    Toast.LENGTH_LONG
+//                                                )
+//                                                .show()
+//                                        }
+//                                    }
+//                                }.run()
+//                            }
+//                        })
+//                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+//                    }
+                }
+            }
+
+            if (saveState) {
+                parentFragment?.childFragmentManager
+                    ?.beginTransaction()?.remove(this)?.commit()
+                parentFragment?.requireActivity()?.supportFragmentManager
+                    ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+            }
+        }
+
+        val backButton = view.findViewById<TextView>(R.id.back_button)
         backButton.setOnClickListener {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()?.remove(this)?.commit()
@@ -331,5 +909,28 @@ class AddSchedule_detail : Fragment() {
         } else if (AddScheduleInfo.color == 12) {
             Glide.with(this).load(R.drawable.color12).into(v)
         }
+    }
+
+    private fun calSetting(i: Int): String {
+        return if (i < 10) {
+            "0$i"
+        } else {
+            i.toString()
+        }
+    }
+
+    private fun saveCalSetting(cal: Calendar): String {
+        return if (cal.get(Calendar.AM_PM) == 0) cal.get(Calendar.YEAR)
+            .toString() + "-" + (cal.get(Calendar.MONTH) + 1).toString() + "-" +
+                cal.get(Calendar.DATE).toString() + " " +
+                calSetting(cal.get(Calendar.HOUR)) + ":" +
+                calSetting(cal.get(Calendar.MINUTE)) + ":" +
+                calSetting(cal.get(Calendar.SECOND))
+        else cal.get(Calendar.YEAR).toString() + "-" +
+                (cal.get(Calendar.MONTH) + 1).toString() + "-" +
+                cal.get(Calendar.DATE).toString() + " " +
+                (cal.get(Calendar.HOUR) + 12).toString() + ":" +
+                calSetting(cal.get(Calendar.MINUTE)) + ":" +
+                calSetting(cal.get(Calendar.SECOND))
     }
 }

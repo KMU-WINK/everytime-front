@@ -1,53 +1,50 @@
 package com.wink.knockmate
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.PersistableBundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 
-class AddSchedule_colorPick : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.addschedule_colorpick, container, false)
+class Modify_colorpick : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.addschedule_colorpick)
 
         val tempColor = AddScheduleInfo.color
 
-        val color1Check = view.findViewById<CheckBox>(R.id.color1_check)
-        val color2Check = view.findViewById<CheckBox>(R.id.color2_check)
-        val color3Check = view.findViewById<CheckBox>(R.id.color3_check)
-        val color4Check = view.findViewById<CheckBox>(R.id.color4_check)
-        val color5Check = view.findViewById<CheckBox>(R.id.color5_check)
-        val color6Check = view.findViewById<CheckBox>(R.id.color6_check)
-        val color7Check = view.findViewById<CheckBox>(R.id.color7_check)
-        val color8Check = view.findViewById<CheckBox>(R.id.color8_check)
-        val color9Check = view.findViewById<CheckBox>(R.id.color9_check)
-        val color10Check = view.findViewById<CheckBox>(R.id.color10_check)
-        val color11Check = view.findViewById<CheckBox>(R.id.color11_check)
-        val color12Check = view.findViewById<CheckBox>(R.id.color12_check)
+        val color1Check = findViewById<CheckBox>(R.id.color1_check)
+        val color2Check = findViewById<CheckBox>(R.id.color2_check)
+        val color3Check = findViewById<CheckBox>(R.id.color3_check)
+        val color4Check = findViewById<CheckBox>(R.id.color4_check)
+        val color5Check = findViewById<CheckBox>(R.id.color5_check)
+        val color6Check = findViewById<CheckBox>(R.id.color6_check)
+        val color7Check = findViewById<CheckBox>(R.id.color7_check)
+        val color8Check = findViewById<CheckBox>(R.id.color8_check)
+        val color9Check = findViewById<CheckBox>(R.id.color9_check)
+        val color10Check = findViewById<CheckBox>(R.id.color10_check)
+        val color11Check = findViewById<CheckBox>(R.id.color11_check)
+        val color12Check = findViewById<CheckBox>(R.id.color12_check)
 
-        val color1 = view.findViewById<ConstraintLayout>(R.id.color1)
-        val color2 = view.findViewById<ConstraintLayout>(R.id.color2)
-        val color3 = view.findViewById<ConstraintLayout>(R.id.color3)
-        val color4 = view.findViewById<ConstraintLayout>(R.id.color4)
-        val color5 = view.findViewById<ConstraintLayout>(R.id.color5)
-        val color6 = view.findViewById<ConstraintLayout>(R.id.color6)
-        val color7 = view.findViewById<ConstraintLayout>(R.id.color7)
-        val color8 = view.findViewById<ConstraintLayout>(R.id.color8)
-        val color9 = view.findViewById<ConstraintLayout>(R.id.color9)
-        val color10 = view.findViewById<ConstraintLayout>(R.id.color10)
-        val color11 = view.findViewById<ConstraintLayout>(R.id.color11)
-        val color12 = view.findViewById<ConstraintLayout>(R.id.color12)
+        val color1 = findViewById<ConstraintLayout>(R.id.color1)
+        val color2 = findViewById<ConstraintLayout>(R.id.color2)
+        val color3 = findViewById<ConstraintLayout>(R.id.color3)
+        val color4 = findViewById<ConstraintLayout>(R.id.color4)
+        val color5 = findViewById<ConstraintLayout>(R.id.color5)
+        val color6 = findViewById<ConstraintLayout>(R.id.color6)
+        val color7 = findViewById<ConstraintLayout>(R.id.color7)
+        val color8 = findViewById<ConstraintLayout>(R.id.color8)
+        val color9 = findViewById<ConstraintLayout>(R.id.color9)
+        val color10 = findViewById<ConstraintLayout>(R.id.color10)
+        val color11 = findViewById<ConstraintLayout>(R.id.color11)
+        val color12 = findViewById<ConstraintLayout>(R.id.color12)
 
-        val icon = view.findViewById<ImageView>(R.id.yellow_icon)
+        val icon = findViewById<ImageView>(R.id.yellow_icon)
 
 
         if (AddScheduleInfo.color == 1) {
@@ -226,26 +223,20 @@ class AddSchedule_colorPick : Fragment() {
             color12Check.isChecked = true
         }
 
-        val backButton = view.findViewById<ImageView>(R.id.back_button)
-        val saveButton = view.findViewById<TextView>(R.id.color_save_button)
+        val backButton = findViewById<ImageView>(R.id.back_button)
+        val saveButton = findViewById<TextView>(R.id.color_save_button)
 
         backButton.setOnClickListener {
             AddScheduleInfo.color = tempColor
-            parentFragment?.childFragmentManager
-                ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
-                ?.addToBackStack(null)
-                ?.commit()
+            val intent = Intent(this, ModifyScheduleActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         saveButton.setOnClickListener {
-            parentFragment?.childFragmentManager
-                ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
-                ?.addToBackStack(null)
-                ?.commit()
+            val intent = Intent(this, ModifyScheduleActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-
-        return view
     }
 }

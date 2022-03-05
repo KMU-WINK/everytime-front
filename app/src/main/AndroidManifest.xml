@@ -71,6 +71,9 @@
             android:name=".KnockmateActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".ModifyScheduleActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:noHistory="true"

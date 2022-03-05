@@ -12,6 +12,8 @@ class AddScheduleInfo {
         var title: String = ""
         var memo: String = ""
         var inviteMembers = mutableListOf<UserModel>()
+        var inviteGroups = mutableListOf<UserModel>()
+        var inviteGroupsNumber: Int = 0
         var invitersNumber: Int = 0
         var startDay: String = ""
         var endDay: String = ""
@@ -24,6 +26,13 @@ class AddScheduleInfo {
         var color: Int = 1
         var brief: Boolean = true
         var followerList = mutableListOf<UserModel>()
+        var groupList = mutableListOf<UserModel>()
+        var priorInviteGroups = mutableListOf<UserModel>()
+        var priorInviteMembers = mutableListOf<UserModel>()
+        var priorInvitersNumber: Int = 0
+        var priorInviteGroupsNumber: Int = 0
+        var allGroupMembersNumber: Int = 0
+        var invitedMembers = mutableListOf<UserModel>()
 
         fun resetStartCal() {
             startCal = Calendar.getInstance()
@@ -73,19 +82,28 @@ class AddScheduleInfo {
             endCal = Calendar.getInstance()
             title = ""
             memo = ""
-            inviteMembers = mutableListOf<UserModel>()
+            inviteMembers = mutableListOf()
+            inviteGroups = mutableListOf()
+            inviteGroupsNumber = 0
             invitersNumber = 0
             startDay = ""
             endDay = ""
             repeatType = "반복 안함"
             repeatDetailType = "Days"
-            repeatDays = mutableListOf<Boolean>(false, false, false, false, false, false, false)
+            repeatDays = mutableListOf(false, false, false, false, false, false, false)
             repeatAllCount = 1
             repeatInterval = 1
             repeatDay = 0
             color = 1
             brief = true
-            followerList = mutableListOf<UserModel>()
+            followerList = mutableListOf()
+            groupList = mutableListOf()
+            priorInviteGroups = mutableListOf()
+            priorInviteMembers = mutableListOf()
+            priorInvitersNumber = 0
+            priorInviteGroupsNumber = 0
+            allGroupMembersNumber = 0
+            invitedMembers = mutableListOf()
         }
     }
 }

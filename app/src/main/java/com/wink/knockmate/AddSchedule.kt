@@ -100,7 +100,7 @@ class AddSchedule : BottomSheetDialogFragment() {
                 .build()
             client.newCall(request2).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    Log.d("log1", e.message.toString())
+                    Log.d("log2", e.message.toString())
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -130,8 +130,272 @@ class AddSchedule : BottomSheetDialogFragment() {
                     }.run()
                 }
             })
-        } else if (args == "Modify") {
-            //캘린더에서 받아오기
+
+            val request3: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url("http://3.35.146.57:3000/mygroup?email=${email}")
+                .get()
+                .build()
+            client.newCall(request3).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log3", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                                val res = JSONObject(response.body()?.string())
+                                val resTemp = res.getJSONArray("data")
+                                AddScheduleInfo.groupList.apply {
+                                    for (i in 0 until resTemp.length()) {
+                                        AddScheduleInfo.groupList.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                false,
+                                                "test",
+                                                i,
+                                                false,
+                                                true,
+                                                1,
+                                                resTemp.getJSONObject(i).getInt("isFav")
+                                            )
+                                        )
+                                    }
+                                }
+                            } else if (response.code() == 201) {
+                            } else {
+                            }
+                        }
+                    }.run()
+                }
+            })
+        } else if (args == "KNOCK") {
+            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
+            val email = prefUser?.getString("email", "email")
+            prefUser?.getString(
+                "email",
+                "email"
+            )?.let { Log.v("test", it) }
+            val client = OkHttpClient().newBuilder()
+                .build()
+            val request: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url(
+                    "http://3.35.146.57:3000/user?query=${email}"
+                )
+                .get()
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log4", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                                val res = JSONObject(response.body()?.string())
+                                Log.v("test", res.toString())
+                                try {
+                                    val resTemp = res.getJSONArray("data")
+                                    AddScheduleInfo.userEmail =
+                                        resTemp.getJSONObject(0).getString("email")
+                                    AddScheduleInfo.userId =
+                                        resTemp.getJSONObject(0).getString("id")
+                                    AddScheduleInfo.color = resTemp.getJSONObject(0).getInt("color")
+                                } catch (e: Exception) {
+                                    dismiss()
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
+                                }
+                            } else {
+                                dismiss()
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    .show()
+                            }
+                        }
+                    }.run()
+                }
+            })
+            AddScheduleInfo.resetStartCal()
+            AddScheduleInfo.startDay = dayOfWeek(AddScheduleInfo.startCal.get(Calendar.DAY_OF_WEEK))
+            AddScheduleInfo.endDay = dayOfWeek(AddScheduleInfo.endCal.get(Calendar.DAY_OF_WEEK))
+
+            val inviteTemp = bundle.getString("invite")
+            val inviteType = bundle.getString("inviteType")
+
+            val request2: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url("http://3.35.146.57:3000/myfollower?email=${email}")
+                .get()
+                .build()
+            client.newCall(request2).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log5", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                                val res = JSONObject(response.body()?.string())
+                                val resTemp = res.getJSONArray("data")
+                                for (i in 0 until resTemp.length()) {
+                                    if (resTemp.getJSONObject(i)
+                                            .getString("id") == inviteTemp &&
+                                        inviteType == "user"
+                                    ) {
+                                        AddScheduleInfo.priorInviteMembers.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                true,
+                                                resTemp.getJSONObject(i).getString("email"),
+                                                i,
+                                                true
+                                            )
+                                        )
+                                        AddScheduleInfo.priorInvitersNumber++
+                                        AddScheduleInfo.invitersNumber++
+                                        AddScheduleInfo.inviteMembers.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                true,
+                                                resTemp.getJSONObject(i).getString("email"),
+                                                i,
+                                                true
+                                            )
+                                        )
+                                        AddScheduleInfo.followerList.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                true,
+                                                resTemp.getJSONObject(i).getString("email"),
+                                                i,
+                                                true
+                                            )
+                                        )
+                                    } else {
+                                        AddScheduleInfo.followerList.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                true,
+                                                resTemp.getJSONObject(i).getString("email"),
+                                                i,
+                                            )
+                                        )
+                                    }
+
+                                }
+                            } else if (response.code() == 201) {
+                            } else {
+                            }
+                        }
+                    }.run()
+                }
+            })
+
+            val request3: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url("http://3.35.146.57:3000/mygroup?email=${email}")
+                .get()
+                .build()
+            client.newCall(request3).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log6", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                                val res = JSONObject(response.body()?.string())
+                                val resTemp = res.getJSONArray("data")
+                                for (i in 0 until resTemp.length()) {
+                                    if (resTemp.getJSONObject(i)
+                                            .getString("id") == inviteTemp &&
+                                        inviteType == "group"
+                                    ) {
+                                        AddScheduleInfo.priorInviteGroups.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                false,
+                                                "",
+                                                i,
+                                                true,
+                                                true,
+                                                1,
+                                                resTemp.getJSONObject(i).getInt("isFav")
+                                            )
+                                        )
+                                        AddScheduleInfo.priorInviteGroupsNumber++
+                                        AddScheduleInfo.inviteGroupsNumber++
+                                        AddScheduleInfo.inviteGroups.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                false,
+                                                "",
+                                                i,
+                                                true,
+                                                true,
+                                                1,
+                                                resTemp.getJSONObject(i).getInt("isFav")
+                                            )
+                                        )
+                                        AddScheduleInfo.groupList.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                false,
+                                                "",
+                                                i,
+                                                true,
+                                                true,
+                                                1,
+                                                resTemp.getJSONObject(i).getInt("isFav")
+                                            )
+                                        )
+                                    } else {
+                                        AddScheduleInfo.groupList.add(
+                                            UserModel(
+                                                resTemp.getJSONObject(i).getString("id"),
+                                                resTemp.getJSONObject(i).getString("nickname"),
+                                                false,
+                                                "test",
+                                                i,
+                                            )
+                                        )
+                                    }
+                                }
+//                                resTemp.getJSONObject(i).getString("email")
+                            } else if (response.code() == 201) {
+                            } else {
+                            }
+                        }
+                    }.run()
+                }
+            })
         }
     }
 

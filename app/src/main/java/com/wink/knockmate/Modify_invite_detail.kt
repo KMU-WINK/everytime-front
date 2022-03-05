@@ -1,22 +1,18 @@
 package com.wink.knockmate
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.*
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.*
-import org.json.JSONObject
-import java.io.IOException
 
-class Addschedule_invite_detail : Fragment() {
+class Modify_invite_detail : AppCompatActivity() {
     lateinit var itemAdapter: Addschedule_invite_detail_Follower_Adapter
     lateinit var knockmate_recycler: RecyclerView
 
@@ -27,6 +23,10 @@ class Addschedule_invite_detail : Fragment() {
     var inviteList = mutableListOf<UserModel>()
     lateinit var invited_recycler: RecyclerView
 
+    lateinit var invitedGrayAdapter: Addschedule_invited_gray_item_Adapter
+    var inviteGrayList = mutableListOf<UserModel>()
+    lateinit var invited_gray_recycler: RecyclerView
+
     var tempInvitedList = mutableListOf<UserModel>()
     private var tempInvitedNumber = 0
     private var tempInvitedList2 = mutableListOf<UserModel>()
@@ -35,37 +35,28 @@ class Addschedule_invite_detail : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        for (i in 0 until tempInvitedList.size) {
-//            var temp = tempInvitedList[i]
-//            tempInvitedList2.add(temp)
-//        }
+
+        setContentView(R.layout.addschedule_invite_detail)
+
         for (i in 0 until AddScheduleInfo.inviteMembers.size) {
             tempInvitedList.add(AddScheduleInfo.inviteMembers[i].copy())
         }
         Log.v("test6", tempInvitedList.toString())
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater!!.inflate(R.layout.addschedule_invite_detail, container, false)
-
-        val okButton = view.findViewById<TextView>(R.id.invite_ok_button)
-        val backButton = view.findViewById<View>(R.id.back_button)
-        knockmate_recycler = view.findViewById(R.id.invite_knockmate_recycler)
-        invited_recycler = view.findViewById(R.id.to_invite_users)
-        group_recycler = view.findViewById(R.id.invite_group_member_recycler)
+        val okButton = findViewById<TextView>(R.id.invite_ok_button)
+        val backButton = findViewById<View>(R.id.back_button)
+        knockmate_recycler = findViewById(R.id.invite_knockmate_recycler)
+        invited_recycler = findViewById(R.id.to_invite_users)
+        group_recycler = findViewById(R.id.invite_group_member_recycler)
+        invited_gray_recycler = findViewById(R.id.to_invited_users)
 
         tempInvitedList = AddScheduleInfo.inviteMembers
         tempInvitedNumber = AddScheduleInfo.invitersNumber
 
         okButton.setOnClickListener {
-            parentFragment?.childFragmentManager
-                ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame, AddSchedule_invite())
-                ?.commit()
+            val intent = Intent(this, Modify_invite::class.java)
+            startActivity(intent)
+            finish()
         }
 
         backButton.setOnClickListener {
@@ -101,11 +92,9 @@ class Addschedule_invite_detail : Fragment() {
             }
             Log.v("test5", AddScheduleInfo.inviteMembers.toString())
             AddScheduleInfo.invitersNumber = tempInvitedNumber
-            parentFragment?.childFragmentManager
-                ?.beginTransaction()
-                ?.replace(R.id.addschedule_frame, AddSchedule_invite())
-                ?.addToBackStack(null)
-                ?.commit()
+            val intent = Intent(this, Modify_invite::class.java)
+            startActivity(intent)
+            finish()
         }
 
         Log.v("followers", AddScheduleInfo.followerList.toString())
@@ -116,6 +105,7 @@ class Addschedule_invite_detail : Fragment() {
         initInvitedRecycler()
         initFollowerRecycler()
         initGroupRecycler()
+        initInvitedGrayRecycler()
 
         itemAdapter.setOnCheckBoxClickListener(object :
             Addschedule_invite_detail_Follower_Adapter.OnCheckBoxClickListener {
@@ -194,51 +184,27 @@ class Addschedule_invite_detail : Fragment() {
             Addschedule_invited_item_Adapter.OnDeleteButtonClickListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDeleteButtonClick(v: TextView, data: UserModel, pos: Int) {
-                if (data.user) {
-                    AddScheduleInfo.followerList[data.sequence!!].invite = false
-                    itemAdapter.datas = AddScheduleInfo.followerList
-                    itemAdapter.notifyDataSetChanged()
-                    AddScheduleInfo.inviteMembers.remove(data)
-                    AddScheduleInfo.invitersNumber--
-                    inviteList.remove(data)
-                    invitedAdapter.datas = inviteList
-                    invitedAdapter.notifyDataSetChanged()
-                } else {
-                    AddScheduleInfo.groupList[data.sequence!!].invite = false
-                    groupAdapter.datas = AddScheduleInfo.groupList
-                    groupAdapter.notifyDataSetChanged()
-                    AddScheduleInfo.inviteGroups.remove(data)
-                    AddScheduleInfo.inviteGroupsNumber--
-                    AddScheduleInfo.allGroupMembersNumber -= data.isFav
-                    inviteList.remove(data)
-                    invitedAdapter.datas = inviteList
-                    invitedAdapter.notifyDataSetChanged()
-                }
-                if (AddScheduleInfo.inviteGroupsNumber == 0 && AddScheduleInfo.invitersNumber == 0) {
-                    invitedBoolean = false
-                }
+                AddScheduleInfo.followerList[data.sequence!!].invite = false
+                itemAdapter.datas = AddScheduleInfo.followerList
+                itemAdapter.notifyDataSetChanged()
+                AddScheduleInfo.inviteMembers.remove(data)
+                inviteList.remove(data)
+                invitedAdapter.datas = inviteList
+                invitedAdapter.notifyDataSetChanged()
+                invitedBoolean = false
                 if (!invitedBoolean) {
                     invited_recycler.visibility = View.GONE
                 }
             }
+
         })
 
         groupAdapter.setOnArrowClickListener(object :
             Addschedule_invite_detail_Follower_Adapter.OnArrowClickListener {
             override fun onArrowClick(v: ImageView, data: UserModel, pos: Int) {
-                val frag = AddSchedule_invite_detail_group()
-                val bundle = Bundle()
-                bundle.putString("id", data.id)
-                frag.arguments = bundle
-                parentFragment?.childFragmentManager
-                    ?.beginTransaction()
-                    ?.replace(R.id.addschedule_frame, frag)
-                    ?.addToBackStack(null)
-                    ?.commit()
+
             }
         })
-
-        return view
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -246,7 +212,7 @@ class Addschedule_invite_detail : Fragment() {
         groupAdapter =
             Addschedule_invite_detail_Follower_Adapter()
         group_recycler.layoutManager =
-            LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
+            LinearLayoutManager(applicationContext)
         group_recycler.adapter = groupAdapter
         groupAdapter.datas = AddScheduleInfo.groupList
         groupAdapter.notifyDataSetChanged()
@@ -255,7 +221,7 @@ class Addschedule_invite_detail : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun initInvitedRecycler() {
         invitedAdapter =
-            Addschedule_invited_item_Adapter(requireParentFragment().requireActivity().applicationContext)
+            Addschedule_invited_item_Adapter(applicationContext)
         invited_recycler.adapter = invitedAdapter
         if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             invited_recycler.visibility = View.GONE
@@ -275,11 +241,24 @@ class Addschedule_invite_detail : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    private fun initInvitedGrayRecycler() {
+        invitedGrayAdapter = Addschedule_invited_gray_item_Adapter(applicationContext)
+        invited_gray_recycler.adapter = invitedGrayAdapter
+        if (AddScheduleInfo.invitedMembers.size == 0) {
+            invited_gray_recycler.visibility = View.GONE
+        } else {
+            invited_gray_recycler.visibility = View.VISIBLE
+        }
+        invitedGrayAdapter.datas = inviteGrayList
+        invitedGrayAdapter.notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun initFollowerRecycler() {
         itemAdapter =
             Addschedule_invite_detail_Follower_Adapter()
         knockmate_recycler.layoutManager =
-            LinearLayoutManager(requireParentFragment().requireActivity().applicationContext)
+            LinearLayoutManager(applicationContext)
         knockmate_recycler.adapter = itemAdapter
 
         itemAdapter.datas = AddScheduleInfo.followerList

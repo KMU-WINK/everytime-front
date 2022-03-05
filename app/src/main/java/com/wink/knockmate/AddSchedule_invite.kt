@@ -11,6 +11,7 @@ import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,28 +27,6 @@ class AddSchedule_invite : Fragment() {
     lateinit var groupFrame: LinearLayout
     lateinit var userFrame: LinearLayout
 
-    var count1 = 0
-    var count2 = 0
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-            if (AddScheduleInfo.inviteMembers[i].invite) {
-                if (AddScheduleInfo.inviteMembers[i].user) {
-                    count1++
-                    userInviteList.apply {
-                        userInviteList.add(AddScheduleInfo.inviteMembers[i])
-                    }
-                } else {
-                    count2++
-                    groupInviteList.apply {
-                        groupInviteList.add(AddScheduleInfo.inviteMembers[i])
-                    }
-                }
-            }
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +36,7 @@ class AddSchedule_invite : Fragment() {
         val view = inflater.inflate(R.layout.addschedule_invite, container, false)
 
         val okButton = view.findViewById<TextView>(R.id.invite_ok_button)
+        val backButton = view.findViewById<View>(R.id.back_button)
         val inviteTitle = view.findViewById<TextView>(R.id.invite_title)
         val inviteButton = view.findViewById<LinearLayout>(R.id.invite_button)
         groupInviteView = view.findViewById(R.id.group_recycler)
@@ -64,9 +44,58 @@ class AddSchedule_invite : Fragment() {
         groupFrame = view.findViewById(R.id.groups_frame)
         userFrame = view.findViewById(R.id.knockmates_frame)
 
-        inviteTitle.text = "초대 " + AddScheduleInfo.invitersNumber.toString() + "명"
+        var inviterTemp = AddScheduleInfo.invitersNumber
+
+        for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+            inviterTemp += AddScheduleInfo.inviteGroups[i].isFav
+            AddScheduleInfo.allGroupMembersNumber += AddScheduleInfo.inviteGroups[i].isFav
+        }
+
+        inviteTitle.text = "초대 " + inviterTemp.toString() + "명"
 
         okButton.setOnClickListener {
+            AddScheduleInfo.priorInviteMembers = AddScheduleInfo.inviteMembers
+            AddScheduleInfo.priorInvitersNumber = AddScheduleInfo.invitersNumber
+            AddScheduleInfo.priorInviteGroupsNumber = AddScheduleInfo.inviteGroupsNumber
+            AddScheduleInfo.priorInviteGroups = AddScheduleInfo.inviteGroups
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()
+                ?.replace(R.id.addschedule_frame, AddSchedule_detail())
+                ?.addToBackStack(null)
+                ?.commit()
+        }
+
+        backButton.setOnClickListener {
+            val tempNumbers = mutableListOf(-1)
+            val tempNumbers2 = mutableListOf(-1)
+            for (i in 0 until AddScheduleInfo.priorInviteMembers.size) {
+                AddScheduleInfo.priorInviteMembers[i].sequence?.let { it1 ->
+                    tempNumbers.apply {
+                        tempNumbers.add(it1)
+                    }
+                }
+            }
+            for (i in 0 until AddScheduleInfo.priorInviteGroups.size) {
+                AddScheduleInfo.priorInviteGroups[i].sequence?.let { it1 ->
+                    tempNumbers2.apply {
+                        tempNumbers2.add(it1)
+                    }
+                }
+            }
+            for (i in 0 until AddScheduleInfo.followerList.size) {
+                if (AddScheduleInfo.followerList[i].sequence !in tempNumbers) {
+                    AddScheduleInfo.followerList[i].invite = false
+                }
+            }
+            for (i in 0 until AddScheduleInfo.groupList.size) {
+                if (AddScheduleInfo.groupList[i].sequence !in tempNumbers) {
+                    AddScheduleInfo.groupList[i].invite = false
+                }
+            }
+            AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
+            AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
+            AddScheduleInfo.inviteGroups = AddScheduleInfo.priorInviteGroups
+            AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
@@ -78,14 +107,61 @@ class AddSchedule_invite : Fragment() {
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, Addschedule_invite_detail())
+                ?.addToBackStack(null)
                 ?.commit()
         }
 
         Log.v("test", userInviteList.toString())
         Log.v("group", groupInviteList.toString())
-
+        Log.v("number", AddScheduleInfo.invitersNumber.toString())
+        Log.v("groups", AddScheduleInfo.groupList.toString())
 
         initGroupInviteList()
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val tempNumbers = mutableListOf(-1)
+                val tempNumbers2 = mutableListOf(-1)
+                for (i in 0 until AddScheduleInfo.priorInviteMembers.size) {
+                    AddScheduleInfo.priorInviteMembers[i].sequence?.let { it1 ->
+                        tempNumbers.apply {
+                            tempNumbers.add(it1)
+                        }
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.priorInviteGroups.size) {
+                    AddScheduleInfo.priorInviteGroups[i].sequence?.let { it1 ->
+                        tempNumbers2.apply {
+                            tempNumbers2.add(it1)
+                        }
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.followerList.size) {
+                    if (AddScheduleInfo.followerList[i].sequence !in tempNumbers) {
+                        AddScheduleInfo.followerList[i].invite = false
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.groupList.size) {
+                    if (AddScheduleInfo.groupList[i].sequence !in tempNumbers) {
+                        AddScheduleInfo.groupList[i].invite = false
+                    }
+                }
+                AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
+                AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
+                AddScheduleInfo.inviteGroups = AddScheduleInfo.priorInviteGroups
+                AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
+                parentFragment?.childFragmentManager
+                    ?.beginTransaction()
+                    ?.replace(R.id.addschedule_frame, AddSchedule_detail())
+                    ?.addToBackStack(null)
+                    ?.commit()
+            }
+        }
+
+        requireParentFragment().requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            callback
+        )
 
         return view
     }
@@ -103,31 +179,18 @@ class AddSchedule_invite : Fragment() {
         groupInviteView.adapter = groupAdapter
         userInviteView.adapter = userAdapter
 
-        for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-            if (AddScheduleInfo.inviteMembers[i].invite) {
-                if (AddScheduleInfo.inviteMembers[i].user) {
-                    count1++
-                    userInviteList.apply {
-                        userInviteList.add(AddScheduleInfo.inviteMembers[i])
-                    }
-                    userAdapter.datas = userInviteList
-                    userAdapter.notifyDataSetChanged()
-                } else {
-                    count2++
-                    groupInviteList.apply {
-                        groupInviteList.add(AddScheduleInfo.inviteMembers[i])
-                    }
-                    groupAdapter.datas = groupInviteList
-                    groupAdapter.notifyDataSetChanged()
-                }
-            }
-        }
 
-        if (count1 >= 1) {
+        userAdapter.datas = AddScheduleInfo.inviteMembers
+        userAdapter.notifyDataSetChanged()
+
+        groupAdapter.datas = AddScheduleInfo.inviteGroups
+        groupAdapter.notifyDataSetChanged()
+
+        if (AddScheduleInfo.inviteMembers.size >= 1) {
             userFrame.visibility = View.VISIBLE
         }
 
-        if (count2 >= 1) {
+        if (AddScheduleInfo.inviteGroups.size >= 1) {
             groupFrame.visibility = View.VISIBLE
         }
 

@@ -74,33 +74,15 @@ class Addschedule_invite_item_Adapter :
                     .into(image)
             }
 
-            if (item.user) {
+            if (item.nickname != null && !item.user) {
+                name.text = item.nickname + " (" + item.isFav + "명)"
+            } else if (item.nickname == null && !item.user) {
+                name.text = item.id + " (" + item.isFav + "명)"
+            }
+            if (item.nickname != null && item.user) {
                 name.text = item.nickname
-            } else {
-                var groupMembers = 0
-                val request2: Request = Request.Builder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/groupuserlist?groupid=@${item.id}")
-                    .get()
-                    .build()
-                client.newCall(request2).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        Log.d("log1", e.message.toString())
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        object : Thread() {
-                            override fun run() {
-                                if (response.code() == 200) {
-                                    val res = JSONObject(response.body()?.string())
-                                    val resTemp = res.getJSONArray("data")
-                                    groupMembers = resTemp.length()
-                                }
-                            }
-                        }.run()
-                    }
-                })
-                name.text = item.nickname + " (" + groupMembers.toString() + "명)"
+            } else if (item.nickname == null && item.user) {
+                name.text = item.id
             }
         }
     }
