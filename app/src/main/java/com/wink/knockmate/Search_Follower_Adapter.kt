@@ -56,13 +56,12 @@ class Search_Follower_Adapter(private val context: Context) :
                 intent.putExtra("email", item.email)
                 intent.putExtra("calendarid", item.id)
                 intent.putExtra("nickname", item.nickname)
-                intent.putExtra("mode", 1)
+                intent.putExtra("mode", 2)
                 intent.putExtra("groupid", "")
                 itemView.context.startActivity(
                     intent
                 )
             }
-
 
             if (item.nickname != null) {
                 followerName.text = item.nickname

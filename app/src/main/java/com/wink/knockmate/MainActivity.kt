@@ -511,7 +511,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             R.color.warn,
                             R.color.info,
                             R.color.safe
-                        )[Random().nextInt(4)]
+                        )[arr.getJSONObject(i).getInt("color")]
                     )
                 )
                 img.setImageDrawable(wrappedDrawable)

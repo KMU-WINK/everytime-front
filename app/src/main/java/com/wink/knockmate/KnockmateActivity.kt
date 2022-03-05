@@ -9,6 +9,7 @@ import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
@@ -52,6 +53,14 @@ class KnockmateActivity : AppCompatActivity() {
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         val myemail = pref.getString("email", "").toString()
 
+        findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).setOnClickListener {
+            val bottomSheetDialogFragment = AddSchedule()
+            val args = Bundle()
+            args.putString("ScheduleType", "ADD") // 일정 추가인지, 처음부터 노크인지, 일정 수정인지 판별
+            bottomSheetDialogFragment.arguments = args
+            bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
+        }
+
         findViewById<FrameLayout>(R.id.main_calendar_frame).setOnTouchListener(OnTouchListener { v, event ->
 
             val duration = event.eventTime - event.downTime
@@ -72,6 +81,10 @@ class KnockmateActivity : AppCompatActivity() {
                 knocks.forEachIndexed { index, pair ->
                     if (pair.first == xx && pair.second == yy) {
                         knocks.removeAt(index)
+                        if(knocks.size == 0) {
+                            findViewById<TextView>(R.id.knockmate_knock_info_text).visibility = View.VISIBLE
+                            findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility = View.GONE
+                        }
                         (rows[yy].getChildAt(xx) as FrameLayout).removeViewAt(
                             (rows[yy].getChildAt(
                                 xx
@@ -100,6 +113,9 @@ class KnockmateActivity : AppCompatActivity() {
                 cellParent =
                     rows[yy].getChildAt(xx) as FrameLayout
 
+                findViewById<TextView>(R.id.knockmate_knock_info_text).visibility = View.GONE
+                findViewById<AppCompatButton>(R.id.knockmate_knock_info_button).visibility = View.VISIBLE
+
                 Log.d("DDY", "${xx} : ${yy}")
                 knocks.add(Pair(xx, yy))
 
@@ -127,7 +143,9 @@ class KnockmateActivity : AppCompatActivity() {
                 View.VISIBLE
             Toast.makeText(this, "그룹이 생성되었습니다!", Toast.LENGTH_SHORT).show()
         } else if (mode == 2) {
-
+            findViewById<ConstraintLayout>(R.id.knock_noti_layout).visibility = View.GONE
+            findViewById<TextView>(R.id.knockmate_titletext).text = nickname
+            findViewById<ConstraintLayout>(R.id.knockmate_knock_info_layout).visibility = View.VISIBLE
         } else if (mode == 1)
             findViewById<TextView>(R.id.knockmate_titletext).text = nickname + "님의 노크"
         else
@@ -446,7 +464,7 @@ class KnockmateActivity : AppCompatActivity() {
                             R.color.warn,
                             R.color.info,
                             R.color.safe
-                        )[Random().nextInt(4)]
+                        )[arr.getJSONObject(i).getInt("color")]
                     )
                 )
                 img.setImageDrawable(wrappedDrawable)
