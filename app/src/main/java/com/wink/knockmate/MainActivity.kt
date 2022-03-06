@@ -35,10 +35,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var rows: MutableList<TableRow>
     lateinit var email: String
     lateinit var nickname: String
+    lateinit var snapHelper: SnapHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val pref = getSharedPreferences("loginInfo", MODE_PRIVATE)
         email = pref.getString("email", "").toString()
         nickname = pref.getString("nickname", "").toString()
@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         header.findViewById<TextView>(R.id.userEmail).text = email
 
         recyclerView = findViewById<RecyclerView>(R.id.day_recycler)
-        val snapHelper: SnapHelper = PagerSnapHelper()
+        snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(recyclerView)
 
         adapter = DayAdapter(this)
@@ -202,7 +202,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             adapter.datas = datas
             adapter.notifyDataSetChanged()
         }
-        lastPosition = RecyclerView.NO_POSITION
+        lastPosition = 1
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
@@ -321,6 +321,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         recyclerView.scrollToPosition(1)
         resetDayRecycler(1)
+    }
+
+    public fun resume() {
+        resetDayRecycler(lastPosition)
     }
 
     fun resetDayRecycler(position: Int) {

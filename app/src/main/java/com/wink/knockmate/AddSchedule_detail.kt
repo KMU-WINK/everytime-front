@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -22,6 +23,7 @@ import java.net.URL
 import java.util.*
 
 class AddSchedule_detail : Fragment() {
+
     private var saveState = false
 
     private var startpicker = false
@@ -49,15 +51,27 @@ class AddSchedule_detail : Fragment() {
             Calendar.DATE
         ).toString() + "일 "
         startTimeText.text =
-            if (Calendar.getInstance().get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
-            else "오후" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
+            if (Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+                    .get(Calendar.AM_PM) == 0
+            ) "오전" + " " + calSetting(Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.HOUR)) + ":" + calSetting(
+                Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.MINUTE)
+            )
+            else "오후" + " " + calSetting(
+                Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.HOUR)
+            ) + ":" + calSetting(Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.MINUTE))
 
         endDateText.text =
             (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
                 .toString() + "일"
         endTimeText.text =
-            if (Calendar.getInstance().get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
-            else "오후" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
+            if (Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+                    .get(Calendar.AM_PM) == 0
+            ) "오전" + " " + calSetting(Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.HOUR)) + ":" + calSetting(
+                Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.MINUTE)
+            )
+            else "오후" + " " + calSetting(
+                Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.HOUR)
+            ) + ":" + calSetting(Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).get(Calendar.MINUTE))
 
         //startpicker
         val startView = view.findViewById<LinearLayout>(R.id.addschedule_start)
@@ -66,7 +80,7 @@ class AddSchedule_detail : Fragment() {
             val datePicker = view.findViewById<DatePicker>(R.id.start_picker_date)
             val timePicker = view.findViewById<TimePicker>(R.id.start_picker_time)
 
-            if(!startpicker) {
+            if (!startpicker) {
                 startpicker = true
 
                 datePicker.isVisible = true
@@ -100,7 +114,7 @@ class AddSchedule_detail : Fragment() {
                             )
                         }
                 }
-            } else{
+            } else {
                 startpicker = false
 
                 datePicker.isVisible = false
@@ -115,7 +129,7 @@ class AddSchedule_detail : Fragment() {
         val timePicker = view.findViewById<TimePicker>(R.id.end_picker_time)
 
         endView.setOnClickListener {
-            if(!endpicker) {
+            if (!endpicker) {
                 endpicker = true
 
                 datePicker.isVisible = true
@@ -148,7 +162,7 @@ class AddSchedule_detail : Fragment() {
                             )
                         }
                 }
-            } else{
+            } else {
                 endpicker = false
 
                 datePicker.isVisible = false
@@ -745,6 +759,7 @@ class AddSchedule_detail : Fragment() {
                 ?.beginTransaction()?.remove(this)?.commit()
             parentFragment?.requireActivity()?.supportFragmentManager
                 ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+            (activity as MainActivity).resume()
         }
 
         val knockButton = view.findViewById<TextView>(R.id.knock_button)
@@ -776,7 +791,52 @@ class AddSchedule_detail : Fragment() {
                 bodyTemp.add("userid", AddScheduleInfo.inviteGroups[i].id!!)
             }
 
-            if (AddScheduleInfo.repeatType == "반복 안함") {
+            if (requireArguments().getString("ScheduleType") == "KNOCK") {
+                bodyTemp.add(
+                    "startDate",
+                    "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                        AddScheduleInfo.startCal.get(Calendar.MONTH)
+                    }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                        AddScheduleInfo.startCal.get(
+                            Calendar.HOUR
+                        )
+                    }:00:00"
+                )
+                    .add(
+                        "endDate",
+                        "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.endCal.get(Calendar.MONTH)
+                        }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.endCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+
+                val request: Request =
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log", "인터넷 연결 불안정")
+
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    saveState = true
+                                } else {
+                                    saveState = false
+                                    Log.d("log", response.message())
+                                }
+                            }
+                        }.run()
+                    }
+                })
+            } /*else if (AddScheduleInfo.repeatType == "반복 안함") {
                 val temp = bodyTemp
                 val body = temp.add("startDate", saveCalSetting(startCalTemp))
                     .add("endDate", saveCalSetting(endCalTemp))
@@ -1035,7 +1095,7 @@ class AddSchedule_detail : Fragment() {
 //                        startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
 //                    }
                 }
-            }
+            }*/
 
             if (saveState) {
                 parentFragment?.childFragmentManager
@@ -1053,64 +1113,9 @@ class AddSchedule_detail : Fragment() {
                 ?.beginTransaction()?.remove(requireParentFragment())?.commit()
         }
 
-        view.findViewById<TextView>(R.id.save_button).setOnClickListener {
-            val client = OkHttpClient()
-            val body = FormBody.Builder()
-                .add(
-                    "startDate",
-                    "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
-                        AddScheduleInfo.startCal.get(Calendar.MONTH)
-                    }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
-                        AddScheduleInfo.startCal.get(
-                            Calendar.HOUR
-                        )
-                    }:00:00"
-                )
-                .add(
-                    "endDate",
-                    "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
-                        AddScheduleInfo.endCal.get(Calendar.MONTH)
-                    }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
-                        AddScheduleInfo.endCal.get(
-                            Calendar.HOUR
-                        )
-                    }:00:00"
-                )
-                .add("title", AddScheduleInfo.title)
-                .add("memo", AddScheduleInfo.memo)
-                .add("color", AddScheduleInfo.color.toString())
-                .add("senderid", AddScheduleInfo.userId)
+        /*view.findViewById<TextView>(R.id.save_button).setOnClickListener {
 
-            for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-                body.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
-            }
-
-            val request: Request =
-                Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/decline_knock").post(body.build()).build()
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.d("log", "인터넷 연결 불안정")
-
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    object : Thread() {
-                        override fun run() {
-                            if (response.code() == 200) {
-                                parentFragment?.childFragmentManager
-                                    ?.beginTransaction()?.remove(this@AddSchedule_detail)?.commit()
-                                parentFragment?.requireActivity()?.supportFragmentManager
-                                    ?.beginTransaction()?.remove(requireParentFragment())?.commit()
-                            } else {
-                                Log.d("log", response.message())
-                            }
-                        }
-                    }.run()
-                }
-            })
-        }
+        }*/
 
 
         return view
