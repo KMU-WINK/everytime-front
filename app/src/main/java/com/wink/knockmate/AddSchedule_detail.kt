@@ -1,6 +1,8 @@
 package com.wink.knockmate
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import okhttp3.*
@@ -20,6 +23,9 @@ import java.util.*
 
 class AddSchedule_detail : Fragment() {
     private var saveState = false
+
+    private var startpicker = false
+    private var endpicker = false
 
     @SuppressLint("CheckResult", "SetTextI18n")
     override fun onCreateView(
@@ -41,29 +47,116 @@ class AddSchedule_detail : Fragment() {
 
         startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
             Calendar.DATE
-        ).toString() + "일 (" + AddScheduleInfo.startDay + ")"
+        ).toString() + "일 "
         startTimeText.text =
-            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " +
-                    calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(startCal.get(Calendar.MINUTE))
-            else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
-                startCal.get(
-                    Calendar.MINUTE
-                )
-            )
+            if (Calendar.getInstance().get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
+            else "오후" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
+
         endDateText.text =
             (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
-                .toString() + "일 (" + AddScheduleInfo.endDay + ")"
+                .toString() + "일"
         endTimeText.text =
-            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
-                endCal.get(Calendar.MINUTE)
-            )
-            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
-                endCal.get(
-                    Calendar.MINUTE
-                )
-            )
+            if (Calendar.getInstance().get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
+            else "오후" + " " + calSetting(Calendar.getInstance().get(Calendar.HOUR)) + ":" + calSetting(Calendar.getInstance().get(Calendar.MINUTE))
 
+        //startpicker
+        val startView = view.findViewById<LinearLayout>(R.id.addschedule_start)
+        startView.setOnClickListener {
 
+            val datePicker = view.findViewById<DatePicker>(R.id.start_picker_date)
+            val timePicker = view.findViewById<TimePicker>(R.id.start_picker_time)
+
+            if(!startpicker) {
+                startpicker = true
+
+                datePicker.isVisible = true
+                timePicker.isVisible = true
+
+                datePicker.init(
+                    startCal.get(Calendar.YEAR),
+                    startCal.get(Calendar.MONTH),
+                    startCal.get(Calendar.DAY_OF_MONTH),
+                    DatePicker.OnDateChangedListener { _, year, month, dayOfMonth ->
+                        startCal.set(Calendar.YEAR, year)
+                        startCal.set(Calendar.MONTH, month)
+                        startCal.set(Calendar.DATE, dayOfMonth)
+                        startDateText.text =
+                            (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
+                                Calendar.DATE
+                            ).toString() + "일"
+                    })
+
+                timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+                    startCal.set(Calendar.HOUR, hourOfDay)
+                    startCal.set(Calendar.MINUTE, minute)
+                    startTimeText.text =
+                        if (hourOfDay < 12 || hourOfDay == 24) {
+                            "오전" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                startCal.get(Calendar.MINUTE)
+                            )
+                        } else {
+                            "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                startCal.get(Calendar.MINUTE)
+                            )
+                        }
+                }
+            } else{
+                startpicker = false
+
+                datePicker.isVisible = false
+                timePicker.isVisible = false
+            }
+        }
+
+        //endpicker
+        val endView = view.findViewById<LinearLayout>(R.id.addschedule_end)
+
+        val datePicker = view.findViewById<DatePicker>(R.id.end_picker_date)
+        val timePicker = view.findViewById<TimePicker>(R.id.end_picker_time)
+
+        endView.setOnClickListener {
+            if(!endpicker) {
+                endpicker = true
+
+                datePicker.isVisible = true
+                timePicker.isVisible = true
+
+                datePicker.init(
+                    endCal.get(Calendar.YEAR),
+                    endCal.get(Calendar.MONTH),
+                    endCal.get(Calendar.DAY_OF_MONTH),
+                    DatePicker.OnDateChangedListener { _, year, month, dayOfMonth ->
+                        endCal.set(Calendar.YEAR, year)
+                        endCal.set(Calendar.MONTH, month)
+                        endCal.set(Calendar.DATE, dayOfMonth)
+                        endDateText.text =
+                            (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
+                                .toString() + "일 "
+                    })
+
+                timePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+                    endCal.set(Calendar.HOUR, hourOfDay)
+                    endCal.set(Calendar.MINUTE, minute)
+                    endTimeText.text =
+                        if (hourOfDay < 12 || hourOfDay == 24) {
+                            "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                endCal.get(Calendar.MINUTE)
+                            )
+                        } else {
+                            "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                endCal.get(Calendar.MINUTE)
+                            )
+                        }
+                }
+            } else{
+                endpicker = false
+
+                datePicker.isVisible = false
+                timePicker.isVisible = false
+            }
+        }
+
+        /*
         // startpicker
         val startView = view.findViewById<LinearLayout>(R.id.addschedule_start)
         val startPicker = view.findViewById<ConstraintLayout>(R.id.start_picker)
@@ -133,8 +226,85 @@ class AddSchedule_detail : Fragment() {
             startPicker.visibility = View.VISIBLE
             endPicker.visibility = View.GONE
         })
+        */
 
+        //TODO
 
+        val title = view.findViewById<EditText>(R.id.schedule_title)
+        val memo = view.findViewById<EditText>(R.id.memo)
+
+        // 참석자초대로 넘어가는 버튼
+        val inviters = view.findViewById<TextView>(R.id.inviters)
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
+            inviters.text = ""
+        } else if (AddScheduleInfo.invitersNumber == 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
+            inviters.text = AddScheduleInfo.inviteMembers[0].nickname
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 1) {
+            inviters.text = AddScheduleInfo.inviteGroups[0].nickname
+        } else if (AddScheduleInfo.invitersNumber > 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
+            inviters.text =
+                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + (AddScheduleInfo.invitersNumber - 1).toString() + "명"
+        } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber > 1) {
+            inviters.text =
+                AddScheduleInfo.inviteGroups[0].nickname + " 외 " + (AddScheduleInfo.allGroupMembersNumber - AddScheduleInfo.inviteGroups[0].isFav).toString() + "명"
+        } else {
+            inviters.text =
+                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + ((AddScheduleInfo.invitersNumber - 1) + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
+        }
+        val to_invite_button = view.findViewById<ConstraintLayout>(R.id.to_invite_button)
+        to_invite_button.setOnClickListener(View.OnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()
+                ?.setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
+                ?.addToBackStack(null)
+                ?.replace(R.id.addschedule_frame, AddSchedule_invite())
+                ?.commit()
+        })
+
+        // 반복 일정으로 넘어가는 버튼
+        val repeatText = view.findViewById<TextView>(R.id.repeat_text)
+        repeatText.text = AddScheduleInfo.repeatType
+        val to_repeat_button = view.findViewById<ConstraintLayout>(R.id.to_repeat_button)
+        to_repeat_button.setOnClickListener(View.OnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()
+                ?.setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
+                ?.addToBackStack(null)
+                ?.replace(R.id.addschedule_frame, AddSchedule_repeat())
+                ?.commit()
+        })
+
+        // 일정 색상 선택으로 넘어가는 버튼
+        val to_colorPick_button = view.findViewById<ConstraintLayout>(R.id.to_colorPick_button)
+        val colorName = view.findViewById<TextView>(R.id.pick_color_name)
+        val colorIcon = view.findViewById<ImageView>(R.id.color_icon)
+        colorName.text = "색상" + AddScheduleInfo.color.toString()
+        colorSetting(colorIcon)
+        to_colorPick_button.setOnClickListener(View.OnClickListener {
+            parentFragment?.childFragmentManager
+                ?.beginTransaction()
+                ?.setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
+                ?.addToBackStack(null)
+                ?.replace(R.id.addschedule_frame, AddSchedule_colorPick())
+                ?.commit()
+        })
+
+        /*
         // endpicker
         val endView = view.findViewById<LinearLayout>(R.id.addschedule_end)
         val endDatePicker = view.findViewById<NumberPicker>(R.id.end_date_picker)
@@ -291,11 +461,15 @@ class AddSchedule_detail : Fragment() {
                 ?.replace(R.id.addschedule_frame, AddSchedule_colorPick())
                 ?.commit()
         })
+        */
 
 
         // 저장 버튼
         val saveButton = view.findViewById<TextView>(R.id.save_button)
         saveButton.setOnClickListener {
+            AddScheduleInfo.title = title.text.toString()
+            AddScheduleInfo.memo = memo.text.toString()
+
             val startCalTemp = startCal
             val endCalTemp = endCal
             val client = OkHttpClient()

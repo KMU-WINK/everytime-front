@@ -54,10 +54,22 @@
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_nickname.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/activity_terms.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_brief.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_colorpick.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_detail.xml" value="0.33" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_detail_invited_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_invited_gray_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_invite_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_repeat.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/addschedule_repeat_detail.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/main_layout.xml" value="0.36614583333333334" />
+        <entry key="..\:/Programming/app_programming/everytime-front-new/app/src/main/res/layout/modify_schedule.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invite_knock_button.xml" value="0.1075" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invited_gray_member.xml" value="0.1" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/drawable/invited_member.xml" value="0.1" />
