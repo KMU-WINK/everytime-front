@@ -879,6 +879,65 @@ class AddSchedule_detail : Fragment() {
                 ?.beginTransaction()?.remove(requireParentFragment())?.commit()
         }
 
+        view.findViewById<TextView>(R.id.save_button).setOnClickListener {
+            val client = OkHttpClient()
+            val body = FormBody.Builder()
+                .add(
+                    "startDate",
+                    "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                        AddScheduleInfo.startCal.get(Calendar.MONTH)
+                    }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                        AddScheduleInfo.startCal.get(
+                            Calendar.HOUR
+                        )
+                    }:00:00"
+                )
+                .add(
+                    "endDate",
+                    "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                        AddScheduleInfo.endCal.get(Calendar.MONTH)
+                    }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                        AddScheduleInfo.endCal.get(
+                            Calendar.HOUR
+                        )
+                    }:00:00"
+                )
+                .add("title", AddScheduleInfo.title)
+                .add("memo", AddScheduleInfo.memo)
+                .add("color", AddScheduleInfo.color.toString())
+                .add("senderid", AddScheduleInfo.userId)
+
+            for (i in 0 until AddScheduleInfo.inviteMembers.size) {
+                body.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
+            }
+
+            val request: Request =
+                Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/decline_knock").post(body.build()).build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log", "인터넷 연결 불안정")
+
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        override fun run() {
+                            if (response.code() == 200) {
+                                parentFragment?.childFragmentManager
+                                    ?.beginTransaction()?.remove(this@AddSchedule_detail)?.commit()
+                                parentFragment?.requireActivity()?.supportFragmentManager
+                                    ?.beginTransaction()?.remove(requireParentFragment())?.commit()
+                            } else {
+                                Log.d("log", response.message())
+                            }
+                        }
+                    }.run()
+                }
+            })
+        }
+
 
         return view
     }
