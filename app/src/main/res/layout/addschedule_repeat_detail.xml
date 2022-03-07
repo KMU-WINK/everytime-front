@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:animateLayoutChanges="true">
 
     <View
         android:id="@+id/back_button"
@@ -21,6 +21,7 @@
         android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/spoqahansansneo_regular"
         android:gravity="center"
         android:text="확인"
         android:textColor="#7A7A7A"
@@ -32,107 +33,110 @@
         android:id="@+id/repeat_title"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="56dp"
-        android:text="반복 설정"
+        android:fontFamily="@font/spoqahansansneo_regular"
         android:lineSpacingExtra="0sp"
+        android:text="반복 설정"
         android:textColor="@color/black"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="20sp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/repeat_pick1"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
-        android:text="다음 간격마다 반복"
-        android:textSize="12sp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="19dp"
-        app:layout_constraintTop_toBottomOf="@id/repeat_title"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/spoqahansansneo_regular"
+        android:text="다음 간격마다 반복"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/repeat_title" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/repeat_frame"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        app:layout_constraintTop_toBottomOf="@id/repeat_pick1"
+        android:layout_marginStart="19dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="19dp">
+        app:layout_constraintTop_toBottomOf="@id/repeat_pick1">
 
         <EditText
             android:id="@+id/repeat_interval"
             android:layout_width="61dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="21dp"
+            android:background="@drawable/repeat_style"
+            android:fontFamily="@font/spoqahansansneo_regular"
+            android:gravity="center"
             android:text="1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:gravity="center"
             android:textStyle="bold"
-            android:background="@drawable/repeat_style"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/repeat_radioGroup"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/repeat_interval"
             android:layout_marginStart="21dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@id/repeat_interval"
+            app:layout_constraintTop_toTopOf="parent">
 
             <RadioButton
                 android:id="@+id/repeat_days_pick"
                 android:layout_width="44dp"
                 android:layout_height="match_parent"
-                android:text="일"
                 android:background="@drawable/repeat_selector"
-                android:textColor="@drawable/repeat_selector_text"
                 android:button="@null"
                 android:checked="true"
-                android:textStyle="bold"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="일"
+                android:textColor="@drawable/repeat_selector_text"
+                android:textStyle="bold" />
 
             <RadioButton
                 android:id="@+id/repeat_weeks_pick"
                 android:layout_width="44dp"
                 android:layout_height="match_parent"
-                android:text="주"
+                android:layout_marginStart="12dp"
                 android:background="@drawable/repeat_selector"
-                android:textColor="@drawable/repeat_selector_text"
                 android:button="@null"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:layout_marginStart="12dp"/>
+                android:text="주"
+                android:textColor="@drawable/repeat_selector_text"
+                android:textStyle="bold" />
 
             <RadioButton
                 android:id="@+id/repeat_months_pick"
                 android:layout_width="44dp"
                 android:layout_height="match_parent"
-                android:text="개월"
+                android:layout_marginStart="12dp"
                 android:background="@drawable/repeat_selector"
-                android:textColor="@drawable/repeat_selector_text"
                 android:button="@null"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:layout_marginStart="12dp"/>
+                android:text="개월"
+                android:textColor="@drawable/repeat_selector_text"
+                android:textStyle="bold" />
 
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:visibility="gone"
         android:id="@+id/repeat_weeks_frame"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_marginStart="19dp"
         android:layout_marginTop="40dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repeat_frame">
 
@@ -144,6 +148,7 @@
                 android:id="@+id/repeat_pick2"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="다음 요일 반복"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -241,12 +246,12 @@
     </FrameLayout>
 
     <FrameLayout
-        android:visibility="gone"
         android:id="@+id/repeat_month_frame"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_marginStart="19dp"
         android:layout_marginTop="40dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/repeat_weeks_frame">
 
@@ -258,6 +263,7 @@
                 android:id="@+id/repeat_pick3"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="반복 날짜"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -268,37 +274,40 @@
                 android:id="@+id/repeat_text"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="매월"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repeat_pick3"
-                android:layout_marginTop="25dp"/>
+                app:layout_constraintTop_toBottomOf="@id/repeat_pick3" />
 
             <EditText
                 android:id="@+id/repeat_day"
                 android:layout_width="61dp"
                 android:layout_height="40dp"
-                app:layout_constraintStart_toEndOf="@id/repeat_text"
-                app:layout_constraintTop_toBottomOf="@id/repeat_pick3"
-                android:layout_marginTop="16dp"
                 android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/repeat_style"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="14dp"
                 android:textColor="@color/black"
-                android:background="@drawable/repeat_style"/>
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/repeat_text"
+                app:layout_constraintTop_toBottomOf="@id/repeat_pick3" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="일"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/repeat_day"
-                android:layout_marginStart="12dp"
-                app:layout_constraintTop_toBottomOf="@id/repeat_pick3"
-                android:layout_marginTop="25dp"/>
+                app:layout_constraintTop_toBottomOf="@id/repeat_pick3" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
@@ -320,6 +329,7 @@
                 android:id="@+id/repeat_pick4"
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="반복 종료 시점"
                 android:textColor="@color/black"
                 android:textSize="12sp"
@@ -330,32 +340,34 @@
                 android:id="@+id/repeat_count"
                 android:layout_width="61dp"
                 android:layout_height="40dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repeat_pick4"
                 android:layout_marginTop="16dp"
-                android:textStyle="bold"
-                android:text="1"
+                android:background="@drawable/repeat_style"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:gravity="center"
-                android:textSize="14dp"
+                android:text="1"
                 android:textColor="@color/black"
-                android:background="@drawable/repeat_style"/>
+                android:textSize="14dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repeat_pick4" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/spoqahansansneo_regular"
                 android:text="회 반복 후 종료"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@id/repeat_count"
-                android:layout_marginStart="12dp"
-                app:layout_constraintTop_toBottomOf="@id/repeat_pick4"
-                android:layout_marginTop="25dp"/>
+                app:layout_constraintTop_toBottomOf="@id/repeat_pick4" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

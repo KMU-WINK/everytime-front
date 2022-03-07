@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="14sp"
+        android:fontFamily="@font/spoqahansansneo_regular"
         android:text="그룹 (10명)"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/detail_profile_image"

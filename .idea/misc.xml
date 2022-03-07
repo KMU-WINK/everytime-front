@@ -57,9 +57,18 @@
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/activity_work_through.xml" value="1.1" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule.xml" value="0.28125" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_brief.xml" value="0.4390625" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_colorpick.xml" value="0.36770833333333336" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_detail.xml" value="0.31666666666666665" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite.xml" value="0.36770833333333336" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.36770833333333336" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_group.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_invited_item.xml" value="0.36770833333333336" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.28125" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_invited_gray_item.xml" value="0.36770833333333336" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.36770833333333336" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_invite_item.xml" value="0.36770833333333336" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_repeat.xml" value="0.36770833333333336" />
+        <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/addschedule_repeat_detail.xml" value="0.36770833333333336" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell.xml" value="0.9" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_knock.xml" value="0.67" />
         <entry key="..\:/Documents/Projects/knockmate/app/src/main/res/layout/calendar_cell_parent.xml" value="0.31666666666666665" />

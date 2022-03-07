@@ -48,6 +48,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signup)
 
         backButton.setOnClickListener {
+            startActivity(Intent(this, LogInActivity::class.java))
             finish()
         }
 

@@ -36,6 +36,7 @@ class KnockmateActivity : AppCompatActivity() {
     lateinit var nickname: String
     var lastPosition: Int = 0
     lateinit var rows: MutableList<TableRow>
+    public var knockable: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_knockmate)
@@ -69,7 +70,7 @@ class KnockmateActivity : AppCompatActivity() {
             val bottomSheetDialogFragment = AddSchedule()
             val args = Bundle()
             args.putString("ScheduleType", "KNOCK")
-            args.putString("invite", email)
+            args.putString("invite", email.split("@")[0])
             args.putString("inviteType", "user")
             args.putString("startDate", "${startDate.get(Calendar.YEAR)}-${startDate.get(Calendar.MONTH)}-${startDate.get(Calendar.DAY_OF_MONTH)} ${startDate.get(Calendar.HOUR)}:00:00")
             args.putString("endDate", "${endDate.get(Calendar.YEAR)}-${endDate.get(Calendar.MONTH)}-${endDate.get(Calendar.DAY_OF_MONTH)} ${endDate.get(Calendar.HOUR)}:00:00")
@@ -80,7 +81,7 @@ class KnockmateActivity : AppCompatActivity() {
         findViewById<FrameLayout>(R.id.main_calendar_frame).setOnTouchListener(OnTouchListener { v, event ->
 
             val duration = event.eventTime - event.downTime
-            if (event.action == MotionEvent.ACTION_UP && duration < 100) {
+            if (event.action == MotionEvent.ACTION_UP && duration < 100 && knockable) {
                 var x = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
                     45f,
