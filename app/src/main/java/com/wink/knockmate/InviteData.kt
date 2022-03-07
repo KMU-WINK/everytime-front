@@ -2,8 +2,9 @@ package com.wink.knockmate
 
 class InviteData {
     companion object {
-        var nowChangeUsers = mutableListOf<UserModel>()
-        var nowChangeGroups = mutableListOf<UserModel>()
+        var userNum = 0
+        var groupNum = 0
+        var allGroupNum = 0
         var fixUsers = mutableListOf<UserModel>()
         var fixGroups = mutableListOf<UserModel>()
     }

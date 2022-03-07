@@ -96,7 +96,7 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".TestMain"
             android:exported="true"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize">

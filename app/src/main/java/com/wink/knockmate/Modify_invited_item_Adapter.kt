@@ -2,6 +2,7 @@ package com.wink.knockmate
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,8 +54,13 @@ class Modify_invited_item_Adapter :
         @SuppressLint("SetTextI18n")
         fun bind(item: UserModel) {
             if (item.user) {
-                arrow.visibility = View.GONE
-                more.visibility = View.VISIBLE
+                if (item.invited) {
+                    arrow.visibility = View.GONE
+                    more.visibility = View.VISIBLE
+                } else {
+                    arrow.visibility = View.GONE
+                    more.visibility = View.GONE
+                }
             } else {
                 arrow.visibility = View.VISIBLE
                 more.visibility = View.GONE
@@ -68,6 +74,18 @@ class Modify_invited_item_Adapter :
                 followerName.text = item.nickname
             } else if (item.nickname == null && item.user) {
                 followerName.text = item.id
+            }
+
+            if (item.invited) {
+                state.visibility = View.VISIBLE
+                if (item.accepted == 1) {
+                    state.text = "노크 수락"
+                    state.setTextColor(Color.parseColor("#B3D66B"))
+                } else {
+                    state.text = "노크 대기"
+                }
+            } else {
+                state.visibility = View.GONE
             }
 
 //            val client = OkHttpClient().newBuilder()

@@ -167,7 +167,6 @@ class Addschedule_invite_detail : Fragment() {
                         inviteList.add(AddScheduleInfo.followerList[pos])
                     }
                     invitedBoolean = inviteList.size >= 1
-//                    Log.v("test7", tempInvitedList.toString())
                 } else {
                     AddScheduleInfo.invitersNumber--
                     inviteList.apply {
@@ -244,9 +243,8 @@ class Addschedule_invite_detail : Fragment() {
                     invitedAdapter.datas = inviteList
                     invitedAdapter.notifyDataSetChanged()
                 }
-                if (AddScheduleInfo.inviteGroupsNumber == 0 && AddScheduleInfo.invitersNumber == 0) {
-                    invitedBoolean = false
-                }
+                invitedBoolean =
+                    AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                 if (!invitedBoolean) {
                     invited_recycler.visibility = View.GONE
                 }

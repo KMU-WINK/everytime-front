@@ -426,7 +426,7 @@ class AddSchedule : BottomSheetDialogFragment() {
                                         .url("http://3.35.146.57:3000/groupuserlist?groupid=${temp}")
                                         .get()
                                         .build()
-                                    client2.newCall(request3).enqueue(object : Callback {
+                                    client2.newCall(request5).enqueue(object : Callback {
                                         override fun onFailure(call: Call, e: IOException) {
                                             Log.d("log6", e.message.toString())
                                         }

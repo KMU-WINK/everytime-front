@@ -32,6 +32,8 @@ class TestMain : AppCompatActivity() {
 
         button2.setOnClickListener(View.OnClickListener {
             val intent = Intent(this@TestMain, ModifyScheduleActivity::class.java)
+            AddScheduleInfo.reset()
+
             intent.putExtra("calendarId", "30") // 일정 아이디
             intent.putExtra("type", "modify") // 타입
             startActivity(intent)

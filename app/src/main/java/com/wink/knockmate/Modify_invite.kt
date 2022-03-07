@@ -3,23 +3,29 @@ package com.wink.knockmate
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class Modify_invite : AppCompatActivity() {
-    lateinit var groupAdapter: Modify_invited_item_Adapter
+    lateinit var invitedGroupAdapter: Modify_invited_item_Adapter
+    var invitedGroupInviteList = mutableListOf<UserModel>()
+    lateinit var invitedGroupInviteView: RecyclerView
+    lateinit var invitedUserAdapter: Modify_invited_item_Adapter
+    var invitedUserInviteList = mutableListOf<UserModel>()
+    lateinit var invitedUserInviteView: RecyclerView
+
+    lateinit var groupAdapter: Addschedule_invite_item_Adapter
     var groupInviteList = mutableListOf<UserModel>()
     lateinit var groupInviteView: RecyclerView
-    lateinit var userAdapter: Modify_invited_item_Adapter
+    lateinit var userAdapter: Addschedule_invite_item_Adapter
     var userInviteList = mutableListOf<UserModel>()
     lateinit var userInviteView: RecyclerView
+
     lateinit var groupFrame: LinearLayout
     lateinit var userFrame: LinearLayout
     var memberNumber = 0
@@ -34,6 +40,8 @@ class Modify_invite : AppCompatActivity() {
         val backButton = findViewById<View>(R.id.back_button)
         val inviteTitle = findViewById<TextView>(R.id.invite_title)
         val inviteButton = findViewById<LinearLayout>(R.id.invite_button)
+        invitedUserInviteView = findViewById(R.id.invited_knockmates_recycler)
+        invitedGroupInviteView = findViewById(R.id.invited_group_recycler)
         groupInviteView = findViewById(R.id.group_recycler)
         userInviteView = findViewById(R.id.knockmates_recycler)
         groupFrame = findViewById(R.id.groups_frame)
@@ -46,7 +54,8 @@ class Modify_invite : AppCompatActivity() {
             AddScheduleInfo.allGroupMembersNumber += AddScheduleInfo.inviteGroups[i].isFav
         }
 
-        inviteTitle.text = "초대 " + inviterTemp.toString() + "명"
+        inviteTitle.text =
+            "초대 " + (AddScheduleInfo.invitersNumber + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
 
         okButton.setOnClickListener {
             AddScheduleInfo.priorInviteMembers = mutableListOf()
@@ -109,7 +118,7 @@ class Modify_invite : AppCompatActivity() {
 
         initGroupInviteList()
 
-        groupAdapter.setOnArrowClickListener(object :
+        invitedGroupAdapter.setOnArrowClickListener(object :
             Modify_invited_item_Adapter.OnArrowClickListener {
             override fun onArrowClick(v: ImageView, data: UserModel, pos: Int) {
                 val intent = Intent(this@Modify_invite, Modify_group_detail1::class.java)
@@ -118,20 +127,68 @@ class Modify_invite : AppCompatActivity() {
             }
         })
 
-        userAdapter.setOnMoreClickListener(object :
+        invitedUserAdapter.setOnMoreClickListener(object :
             Modify_invited_item_Adapter.OnMoreClickListener {
             override fun onMoreClick(v: ImageView, data: UserModel, pos: Int) {
-                TODO("Not yet implemented")
+                val bottomSheetDialog: Modify_bottomSheetDialog = Modify_bottomSheetDialog {
+                    when (it) {
+                        0 -> {
+                            val bundle = Bundle()
+                            if (data.nickname != null) {
+                                bundle.putString("name", data.id)
+                            } else {
+                                bundle.putString("name", data.nickname)
+                            }
+                            val dialog = Modify_invite_dialog()
+                            dialog.arguments = bundle
+                            dialog.setButtonClickListener(object :
+                                Modify_invite_dialog.OnButtonClickListener {
+                                override fun onButton1Clicked() {
+                                }
+
+                                override fun onButton2Clicked() {
+                                    //노크알람삭제
+                                    AddScheduleInfo.invitedMembers.remove(data)
+                                    if (data.user) {
+                                        userInviteList.remove(data)
+                                        AddScheduleInfo.invitersNumber--
+                                    } else {
+                                        groupInviteList.remove(data)
+                                        AddScheduleInfo.inviteGroupsNumber--
+                                        AddScheduleInfo.allGroupMembersNumber -= data.members
+                                    }
+                                    onRestart()
+                                }
+                            })
+                            dialog.show(supportFragmentManager, dialog.tag)
+                        }
+                        1 -> {
+                            // 재노크
+                        }
+                    }
+                }
+                bottomSheetDialog.show(supportFragmentManager, bottomSheetDialog.tag)
             }
         })
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initGroupInviteList() {
+        invitedGroupAdapter =
+            Modify_invited_item_Adapter()
+        invitedUserAdapter =
+            Modify_invited_item_Adapter()
+        invitedGroupInviteView.layoutManager =
+            LinearLayoutManager(applicationContext)
+        invitedUserInviteView.layoutManager =
+            LinearLayoutManager(applicationContext)
+        invitedGroupInviteView.adapter = invitedGroupAdapter
+        invitedUserInviteView.adapter = invitedUserAdapter
+
         groupAdapter =
-            Modify_invited_item_Adapter()
+            Addschedule_invite_item_Adapter()
         userAdapter =
-            Modify_invited_item_Adapter()
+            Addschedule_invite_item_Adapter()
         groupInviteView.layoutManager =
             LinearLayoutManager(applicationContext)
         userInviteView.layoutManager =
@@ -141,12 +198,20 @@ class Modify_invite : AppCompatActivity() {
 
         for (i in 0 until AddScheduleInfo.invitedMembers.size) {
             if (AddScheduleInfo.invitedMembers[i].user) {
-                userInviteList.add(AddScheduleInfo.invitedMembers[i])
+                invitedUserInviteList.add(AddScheduleInfo.invitedMembers[i])
                 memberNumber++
             } else {
-                groupInviteList.add(AddScheduleInfo.invitedMembers[i])
+                invitedGroupInviteList.add(AddScheduleInfo.invitedMembers[i])
                 groupNumber++
             }
+        }
+        for (i in 0 until AddScheduleInfo.inviteMembers.size) {
+            userInviteList.add(AddScheduleInfo.inviteMembers[i])
+            memberNumber++
+        }
+        for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+            groupInviteList.add(AddScheduleInfo.inviteGroups[i])
+            groupNumber++
         }
 
         if (memberNumber >= 1) {
@@ -156,6 +221,12 @@ class Modify_invite : AppCompatActivity() {
         if (groupNumber >= 1) {
             groupFrame.visibility = View.VISIBLE
         }
+
+        invitedUserAdapter.datas = invitedUserInviteList
+        invitedUserAdapter.notifyDataSetChanged()
+
+        invitedGroupAdapter.datas = invitedGroupInviteList
+        invitedGroupAdapter.notifyDataSetChanged()
 
         userAdapter.datas = userInviteList
         userAdapter.notifyDataSetChanged()

@@ -26,11 +26,10 @@ class ModifyScheduleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.modify_schedule)
-        val handler = Handler(Looper.myLooper()!!)
 
         val mod = intent.getStringExtra("type")
 
-        if (mod == "modify"){
+        if (mod == "modify") {
             AddScheduleInfo.reset()
             calendarId = intent.getStringExtra("calendarId").toString()
             var startDateArr: List<String>? = null
@@ -71,34 +70,8 @@ class ModifyScheduleActivity : AppCompatActivity() {
                                         resTemp.getJSONObject(0).getString("id")
                                     AddScheduleInfo.color = resTemp.getJSONObject(0).getInt("color")
                                 } catch (e: Exception) {
-                                    finish()
-                                    handler.postDelayed(Runnable() {
-                                        @Override
-                                        fun run() {
-                                            Toast
-                                                .makeText(
-                                                    baseContext,
-                                                    "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                    Toast.LENGTH_LONG
-                                                )
-                                                .show()
-                                        }
-                                    }, 0)
                                 }
                             } else {
-                                finish()
-                                handler.postDelayed(Runnable() {
-                                    @Override
-                                    fun run() {
-                                        Toast
-                                            .makeText(
-                                                baseContext,
-                                                "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
-                                    }
-                                }, 0)
                             }
                         }
                     }.run()
@@ -123,59 +96,174 @@ class ModifyScheduleActivity : AppCompatActivity() {
                         override fun run() {
                             if (response.code() == 200) {
                                 val res = JSONObject(response.body()?.string())
-                                Log.v("test", res.toString())
-                                try {
-                                    val resTemp = res.getJSONArray("data")
-                                    for (i in 0 until resTemp.length()) {
-                                        if (calendarId != AddScheduleInfo.userId) {
+                                Log.v("test2", res.toString())
+                                val resTemp = res.getJSONArray("data")
+                                for (i in 0 until resTemp.length()) {
+                                    if (AddScheduleInfo.userId != resTemp.getJSONObject(i)
+                                            .getString("senderid")
+                                    ) {
+                                        if (resTemp.getJSONObject(i).getString("userid") != null) {
+                                            val client2 = OkHttpClient().newBuilder()
+                                                .build()
+                                            val request5: Request = Request.Builder()
+                                                .addHeader(
+                                                    "Content-Type",
+                                                    "application/x-www-form-urlencoded"
+                                                )
+                                                .url(
+                                                    "http://3.35.146.57:3000/user?query=${
+                                                        resTemp.getJSONObject(
+                                                            i
+                                                        ).getString("userid")
+                                                    }"
+                                                )
+                                                .get()
+                                                .build()
+                                            client2.newCall(request5).enqueue(object : Callback {
+                                                override fun onFailure(call: Call, e: IOException) {
+                                                    Log.d("log1", e.message.toString())
+                                                }
+
+                                                override fun onResponse(
+                                                    call: Call,
+                                                    response: Response
+                                                ) {
+                                                    object : Thread() {
+                                                        @SuppressLint("NotifyDataSetChanged")
+                                                        override fun run() {
+                                                            if (response.code() == 200) {
+                                                                val res2 = JSONObject(
+                                                                    response.body()?.string()
+                                                                )
+                                                                Log.v("test", res2.toString())
+                                                                val resTemp2 =
+                                                                    res2.getJSONArray("data")
+                                                                AddScheduleInfo.invitedMembers.add(
+                                                                    UserModel(
+                                                                        resTemp2.getJSONObject(i)
+                                                                            .getString("id"),
+                                                                        resTemp2.getJSONObject(i)
+                                                                            .getString("nickname"),
+                                                                        true,
+                                                                        resTemp2.getJSONObject(i)
+                                                                            .getString("email"),
+                                                                        0,
+                                                                        true,
+                                                                        true,
+                                                                        0,
+                                                                        0,
+                                                                        1,
+                                                                        true,
+                                                                        resTemp.getJSONObject(i)
+                                                                            .getInt("accepted")
+                                                                    )
+                                                                )
+                                                                AddScheduleInfo.invitersNumber++
+                                                                AddScheduleInfo.priorInvitersNumber++
+                                                                InviteData.userNum++
+                                                            } else {
+                                                            }
+                                                        }
+                                                    }.run()
+                                                }
+                                            })
+                                        } else {
                                             AddScheduleInfo.invitedMembers.add(
                                                 UserModel(
-                                                    resTemp.getJSONObject(i).getString("id"),
-                                                    resTemp.getJSONObject(i).getString("nickname"),
+                                                    resTemp.getJSONObject(i).getString("groupid"),
+                                                    null,
+                                                    false,
+                                                    "",
+                                                    0,
                                                     true,
-                                                    resTemp.getJSONObject(i).getString("email"),
-                                                    i,
                                                     true,
+                                                    0,
+                                                    0,
+                                                    1,
+                                                    true,
+                                                    resTemp.getJSONObject(i).getInt("accepted")
                                                 )
                                             )
-                                            AddScheduleInfo.invitersNumber++
-                                        }
-                                        startDateArr =
-                                            resTemp.getJSONObject(i).getString("startDate")
-                                                .split("-", " ", ":")
-                                        endDateArr =
-                                            resTemp.getJSONObject(i).getString("endDate")
-                                                .split("-", " ", ":")
-                                    }
-                                } catch (e: Exception) {
-                                    finish()
-                                    handler.postDelayed(Runnable() {
-                                        @Override
-                                        fun run() {
-                                            Toast
-                                                .makeText(
-                                                    baseContext,
-                                                    "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                    Toast.LENGTH_LONG
+                                            AddScheduleInfo.inviteGroupsNumber++
+                                            AddScheduleInfo.priorInviteGroupsNumber++
+                                            InviteData.groupNum++
+                                            val client2 = OkHttpClient().newBuilder()
+                                                .build()
+                                            val request5: Request = Request.Builder()
+                                                .addHeader(
+                                                    "Content-Type",
+                                                    "application/x-www-form-urlencoded"
                                                 )
-                                                .show()
+                                                .url(
+                                                    "http://3.35.146.57:3000/groupuserlist?groupid=${
+                                                        resTemp.getJSONObject(
+                                                            i
+                                                        ).getString("groupid")
+                                                    }"
+                                                )
+                                                .get()
+                                                .build()
+                                            client2.newCall(request5).enqueue(object : Callback {
+                                                override fun onFailure(call: Call, e: IOException) {
+                                                    Log.d("log6", e.message.toString())
+                                                }
+
+                                                override fun onResponse(
+                                                    call: Call,
+                                                    response: Response
+                                                ) {
+                                                    object : Thread() {
+                                                        @SuppressLint("NotifyDataSetChanged")
+                                                        override fun run() {
+                                                            if (response.code() == 200) {
+                                                                val res =
+                                                                    JSONObject(
+                                                                        response.body()?.string()
+                                                                    )
+                                                                val resTemp =
+                                                                    res.getJSONArray("data")
+                                                                AddScheduleInfo.invitedMembers[i].members =
+                                                                    resTemp.length()
+                                                                AddScheduleInfo.allGroupMembersNumber += resTemp.length()
+                                                                AddScheduleInfo.priorAllGroupMembersNumber += resTemp.length()
+                                                                InviteData.allGroupNum += resTemp.length()
+                                                            } else if (response.code() == 201) {
+                                                            } else {
+                                                            }
+                                                        }
+                                                    }.run()
+                                                }
+                                            })
                                         }
-                                    }, 0)
+                                    }
                                 }
+                                startDateArr =
+                                    resTemp.getJSONObject(0).getString("startDate")
+                                        .split("-", " ", ":")
+                                endDateArr =
+                                    resTemp.getJSONObject(0).getString("endDate")
+                                        .split("-", " ", ":")
+
+                                Log.v("test3", startDateArr.toString())
+
+                                AddScheduleInfo.startCal.set(
+                                    startDateArr!![0].toInt(),
+                                    startDateArr!![1].toInt() - 1,
+                                    startDateArr!![2].toInt(),
+                                    startDateArr!![3].toInt(),
+                                    startDateArr!![4].toInt(),
+                                    startDateArr!![5].toInt()
+                                )
+
+                                AddScheduleInfo.endCal.set(
+                                    endDateArr!![0].toInt(),
+                                    endDateArr!![1].toInt() - 1,
+                                    endDateArr!![2].toInt(),
+                                    endDateArr!![3].toInt(),
+                                    endDateArr!![4].toInt(),
+                                    endDateArr!![5].toInt()
+                                )
                             } else {
-                                finish()
-                                handler.postDelayed(Runnable() {
-                                    @Override
-                                    fun run() {
-                                        Toast
-                                            .makeText(
-                                                baseContext,
-                                                "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
-                                    }
-                                }, 0)
                             }
                         }
                     }.run()
@@ -213,18 +301,6 @@ class ModifyScheduleActivity : AppCompatActivity() {
                                     }
                                 }
                             } else {
-                                handler.postDelayed(Runnable() {
-                                    @Override
-                                    fun run() {
-                                        Toast
-                                            .makeText(
-                                                baseContext,
-                                                "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
-                                    }
-                                }, 0)
                             }
                         }
                     }.run()
@@ -255,59 +331,54 @@ class ModifyScheduleActivity : AppCompatActivity() {
                                                 resTemp.getJSONObject(i).getString("id"),
                                                 resTemp.getJSONObject(i).getString("nickname"),
                                                 false,
-                                                "test",
+                                                "",
                                                 i,
-                                                false,
-                                                true,
-                                                1,
-                                                resTemp.getJSONObject(i).getInt("isFav")
                                             )
                                         )
                                     }
                                 }
+                                for (i in 0 until AddScheduleInfo.groupList.size) {
+                                    val temp = AddScheduleInfo.groupList[i].id
+                                    val client2 = OkHttpClient().newBuilder()
+                                        .build()
+                                    val request5: Request = Request.Builder()
+                                        .addHeader(
+                                            "Content-Type",
+                                            "application/x-www-form-urlencoded"
+                                        )
+                                        .url("http://3.35.146.57:3000/groupuserlist?groupid=${temp}")
+                                        .get()
+                                        .build()
+                                    client2.newCall(request5).enqueue(object : Callback {
+                                        override fun onFailure(call: Call, e: IOException) {
+                                            Log.d("log6", e.message.toString())
+                                        }
+
+                                        override fun onResponse(call: Call, response: Response) {
+                                            object : Thread() {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                override fun run() {
+                                                    if (response.code() == 200) {
+                                                        val res =
+                                                            JSONObject(response.body()?.string())
+                                                        val resTemp = res.getJSONArray("data")
+                                                        AddScheduleInfo.groupList[i].members =
+                                                            resTemp.length()
+                                                    } else if (response.code() == 201) {
+                                                    } else {
+                                                    }
+                                                }
+                                            }.run()
+                                        }
+                                    })
+                                }
                             } else {
-                                handler.postDelayed(Runnable() {
-                                    @Override
-                                    fun run() {
-                                        Toast
-                                            .makeText(
-                                                baseContext,
-                                                "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                                Toast.LENGTH_LONG
-                                            )
-                                            .show()
-                                    }
-                                }, 0)
                             }
                         }
                     }.run()
                 }
             })
-
-            if (startDateArr != null) {
-                AddScheduleInfo.startCal.set(
-                    startDateArr!![0].toInt(),
-                    startDateArr!![1].toInt(),
-                    startDateArr!![2].toInt(),
-                    startDateArr!![3].toInt(),
-                    startDateArr!![4].toInt(),
-                    startDateArr!![5].toInt()
-                )
-            }
-            if (endDateArr != null) {
-                AddScheduleInfo.endCal.set(
-                    endDateArr!![0].toInt(),
-                    endDateArr!![1].toInt(),
-                    endDateArr!![2].toInt(),
-                    endDateArr!![3].toInt(),
-                    endDateArr!![4].toInt(),
-                    endDateArr!![5].toInt()
-                )
-            }
         }
-
-
-
 
         val addscheduleIcon = findViewById<ImageView>(R.id.addschedule_icon)
         colorSetting(addscheduleIcon)
@@ -495,18 +566,18 @@ class ModifyScheduleActivity : AppCompatActivity() {
         if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text = ""
         } else if (AddScheduleInfo.invitersNumber == 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
-            inviters.text = AddScheduleInfo.inviteMembers[0].nickname
+            inviters.text = AddScheduleInfo.invitedMembers[0].nickname
         } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 1) {
-            inviters.text = AddScheduleInfo.inviteGroups[0].nickname
+            inviters.text = AddScheduleInfo.invitedMembers[0].nickname
         } else if (AddScheduleInfo.invitersNumber > 1 && AddScheduleInfo.inviteGroupsNumber == 0) {
             inviters.text =
-                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + (AddScheduleInfo.invitersNumber - 1).toString() + "명"
+                AddScheduleInfo.invitedMembers[0].nickname + " 외 " + (AddScheduleInfo.invitersNumber - 1).toString() + "명"
         } else if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber > 1) {
             inviters.text =
-                AddScheduleInfo.inviteGroups[0].nickname + " 외 " + (AddScheduleInfo.allGroupMembersNumber - AddScheduleInfo.inviteGroups[0].isFav).toString() + "명"
+                AddScheduleInfo.invitedMembers[0].nickname + " 외 " + (AddScheduleInfo.allGroupMembersNumber - AddScheduleInfo.inviteGroups[0].isFav).toString() + "명"
         } else {
             inviters.text =
-                AddScheduleInfo.inviteMembers[0].nickname + " 외 " + ((AddScheduleInfo.invitersNumber - 1) + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
+                AddScheduleInfo.invitedMembers[0].nickname + " 외 " + ((AddScheduleInfo.invitersNumber - 1) + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
         }
         val to_invite_button = findViewById<ConstraintLayout>(R.id.to_invite_button)
         to_invite_button.setOnClickListener(View.OnClickListener {

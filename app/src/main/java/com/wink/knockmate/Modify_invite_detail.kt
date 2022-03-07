@@ -41,7 +41,6 @@ class Modify_invite_detail : AppCompatActivity() {
         for (i in 0 until AddScheduleInfo.inviteMembers.size) {
             tempInvitedList.add(AddScheduleInfo.inviteMembers[i].copy())
         }
-        Log.v("test6", tempInvitedList.toString())
 
         val okButton = findViewById<TextView>(R.id.invite_ok_button)
         val backButton = findViewById<View>(R.id.back_button)
@@ -58,6 +57,9 @@ class Modify_invite_detail : AppCompatActivity() {
             InviteData.fixGroups = mutableListOf()
             InviteData.fixUsers.addAll(AddScheduleInfo.inviteMembers)
             InviteData.fixGroups.addAll(AddScheduleInfo.inviteGroups)
+            InviteData.userNum = AddScheduleInfo.invitersNumber
+            InviteData.groupNum = AddScheduleInfo.inviteGroupsNumber
+            InviteData.allGroupNum = AddScheduleInfo.allGroupMembersNumber
             val intent = Intent(this, Modify_invite::class.java)
             startActivity(intent)
             finish()
@@ -67,8 +69,9 @@ class Modify_invite_detail : AppCompatActivity() {
             if (InviteData.fixUsers.size == 0 && InviteData.fixGroups.size == 0) {
                 AddScheduleInfo.inviteMembers = mutableListOf()
                 AddScheduleInfo.inviteGroups = mutableListOf()
-                AddScheduleInfo.inviteGroupsNumber = 0
-                AddScheduleInfo.invitersNumber = 0
+                AddScheduleInfo.inviteGroupsNumber = InviteData.groupNum
+                AddScheduleInfo.invitersNumber = InviteData.userNum
+                AddScheduleInfo.allGroupMembersNumber = InviteData.allGroupNum
                 for (i in 0 until AddScheduleInfo.followerList.size) {
                     AddScheduleInfo.followerList[i].invite = false
                 }
@@ -79,8 +82,9 @@ class Modify_invite_detail : AppCompatActivity() {
                 AddScheduleInfo.inviteMembers = mutableListOf()
                 AddScheduleInfo.inviteGroups = mutableListOf()
                 AddScheduleInfo.inviteMembers.addAll(InviteData.fixUsers)
-                AddScheduleInfo.inviteGroupsNumber = 0
-                AddScheduleInfo.invitersNumber = InviteData.fixUsers.size
+                AddScheduleInfo.inviteGroupsNumber = InviteData.groupNum
+                AddScheduleInfo.invitersNumber = InviteData.userNum
+                AddScheduleInfo.allGroupMembersNumber = InviteData.allGroupNum
                 val tempNumbers1 = mutableListOf(-1)
                 for (i in 0 until InviteData.fixUsers.size) {
                     InviteData.fixUsers[i].sequence?.let { it1 ->
@@ -101,8 +105,9 @@ class Modify_invite_detail : AppCompatActivity() {
                 AddScheduleInfo.inviteMembers = mutableListOf()
                 AddScheduleInfo.inviteGroups = mutableListOf()
                 AddScheduleInfo.inviteGroups.addAll(InviteData.fixGroups)
-                AddScheduleInfo.inviteGroupsNumber = InviteData.fixGroups.size
-                AddScheduleInfo.invitersNumber = 0
+                AddScheduleInfo.inviteGroupsNumber = InviteData.groupNum
+                AddScheduleInfo.invitersNumber = InviteData.userNum
+                AddScheduleInfo.allGroupMembersNumber = InviteData.allGroupNum
                 val tempNumbers2 = mutableListOf(-1)
                 for (i in 0 until InviteData.fixGroups.size) {
                     InviteData.fixGroups[i].sequence?.let { it1 ->
@@ -124,8 +129,9 @@ class Modify_invite_detail : AppCompatActivity() {
                 AddScheduleInfo.inviteGroups = mutableListOf()
                 AddScheduleInfo.inviteGroups.addAll(InviteData.fixGroups)
                 AddScheduleInfo.inviteMembers.addAll(InviteData.fixUsers)
-                AddScheduleInfo.inviteGroupsNumber = InviteData.fixGroups.size
-                AddScheduleInfo.invitersNumber = InviteData.fixUsers.size
+                AddScheduleInfo.inviteGroupsNumber = InviteData.groupNum
+                AddScheduleInfo.invitersNumber = InviteData.userNum
+                AddScheduleInfo.allGroupMembersNumber = InviteData.allGroupNum
                 val tempNumbers1 = mutableListOf(-1)
                 val tempNumbers2 = mutableListOf(-1)
                 for (i in 0 until InviteData.fixUsers.size) {
@@ -175,14 +181,16 @@ class Modify_invite_detail : AppCompatActivity() {
                     inviteList.apply {
                         inviteList.add(AddScheduleInfo.followerList[pos])
                     }
-                    invitedBoolean = inviteList.size >= 1
+                    invitedBoolean =
+                        AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                 } else {
                     AddScheduleInfo.invitersNumber--
                     inviteList.apply {
                         AddScheduleInfo.inviteMembers.remove(AddScheduleInfo.followerList[pos].copy())
                         inviteList.remove(AddScheduleInfo.followerList[pos])
                     }
-                    invitedBoolean = inviteList.size >= 1
+                    invitedBoolean =
+                        AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                     AddScheduleInfo.followerList[pos].invite = v.isChecked
                 }
                 if (invitedBoolean) {
@@ -192,7 +200,6 @@ class Modify_invite_detail : AppCompatActivity() {
                 }
                 invitedAdapter.datas = inviteList
                 invitedAdapter.notifyDataSetChanged()
-                Log.v("test", inviteList.toString())
             }
         })
 
@@ -203,22 +210,22 @@ class Modify_invite_detail : AppCompatActivity() {
                 if (v.isChecked) {
                     AddScheduleInfo.groupList[pos].invite = v.isChecked
                     AddScheduleInfo.inviteGroupsNumber++
+                    AddScheduleInfo.allGroupMembersNumber += data.members
                     AddScheduleInfo.inviteGroups.add(AddScheduleInfo.groupList[pos].copy())
                     inviteList.apply {
                         inviteList.add(AddScheduleInfo.groupList[pos])
                     }
-                    if (inviteList.size >= 1) {
-                        invitedBoolean = true
-                    }
+                    invitedBoolean =
+                        AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                 } else {
                     AddScheduleInfo.inviteGroupsNumber--
+                    AddScheduleInfo.allGroupMembersNumber -= data.members
                     inviteList.apply {
                         AddScheduleInfo.inviteGroups.remove(AddScheduleInfo.groupList[pos].copy())
                         inviteList.remove(AddScheduleInfo.groupList[pos])
                     }
-                    if (inviteList.size == 0) {
-                        invitedBoolean = false
-                    }
+                    invitedBoolean =
+                        AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                     AddScheduleInfo.groupList[pos].invite = v.isChecked
                 }
                 if (invitedBoolean) {
@@ -228,6 +235,7 @@ class Modify_invite_detail : AppCompatActivity() {
                 }
                 invitedAdapter.datas = inviteList
                 invitedAdapter.notifyDataSetChanged()
+                Log.v("GN", AddScheduleInfo.allGroupMembersNumber.toString())
             }
         })
 
@@ -235,14 +243,28 @@ class Modify_invite_detail : AppCompatActivity() {
             Addschedule_invited_item_Adapter.OnDeleteButtonClickListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onDeleteButtonClick(v: TextView, data: UserModel, pos: Int) {
-                AddScheduleInfo.followerList[data.sequence!!].invite = false
-                itemAdapter.datas = AddScheduleInfo.followerList
-                itemAdapter.notifyDataSetChanged()
-                AddScheduleInfo.inviteMembers.remove(data)
-                inviteList.remove(data)
-                invitedAdapter.datas = inviteList
-                invitedAdapter.notifyDataSetChanged()
-                invitedBoolean = false
+                if (data.user) {
+                    AddScheduleInfo.followerList[data.sequence!!].invite = false
+                    itemAdapter.datas = AddScheduleInfo.followerList
+                    itemAdapter.notifyDataSetChanged()
+                    AddScheduleInfo.inviteMembers.remove(data)
+                    AddScheduleInfo.invitersNumber--
+                    inviteList.remove(data)
+                    invitedAdapter.datas = inviteList
+                    invitedAdapter.notifyDataSetChanged()
+                } else {
+                    AddScheduleInfo.groupList[data.sequence!!].invite = false
+                    groupAdapter.datas = AddScheduleInfo.groupList
+                    groupAdapter.notifyDataSetChanged()
+                    AddScheduleInfo.inviteGroups.remove(data)
+                    AddScheduleInfo.inviteGroupsNumber--
+                    AddScheduleInfo.allGroupMembersNumber -= data.members
+                    inviteList.remove(data)
+                    invitedAdapter.datas = inviteList
+                    invitedAdapter.notifyDataSetChanged()
+                }
+                invitedBoolean =
+                    AddScheduleInfo.inviteGroups.size + AddScheduleInfo.inviteMembers.size > 0
                 if (!invitedBoolean) {
                     invited_recycler.visibility = View.GONE
                 }
@@ -276,7 +298,7 @@ class Modify_invite_detail : AppCompatActivity() {
         invitedAdapter =
             Addschedule_invited_item_Adapter(applicationContext)
         invited_recycler.adapter = invitedAdapter
-        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
+        if (AddScheduleInfo.inviteMembers.size == 0 && AddScheduleInfo.inviteGroups.size == 0) {
             invited_recycler.visibility = View.GONE
         } else {
             invited_recycler.visibility = View.VISIBLE
@@ -302,7 +324,7 @@ class Modify_invite_detail : AppCompatActivity() {
         } else {
             invited_gray_recycler.visibility = View.VISIBLE
         }
-        invitedGrayAdapter.datas = inviteGrayList
+        invitedGrayAdapter.datas = AddScheduleInfo.invitedMembers
         invitedGrayAdapter.notifyDataSetChanged()
     }
 
