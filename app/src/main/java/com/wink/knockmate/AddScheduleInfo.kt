@@ -41,7 +41,7 @@ class AddScheduleInfo {
                 startCal.add(Calendar.HOUR, 1)
                 endCal.add(Calendar.HOUR, 2)
                 startCal.set(Calendar.MINUTE, 0)
-                endCal.add(Calendar.MINUTE, 0)
+                endCal.set(Calendar.MINUTE, 0)
             } else if (startCal.get(Calendar.MINUTE) % 5 != 0) {
                 startCal.set(
                     Calendar.MINUTE,
@@ -57,11 +57,17 @@ class AddScheduleInfo {
             }
         }
 
-        fun settingStartCal(dateTime: Calendar) {
-            startCal = dateTime
+        fun settingStartCal() {
             if (getIgnoredSecond(endCal.timeInMillis) - getIgnoredSecond(startCal.timeInMillis) > 0) {
                 endCal = startCal
                 endCal.add(Calendar.HOUR, 1)
+            }
+        }
+
+        fun settingEndCal() {
+            if (getIgnoredSecond(endCal.timeInMillis) - getIgnoredSecond(startCal.timeInMillis) > 0) {
+                startCal = endCal
+                startCal.add(Calendar.HOUR, -1)
             }
         }
 

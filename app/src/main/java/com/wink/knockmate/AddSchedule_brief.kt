@@ -234,29 +234,29 @@ class AddSchedule_brief : Fragment() {
     }
 
     private fun colorSetting(v: ImageView) {
-        if (AddScheduleInfo.color == 1) {
+        if (AddScheduleInfo.color == 0) {
             Glide.with(this).load(R.drawable.color1).into(v)
-        } else if (AddScheduleInfo.color == 2) {
+        } else if (AddScheduleInfo.color == 1) {
             Glide.with(this).load(R.drawable.color2).into(v)
-        } else if (AddScheduleInfo.color == 3) {
+        } else if (AddScheduleInfo.color == 2) {
             Glide.with(this).load(R.drawable.color3).into(v)
-        } else if (AddScheduleInfo.color == 4) {
+        } else if (AddScheduleInfo.color == 3) {
             Glide.with(this).load(R.drawable.color4).into(v)
-        } else if (AddScheduleInfo.color == 5) {
+        } else if (AddScheduleInfo.color == 4) {
             Glide.with(this).load(R.drawable.color5).into(v)
-        } else if (AddScheduleInfo.color == 6) {
+        } else if (AddScheduleInfo.color == 5) {
             Glide.with(this).load(R.drawable.color6).into(v)
-        } else if (AddScheduleInfo.color == 7) {
+        } else if (AddScheduleInfo.color == 6) {
             Glide.with(this).load(R.drawable.color7).into(v)
-        } else if (AddScheduleInfo.color == 8) {
+        } else if (AddScheduleInfo.color == 7) {
             Glide.with(this).load(R.drawable.color8).into(v)
-        } else if (AddScheduleInfo.color == 9) {
+        } else if (AddScheduleInfo.color == 8) {
             Glide.with(this).load(R.drawable.color9).into(v)
-        } else if (AddScheduleInfo.color == 10) {
+        } else if (AddScheduleInfo.color == 9) {
             Glide.with(this).load(R.drawable.color10).into(v)
-        } else if (AddScheduleInfo.color == 11) {
+        } else if (AddScheduleInfo.color == 10) {
             Glide.with(this).load(R.drawable.color11).into(v)
-        } else if (AddScheduleInfo.color == 12) {
+        } else if (AddScheduleInfo.color == 11) {
             Glide.with(this).load(R.drawable.color12).into(v)
         }
     }

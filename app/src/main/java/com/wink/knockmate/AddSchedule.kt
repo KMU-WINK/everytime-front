@@ -31,7 +31,7 @@ class AddSchedule : BottomSheetDialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val pref = activity?.getSharedPreferences("loginInfo", MODE_PRIVATE)
+        val pref = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
         val email = pref?.getString("email", "").toString()
         AddScheduleInfo.reset()
         val bundle = arguments
@@ -159,8 +159,6 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 i,
                                                 false,
                                                 true,
-                                                1,
-                                                resTemp.getJSONObject(i).getInt("isFav")
                                             )
                                         )
                                     }
@@ -355,8 +353,6 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 i,
                                                 true,
                                                 true,
-                                                1,
-                                                resTemp.getJSONObject(i).getInt("isFav")
                                             )
                                         )
                                         AddScheduleInfo.priorInviteGroupsNumber++
@@ -370,8 +366,6 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 i,
                                                 true,
                                                 true,
-                                                1,
-                                                resTemp.getJSONObject(i).getInt("isFav")
                                             )
                                         )
                                         AddScheduleInfo.groupList.add(
@@ -383,8 +377,6 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 i,
                                                 true,
                                                 true,
-                                                1,
-                                                resTemp.getJSONObject(i).getInt("isFav")
                                             )
                                         )
                                     } else {
@@ -420,8 +412,6 @@ class AddSchedule : BottomSheetDialogFragment() {
 
         val transition = Fade()
         transition.duration = 200
-
-        val frame = view.findViewById<FrameLayout>(R.id.addschedule_frame)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
 
@@ -465,18 +455,6 @@ class AddSchedule : BottomSheetDialogFragment() {
                     AddScheduleInfo.brief = false
                 }
                 if (BottomSheetBehavior.STATE_DRAGGING == newState) {
-//                    if (brief.visibility == View.VISIBLE) {
-////                        transition.addTarget(R.id.detail_frame)
-////                        TransitionManager.beginDelayedTransition(brief, transition)
-////                        brief.visibility = View.INVISIBLE
-////                        detail.visibility = View.VISIBLE
-//                    } else if (detail.visibility == View.VISIBLE) {
-////                        transition.addTarget(R.id.brief_frame)
-////                        TransitionManager.beginDelayedTransition(detail, transition)
-////                        brief.visibility = View.VISIBLE
-////                        detail.visibility = View.INVISIBLE
-////                        frame.visibility = View.INVISIBLE
-//                    }
                 }
             }
 

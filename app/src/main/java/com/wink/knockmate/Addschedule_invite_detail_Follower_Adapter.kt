@@ -76,9 +76,65 @@ class Addschedule_invite_detail_Follower_Adapter :
                 arrow.visibility = View.VISIBLE
             }
             if (item.nickname != null && !item.user) {
-                followerName.text = item.nickname + " (" + item.isFav + "명)"
+                val client = OkHttpClient().newBuilder()
+                    .build()
+                val request3: Request = Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
+                    .get()
+                    .build()
+                client.newCall(request3).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log6", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    val res = JSONObject(response.body()?.string())
+                                    val resTemp = res.getJSONArray("data")
+                                    followerName.setText(
+                                        item.nickname + " (" + resTemp.length().toString() + "명)"
+                                    )
+                                } else if (response.code() == 201) {
+                                } else {
+                                }
+                            }
+                        }.run()
+                    }
+                })
             } else if (item.nickname == null && !item.user) {
-                followerName.text = item.id + " (" + item.isFav + "명)"
+                val client = OkHttpClient().newBuilder()
+                    .build()
+                val request3: Request = Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
+                    .get()
+                    .build()
+                client.newCall(request3).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log6", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    val res = JSONObject(response.body()?.string())
+                                    val resTemp = res.getJSONArray("data")
+                                    followerName.setText(
+                                        item.id + " (" + resTemp.length().toString() + "명)"
+                                    )
+                                } else if (response.code() == 201) {
+                                } else {
+                                }
+                            }
+                        }.run()
+                    }
+                })
             }
             if (item.nickname != null && item.user) {
                 followerName.text = item.nickname

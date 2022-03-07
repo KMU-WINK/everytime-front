@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -34,7 +31,7 @@ class AddSchedule_invite : Fragment() {
         val view = inflater.inflate(R.layout.addschedule_invite, container, false)
 
         val okButton = view.findViewById<TextView>(R.id.invite_ok_button)
-        val backButton = view.findViewById<View>(R.id.back_button)
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
         val inviteTitle = view.findViewById<TextView>(R.id.invite_title)
         val inviteButton = view.findViewById<LinearLayout>(R.id.invite_button)
         groupInviteView = view.findViewById(R.id.group_recycler)
@@ -42,14 +39,8 @@ class AddSchedule_invite : Fragment() {
         groupFrame = view.findViewById(R.id.groups_frame)
         userFrame = view.findViewById(R.id.knockmates_frame)
 
-        var inviterTemp = AddScheduleInfo.invitersNumber
-
-        for (i in 0 until AddScheduleInfo.inviteGroups.size) {
-            inviterTemp += AddScheduleInfo.inviteGroups[i].isFav
-            AddScheduleInfo.allGroupMembersNumber += AddScheduleInfo.inviteGroups[i].isFav
-        }
-
-        inviteTitle.text = "초대 " + inviterTemp.toString() + "명"
+        inviteTitle.text =
+            "초대 " + (AddScheduleInfo.invitersNumber + AddScheduleInfo.allGroupMembersNumber).toString() + "명"
 
         okButton.setOnClickListener {
             AddScheduleInfo.priorInviteMembers = mutableListOf()
@@ -192,10 +183,5 @@ class AddSchedule_invite : Fragment() {
         if (AddScheduleInfo.inviteGroups.size >= 1) {
             groupFrame.visibility = View.VISIBLE
         }
-
-//        userAdapter.datas = userInviteList
-//        userAdapter.notifyDataSetChanged()
-//        groupAdapter.datas = groupInviteList
-//        groupAdapter.notifyDataSetChanged()
     }
 }

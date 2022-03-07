@@ -230,7 +230,7 @@ class AddSchedule_repeat_detail : Fragment() {
                 ?.commit()
         })
 
-        val backButton = view.findViewById<View>(R.id.back_button)
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
         backButton.setOnClickListener {
             if (boolean) {
                 AddScheduleInfo.repeatDetailType = tempRepeatType

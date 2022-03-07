@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -31,7 +32,7 @@ class AddSchedule_repeat : Fragment() {
         val everyYear = view.findViewById<ConstraintLayout>(R.id.repeat_everyyear)
         val custom = view.findViewById<ConstraintLayout>(R.id.repeat_custom)
 
-        val backButton = view.findViewById<View>(R.id.back_button)
+        val backButton = view.findViewById<ImageView>(R.id.back_button)
         val saveButton = view.findViewById<TextView>(R.id.repeat_save_button)
 
         val noRepeatCheck = view.findViewById<CheckBox>(R.id.repeat_no_check)

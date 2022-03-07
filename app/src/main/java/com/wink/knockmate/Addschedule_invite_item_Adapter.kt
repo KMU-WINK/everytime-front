@@ -1,5 +1,6 @@
 package com.wink.knockmate
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,7 +33,7 @@ class Addschedule_invite_item_Adapter :
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val image = itemView.findViewById<ImageView>(R.id.profile_image)
-        private val name = itemView.findViewById<TextView>(R.id.profile_name)
+        private val nameView = itemView.findViewById<TextView>(R.id.profile_name)
 
         fun bind(item: UserModel) {
             var tempQuery = ""
@@ -75,14 +76,70 @@ class Addschedule_invite_item_Adapter :
             }
 
             if (item.nickname != null && !item.user) {
-                name.text = item.nickname + " (" + item.isFav + "명)"
+                val client = OkHttpClient().newBuilder()
+                    .build()
+                val request3: Request = Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
+                    .get()
+                    .build()
+                client.newCall(request3).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log6", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    val res = JSONObject(response.body()?.string())
+                                    val resTemp = res.getJSONArray("data")
+                                    nameView.setText(
+                                        item.nickname + " (" + resTemp.length().toString() + "명)"
+                                    )
+                                } else if (response.code() == 201) {
+                                } else {
+                                }
+                            }
+                        }.run()
+                    }
+                })
             } else if (item.nickname == null && !item.user) {
-                name.text = item.id + " (" + item.isFav + "명)"
+                val client = OkHttpClient().newBuilder()
+                    .build()
+                val request3: Request = Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
+                    .get()
+                    .build()
+                client.newCall(request3).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        Log.d("log6", e.message.toString())
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        object : Thread() {
+                            @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+                            override fun run() {
+                                if (response.code() == 200) {
+                                    val res = JSONObject(response.body()?.string())
+                                    val resTemp = res.getJSONArray("data")
+                                    nameView.setText(
+                                        item.id + " (" + resTemp.length().toString() + "명)"
+                                    )
+                                } else if (response.code() == 201) {
+                                } else {
+                                }
+                            }
+                        }.run()
+                    }
+                })
             }
             if (item.nickname != null && item.user) {
-                name.text = item.nickname
+                nameView.text = item.nickname
             } else if (item.nickname == null && item.user) {
-                name.text = item.id
+                nameView.text = item.id
             }
         }
     }
