@@ -1,12 +1,14 @@
 package com.wink.knockmate
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.w3c.dom.Text
@@ -58,6 +60,18 @@ class Search_FollowGroup_Adapter(private val context: Context) :
             itemView.findViewById<ImageButton>(R.id.search_item_follow).visibility = View.GONE
             itemView.findViewById<ImageView>(R.id.search_item_follow_back).visibility = View.GONE
             itemView.findViewById<TextView>(R.id.search_item_follow_text).visibility = View.GONE
+
+            itemView.setOnClickListener {
+                val intt = Intent(
+                    itemView.context,
+                    KnockmateActivity::class.java
+                )
+                intt.putExtra(
+                    "groupid",
+                    item.nickname
+                )
+                itemView.context.startActivity(intt)
+            }
 
             if (item.nickname != null) {
                 followerName.text = item.nickname

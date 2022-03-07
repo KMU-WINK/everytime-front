@@ -36,7 +36,7 @@ class AddSchedule_brief : Fragment() {
         val startTimeText_brief = view.findViewById<TextView>(R.id.brief_start_time)
         val endTimeText_brief = view.findViewById<TextView>(R.id.brief_end_time)
         val startCal = AddScheduleInfo.startCal
-        val endCal = AddScheduleInfo.startCal
+        val endCal = AddScheduleInfo.endCal
         val icon = view.findViewById<ImageView>(R.id.icon)
 
         startDateText_brief.text =
@@ -56,12 +56,12 @@ class AddSchedule_brief : Fragment() {
                 )
             )
         endTimeText_brief.text =
-            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR) + 1) + ":" + calSetting(
+            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
                 endCal.get(
                     Calendar.MINUTE
                 )
             )
-            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR) + 1) + ":" + calSetting(
+            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
                 endCal.get(
                     Calendar.MINUTE
                 )

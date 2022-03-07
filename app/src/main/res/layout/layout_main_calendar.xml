@@ -1,5 +1,4 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -364,7 +363,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <FrameLayout
+                android:id="@+id/main_calendar_frame"
                 android:layout_width="330dp"
+                android:focusable="true"
+                android:clickable="true"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -377,12 +379,16 @@
                 <TableLayout
                     android:id="@+id/main_calendar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
 
-                    <TableRow>
+                    <TableRow
+                        android:clipChildren="false"
+                        android:clipToPadding="false">
 
                         <ImageView
-                            android:layout_width="45dp"
+                            android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:layout_column="0" />
 
@@ -414,6 +420,11 @@
                             android:layout_width="45dp"
                             android:layout_height="0dp"
                             android:layout_column="6" />
+
+                        <ImageView
+                            android:layout_width="45dp"
+                            android:layout_height="0dp"
+                            android:layout_column="7" />
                     </TableRow>
 
                 </TableLayout>

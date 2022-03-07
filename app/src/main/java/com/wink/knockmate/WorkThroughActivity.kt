@@ -2,18 +2,16 @@ package com.wink.knockmate
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.*
-import android.widget.TextView
-import androidx.core.view.marginLeft
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import kotlinx.android.synthetic.main.activity_work_through.*
-import java.util.*
+
 
 class WorkThroughActivity : AppCompatActivity() {
     inner class WorkThroughAdapter(private val context: Context) :
@@ -30,7 +28,8 @@ class WorkThroughActivity : AppCompatActivity() {
         override fun getItemCount(): Int = 4
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.itemView.translationX = (-360 * position).toFloat()
+            holder.itemView.translationX =
+                (-resources.displayMetrics.widthPixels * position).toFloat()
         }
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

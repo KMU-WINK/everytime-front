@@ -67,7 +67,6 @@
         android:gravity="top"
         android:hint="일정 제목을 적어주세요"
         android:lineSpacingExtra="0sp"
-        android:text="일정 제목"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"

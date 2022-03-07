@@ -30,16 +30,13 @@ class AddSchedule : BottomSheetDialogFragment() {
     @SuppressLint("CommitPrefEdits")
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        val pref = activity?.getSharedPreferences("loginInfo", MODE_PRIVATE)
+        val email = pref?.getString("email", "").toString()
         AddScheduleInfo.reset()
         val bundle = arguments
         val args = bundle?.getString("ScheduleType")
         if (args == "ADD") {
-            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
-            val email = prefUser?.getString("email", "email")
-            prefUser?.getString(
-                "email",
-                "email"
-            )?.let { Log.v("test", it) }
             val client = OkHttpClient().newBuilder()
                 .build()
             val request: Request = Request.Builder()
@@ -176,12 +173,22 @@ class AddSchedule : BottomSheetDialogFragment() {
                 }
             })
         } else if (args == "KNOCK") {
-            val prefUser = activity?.getSharedPreferences("LoginInfo", MODE_PRIVATE)
-            val email = prefUser?.getString("email", "email")
-            prefUser?.getString(
-                "email",
-                "email"
-            )?.let { Log.v("test", it) }
+            var startDate = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+            var startDateString = bundle?.getString("startDate")
+            startDate.set(Calendar.DAY_OF_MONTH, startDateString!!.split(" ")[0].split("-")[2].toInt())
+            startDate.set(Calendar.MONTH, startDateString!!.split(" ")[0].split("-")[1].toInt())
+            startDate.set(Calendar.HOUR, startDateString!!.split(" ")[1].split(":")[0].toInt())
+            startDate.set(Calendar.MINUTE, 0)
+            startDate.set(Calendar.SECOND, 0)
+            var endDate = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
+            var endDateString = bundle?.getString("endDate")
+            endDate.set(Calendar.DAY_OF_MONTH, endDateString!!.split(" ")[0].split("-")[2].toInt())
+            endDate.set(Calendar.MONTH, endDateString!!.split(" ")[0].split("-")[1].toInt())
+            endDate.set(Calendar.HOUR, endDateString!!.split(" ")[1].split(":")[0].toInt() + 1)
+            endDate.set(Calendar.MINUTE, 0)
+            endDate.set(Calendar.SECOND, 0)
+            AddScheduleInfo.startCal = startDate
+            AddScheduleInfo.endCal = endDate
             val client = OkHttpClient().newBuilder()
                 .build()
             val request: Request = Request.Builder()
@@ -212,29 +219,30 @@ class AddSchedule : BottomSheetDialogFragment() {
                                     AddScheduleInfo.color = resTemp.getJSONObject(0).getInt("color")
                                 } catch (e: Exception) {
                                     dismiss()
-                                    Toast
+
+                                    /*Toast
                                         .makeText(
                                             context,
                                             "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
                                             Toast.LENGTH_LONG
                                         )
-                                        .show()
+                                        .show()*/
                                 }
                             } else {
                                 dismiss()
-                                Toast
+                                /*Toast
                                     .makeText(
                                         context,
                                         "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
                                         Toast.LENGTH_LONG
                                     )
-                                    .show()
+                                    .show()*/
                             }
                         }
                     }.run()
                 }
             })
-            AddScheduleInfo.resetStartCal()
+            //AddScheduleInfo.resetStartCal()
             AddScheduleInfo.startDay = dayOfWeek(AddScheduleInfo.startCal.get(Calendar.DAY_OF_WEEK))
             AddScheduleInfo.endDay = dayOfWeek(AddScheduleInfo.endCal.get(Calendar.DAY_OF_WEEK))
 

@@ -236,7 +236,7 @@ class EditProfileActivity : AppCompatActivity(), BottomSheetFragment_settings.On
         if (inImage != null) {
             inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         }
-        val path = MediaStore.Images.Media.insertImage(inContext?.getContentResolver(), inImage, "Title" + " - " + Calendar.getInstance().getTime(), null)
+        val path = MediaStore.Images.Media.insertImage(inContext?.getContentResolver(), inImage, "Title" + " - " + Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA).getTime(), null)
         return Uri.parse(path)
     }
 
