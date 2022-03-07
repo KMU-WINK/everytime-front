@@ -32,6 +32,7 @@ class AddScheduleInfo {
         var priorInvitersNumber: Int = 0
         var priorInviteGroupsNumber: Int = 0
         var allGroupMembersNumber: Int = 0
+        var priorAllGroupMembersNumber: Int = 0
         var invitedMembers = mutableListOf<UserModel>()
 
         fun resetStartCal() {

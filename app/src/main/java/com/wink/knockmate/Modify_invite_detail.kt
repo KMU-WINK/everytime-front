@@ -175,18 +175,14 @@ class Modify_invite_detail : AppCompatActivity() {
                     inviteList.apply {
                         inviteList.add(AddScheduleInfo.followerList[pos])
                     }
-                    if (inviteList.size >= 1) {
-                        invitedBoolean = true
-                    }
+                    invitedBoolean = inviteList.size >= 1
                 } else {
                     AddScheduleInfo.invitersNumber--
                     inviteList.apply {
                         AddScheduleInfo.inviteMembers.remove(AddScheduleInfo.followerList[pos].copy())
                         inviteList.remove(AddScheduleInfo.followerList[pos])
                     }
-                    if (inviteList.size == 0) {
-                        invitedBoolean = false
-                    }
+                    invitedBoolean = inviteList.size >= 1
                     AddScheduleInfo.followerList[pos].invite = v.isChecked
                 }
                 if (invitedBoolean) {
@@ -196,6 +192,7 @@ class Modify_invite_detail : AppCompatActivity() {
                 }
                 invitedAdapter.datas = inviteList
                 invitedAdapter.notifyDataSetChanged()
+                Log.v("test", inviteList.toString())
             }
         })
 

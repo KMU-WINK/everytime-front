@@ -155,13 +155,48 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 resTemp.getJSONObject(i).getString("id"),
                                                 resTemp.getJSONObject(i).getString("nickname"),
                                                 false,
-                                                "test",
+                                                "",
                                                 i,
                                                 false,
                                                 true,
                                             )
                                         )
                                     }
+                                }
+                                for (i in 0 until AddScheduleInfo.groupList.size) {
+                                    val temp = AddScheduleInfo.groupList[i].id
+                                    val client2 = OkHttpClient().newBuilder()
+                                        .build()
+                                    val request5: Request = Request.Builder()
+                                        .addHeader(
+                                            "Content-Type",
+                                            "application/x-www-form-urlencoded"
+                                        )
+                                        .url("http://3.35.146.57:3000/groupuserlist?groupid=${temp}")
+                                        .get()
+                                        .build()
+                                    client2.newCall(request5).enqueue(object : Callback {
+                                        override fun onFailure(call: Call, e: IOException) {
+                                            Log.d("log6", e.message.toString())
+                                        }
+
+                                        override fun onResponse(call: Call, response: Response) {
+                                            object : Thread() {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                override fun run() {
+                                                    if (response.code() == 200) {
+                                                        val res =
+                                                            JSONObject(response.body()?.string())
+                                                        val resTemp = res.getJSONArray("data")
+                                                        AddScheduleInfo.groupList[i].members =
+                                                            resTemp.length()
+                                                    } else if (response.code() == 201) {
+                                                    } else {
+                                                    }
+                                                }
+                                            }.run()
+                                        }
+                                    })
                                 }
                             } else if (response.code() == 201) {
                             } else {
@@ -173,7 +208,10 @@ class AddSchedule : BottomSheetDialogFragment() {
         } else if (args == "KNOCK") {
             var startDate = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"), Locale.KOREA)
             var startDateString = bundle?.getString("startDate")
-            startDate.set(Calendar.DAY_OF_MONTH, startDateString!!.split(" ")[0].split("-")[2].toInt())
+            startDate.set(
+                Calendar.DAY_OF_MONTH,
+                startDateString!!.split(" ")[0].split("-")[2].toInt()
+            )
             startDate.set(Calendar.MONTH, startDateString!!.split(" ")[0].split("-")[1].toInt())
             startDate.set(Calendar.HOUR, startDateString!!.split(" ")[1].split(":")[0].toInt())
             startDate.set(Calendar.MINUTE, 0)
@@ -217,24 +255,9 @@ class AddSchedule : BottomSheetDialogFragment() {
                                     AddScheduleInfo.color = resTemp.getJSONObject(0).getInt("color")
                                 } catch (e: Exception) {
                                     dismiss()
-
-                                    /*Toast
-                                        .makeText(
-                                            context,
-                                            "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                            Toast.LENGTH_LONG
-                                        )
-                                        .show()*/
                                 }
                             } else {
                                 dismiss()
-                                /*Toast
-                                    .makeText(
-                                        context,
-                                        "유저 정보를 가져올 수 없습니다. 다시 시도해주세요.",
-                                        Toast.LENGTH_LONG
-                                    )
-                                    .show()*/
                             }
                         }
                     }.run()
@@ -385,13 +408,47 @@ class AddSchedule : BottomSheetDialogFragment() {
                                                 resTemp.getJSONObject(i).getString("id"),
                                                 resTemp.getJSONObject(i).getString("nickname"),
                                                 false,
-                                                "test",
+                                                "",
                                                 i,
                                             )
                                         )
                                     }
                                 }
-//                                resTemp.getJSONObject(i).getString("email")
+                                for (i in 0 until AddScheduleInfo.groupList.size) {
+                                    val temp = AddScheduleInfo.groupList[i].id
+                                    val client2 = OkHttpClient().newBuilder()
+                                        .build()
+                                    val request5: Request = Request.Builder()
+                                        .addHeader(
+                                            "Content-Type",
+                                            "application/x-www-form-urlencoded"
+                                        )
+                                        .url("http://3.35.146.57:3000/groupuserlist?groupid=${temp}")
+                                        .get()
+                                        .build()
+                                    client2.newCall(request3).enqueue(object : Callback {
+                                        override fun onFailure(call: Call, e: IOException) {
+                                            Log.d("log6", e.message.toString())
+                                        }
+
+                                        override fun onResponse(call: Call, response: Response) {
+                                            object : Thread() {
+                                                @SuppressLint("NotifyDataSetChanged")
+                                                override fun run() {
+                                                    if (response.code() == 200) {
+                                                        val res =
+                                                            JSONObject(response.body()?.string())
+                                                        val resTemp = res.getJSONArray("data")
+                                                        AddScheduleInfo.groupList[i].members =
+                                                            resTemp.length()
+                                                    } else if (response.code() == 201) {
+                                                    } else {
+                                                    }
+                                                }
+                                            }.run()
+                                        }
+                                    })
+                                }
                             } else if (response.code() == 201) {
                             } else {
                             }

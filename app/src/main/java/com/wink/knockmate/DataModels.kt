@@ -10,6 +10,7 @@ data class UserModel(
     var searchAble: Boolean = true,
     var follow: Int = 0,
     var isFav: Int = 0,
+    var members: Int = 1,
 )
 
 data class GroupModel(

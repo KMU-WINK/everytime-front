@@ -166,9 +166,7 @@ class Addschedule_invite_detail : Fragment() {
                     inviteList.apply {
                         inviteList.add(AddScheduleInfo.followerList[pos])
                     }
-                    if (inviteList.size >= 1) {
-                        invitedBoolean = true
-                    }
+                    invitedBoolean = inviteList.size >= 1
 //                    Log.v("test7", tempInvitedList.toString())
                 } else {
                     AddScheduleInfo.invitersNumber--
@@ -176,9 +174,7 @@ class Addschedule_invite_detail : Fragment() {
                         AddScheduleInfo.inviteMembers.remove(AddScheduleInfo.followerList[pos].copy())
                         inviteList.remove(AddScheduleInfo.followerList[pos])
                     }
-                    if (inviteList.size == 0) {
-                        invitedBoolean = false
-                    }
+                    invitedBoolean = inviteList.size >= 1
                     AddScheduleInfo.followerList[pos].invite = v.isChecked
                 }
                 if (invitedBoolean) {
@@ -195,56 +191,23 @@ class Addschedule_invite_detail : Fragment() {
             Addschedule_invite_detail_Follower_Adapter.OnCheckBoxClickListener {
             @SuppressLint("NotifyDataSetChanged")
             override fun onCheckClick(v: CheckBox, data: UserModel, pos: Int) {
-                val client = OkHttpClient().newBuilder()
-                    .build()
-                val request3: Request = Request.Builder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${data.id}")
-                    .get()
-                    .build()
-                client.newCall(request3).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        Log.d("log6", e.message.toString())
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        object : Thread() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun run() {
-                                if (response.code() == 200) {
-                                    val res = JSONObject(response.body()?.string())
-                                    val resTemp = res.getJSONArray("data")
-                                    if (v.isChecked) {
-                                        AddScheduleInfo.allGroupMembersNumber += resTemp.length()
-                                    } else {
-                                        AddScheduleInfo.allGroupMembersNumber -= resTemp.length()
-                                    }
-                                } else if (response.code() == 201) {
-                                } else {
-                                }
-                            }
-                        }.run()
-                    }
-                })
                 if (v.isChecked) {
                     AddScheduleInfo.groupList[pos].invite = v.isChecked
                     AddScheduleInfo.inviteGroupsNumber++
+                    AddScheduleInfo.allGroupMembersNumber += data.members
                     AddScheduleInfo.inviteGroups.add(AddScheduleInfo.groupList[pos].copy())
                     inviteList.apply {
                         inviteList.add(AddScheduleInfo.groupList[pos])
                     }
-                    if (inviteList.size >= 1) {
-                        invitedBoolean = true
-                    }
+                    invitedBoolean = inviteList.size >= 1
                 } else {
                     AddScheduleInfo.inviteGroupsNumber--
+                    AddScheduleInfo.allGroupMembersNumber -= data.members
                     inviteList.apply {
                         AddScheduleInfo.inviteGroups.remove(AddScheduleInfo.groupList[pos].copy())
                         inviteList.remove(AddScheduleInfo.groupList[pos])
                     }
-                    if (inviteList.size == 0) {
-                        invitedBoolean = false
-                    }
+                    invitedBoolean = inviteList.size >= 1
                     AddScheduleInfo.groupList[pos].invite = v.isChecked
                 }
                 if (invitedBoolean) {
@@ -276,7 +239,7 @@ class Addschedule_invite_detail : Fragment() {
                     groupAdapter.notifyDataSetChanged()
                     AddScheduleInfo.inviteGroups.remove(data)
                     AddScheduleInfo.inviteGroupsNumber--
-                    AddScheduleInfo.allGroupMembersNumber -= data.isFav
+                    AddScheduleInfo.allGroupMembersNumber -= data.members
                     inviteList.remove(data)
                     invitedAdapter.datas = inviteList
                     invitedAdapter.notifyDataSetChanged()

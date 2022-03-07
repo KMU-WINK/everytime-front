@@ -49,6 +49,7 @@ class AddSchedule_invite : Fragment() {
             AddScheduleInfo.priorInvitersNumber = AddScheduleInfo.invitersNumber
             AddScheduleInfo.priorInviteGroupsNumber = AddScheduleInfo.inviteGroupsNumber
             AddScheduleInfo.priorInviteGroups.addAll(AddScheduleInfo.inviteGroups)
+            AddScheduleInfo.priorInviteGroupsNumber = AddScheduleInfo.allGroupMembersNumber
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
@@ -89,6 +90,7 @@ class AddSchedule_invite : Fragment() {
             AddScheduleInfo.inviteMembers.addAll(AddScheduleInfo.priorInviteMembers)
             AddScheduleInfo.inviteGroups.addAll(AddScheduleInfo.priorInviteGroups)
             AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
+            AddScheduleInfo.allGroupMembersNumber = AddScheduleInfo.priorAllGroupMembersNumber
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
@@ -140,6 +142,7 @@ class AddSchedule_invite : Fragment() {
                 AddScheduleInfo.inviteMembers.addAll(AddScheduleInfo.priorInviteMembers)
                 AddScheduleInfo.inviteGroups.addAll(AddScheduleInfo.priorInviteGroups)
                 AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
+                AddScheduleInfo.allGroupMembersNumber = AddScheduleInfo.priorAllGroupMembersNumber
                 parentFragment?.childFragmentManager
                     ?.beginTransaction()
                     ?.replace(R.id.addschedule_frame, AddSchedule_detail())

@@ -17,10 +17,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+import java.util.logging.Handler
 
 class Addschedule_invite_detail_Follower_Adapter :
     RecyclerView.Adapter<Addschedule_invite_detail_Follower_Adapter.ViewHolder>() {
     var datas = mutableListOf<UserModel>()
+    var imageboolean = false
 
     interface OnCheckBoxClickListener {
         fun onCheckClick(v: CheckBox, data: UserModel, pos: Int)
@@ -70,71 +72,19 @@ class Addschedule_invite_detail_Follower_Adapter :
 
         @SuppressLint("SetTextI18n")
         fun bind(item: UserModel) {
+            val client = OkHttpClient().newBuilder()
+                .build()
             if (item.user) {
                 arrow.visibility = View.GONE
             } else {
                 arrow.visibility = View.VISIBLE
             }
             if (item.nickname != null && !item.user) {
-                val client = OkHttpClient().newBuilder()
-                    .build()
-                val request3: Request = Request.Builder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
-                    .get()
-                    .build()
-                client.newCall(request3).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        Log.d("log6", e.message.toString())
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        object : Thread() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun run() {
-                                if (response.code() == 200) {
-                                    val res = JSONObject(response.body()?.string())
-                                    val resTemp = res.getJSONArray("data")
-                                    followerName.setText(
-                                        item.nickname + " (" + resTemp.length().toString() + "명)"
-                                    )
-                                } else if (response.code() == 201) {
-                                } else {
-                                }
-                            }
-                        }.run()
-                    }
-                })
+                followerName.text =
+                    item.nickname + " (" + item.members.toString() + "명)"
             } else if (item.nickname == null && !item.user) {
-                val client = OkHttpClient().newBuilder()
-                    .build()
-                val request3: Request = Request.Builder()
-                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                    .url("http://3.35.146.57:3000/groupuserlist?groupid=${item.id}")
-                    .get()
-                    .build()
-                client.newCall(request3).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        Log.d("log6", e.message.toString())
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        object : Thread() {
-                            @SuppressLint("NotifyDataSetChanged")
-                            override fun run() {
-                                if (response.code() == 200) {
-                                    val res = JSONObject(response.body()?.string())
-                                    val resTemp = res.getJSONArray("data")
-                                    followerName.setText(
-                                        item.id + " (" + resTemp.length().toString() + "명)"
-                                    )
-                                } else if (response.code() == 201) {
-                                } else {
-                                }
-                            }
-                        }.run()
-                    }
-                })
+                followerName.text =
+                    item.id + " (" + item.members.toString() + "명)"
             }
             if (item.nickname != null && item.user) {
                 followerName.text = item.nickname
@@ -155,37 +105,43 @@ class Addschedule_invite_detail_Follower_Adapter :
                     }
                 }
             }
+            var tempQuery = ""
+            tempQuery = if (item.email == "") {
+                item.id + "@naver.com"
+            } else {
+                item.email!!
+            }
+            val request: Request = Request.Builder()
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                .url("http://3.35.146.57:3000/picture/${tempQuery}")
+                .get()
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log1", e.message.toString())
+                }
 
-//            val client = OkHttpClient().newBuilder()
-//                .build()
-//            val request: Request = Request.Builder()
-//                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-//                .url("http://3.35.146.57:3000/picture/${item.email}")
-//                .get()
-//                .build()
-//            client.newCall(request).enqueue(object : Callback {
-//                override fun onFailure(call: Call, e: IOException) {
-//                    Log.d("log1", e.message.toString())
-//                }
-//
-//                override fun onResponse(call: Call, response: Response) {
-//                    object : Thread() {
-//                        override fun run() {
-//                            if (response.code() == 200) {
-//                                Glide.with(itemView).load(JSONObject(response.body()?.string()))
-//                                    .transform(CenterCrop(), RoundedCorners(20))
-//                                    .into(followerImage)
-//                            } else {
-//                                Glide.with(itemView).load(R.drawable.profile_default)
-//                                    .into(followerImage)
-//                            }
-//                        }
-//                    }.run()
-//                }
-//            })
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        override fun run() {
+                            if (response.code() == 200) {
+                                Glide.with(itemView).load(JSONObject(response.body()?.string()))
+                                    .transform(CenterCrop(), RoundedCorners(20))
+                                    .into(followerImage)
+                                imageboolean = true
+                            } else {
+                                imageboolean = false
+                            }
+                        }
+                    }.run()
+                }
+            })
 
-            Glide.with(itemView).load(R.drawable.profile_default)
-                .into(followerImage)
+            if (!imageboolean) {
+                Glide.with(itemView).load(R.drawable.profile_default)
+                    .into(followerImage)
+            }
+
             val pos = adapterPosition
             if (pos != RecyclerView.NO_POSITION) {
                 checkbox.setOnClickListener {
