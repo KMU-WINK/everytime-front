@@ -27,19 +27,7 @@ class Addschedule_invite_detail : Fragment() {
     var inviteList = mutableListOf<UserModel>()
     lateinit var invited_recycler: RecyclerView
 
-//    var tempInvitedList = mutableListOf<UserModel>()
-//    private var tempInvitedNumber = 0
-//    private var tempInvitedList2 = mutableListOf<UserModel>()
-
     var invitedBoolean = false
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-//            tempInvitedList.add(AddScheduleInfo.inviteMembers[i].copy())
-//        }
-//        Log.v("test6", tempInvitedList.toString())
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,9 +42,6 @@ class Addschedule_invite_detail : Fragment() {
         invited_recycler = view.findViewById(R.id.to_invite_users)
         group_recycler = view.findViewById(R.id.invite_group_member_recycler)
 
-//        tempInvitedList = AddScheduleInfo.inviteMembers
-//        tempInvitedNumber = AddScheduleInfo.invitersNumber
-
         okButton.setOnClickListener {
             InviteData.fixUsers = mutableListOf()
             InviteData.fixGroups = mutableListOf()
@@ -66,16 +51,7 @@ class Addschedule_invite_detail : Fragment() {
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_invite())
                 ?.commit()
-            Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-            Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-            Log.v("test3", InviteData.fixUsers.toString())
-            Log.v("test4", InviteData.fixGroups.toString())
         }
-
-        Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-        Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-        Log.v("test3", InviteData.fixUsers.toString())
-        Log.v("test4", InviteData.fixGroups.toString())
 
         backButton.setOnClickListener {
             if (InviteData.fixUsers.size == 0 && InviteData.fixGroups.size == 0) {
@@ -167,10 +143,6 @@ class Addschedule_invite_detail : Fragment() {
                     }
                 }
             }
-            Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-            Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-            Log.v("test3", InviteData.fixUsers.toString())
-            Log.v("test4", InviteData.fixGroups.toString())
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_invite())
@@ -216,10 +188,6 @@ class Addschedule_invite_detail : Fragment() {
                 }
                 invitedAdapter.datas = inviteList
                 invitedAdapter.notifyDataSetChanged()
-                Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-                Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-                Log.v("test3", InviteData.fixUsers.toString())
-                Log.v("test4", InviteData.fixGroups.toString())
             }
         })
 
@@ -256,10 +224,6 @@ class Addschedule_invite_detail : Fragment() {
                 }
                 invitedAdapter.datas = inviteList
                 invitedAdapter.notifyDataSetChanged()
-                Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-                Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-                Log.v("test3", InviteData.fixUsers.toString())
-                Log.v("test4", InviteData.fixGroups.toString())
             }
         })
 
@@ -293,10 +257,6 @@ class Addschedule_invite_detail : Fragment() {
                 if (!invitedBoolean) {
                     invited_recycler.visibility = View.GONE
                 }
-                Log.v("test1", AddScheduleInfo.inviteMembers.toString())
-                Log.v("test2", AddScheduleInfo.inviteGroups.toString())
-                Log.v("test3", InviteData.fixUsers.toString())
-                Log.v("test4", InviteData.fixGroups.toString())
             }
         })
 

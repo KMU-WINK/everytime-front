@@ -54,53 +54,109 @@ class Modify_invite_detail : AppCompatActivity() {
         tempInvitedNumber = AddScheduleInfo.invitersNumber
 
         okButton.setOnClickListener {
+            InviteData.fixUsers = mutableListOf()
+            InviteData.fixGroups = mutableListOf()
+            InviteData.fixUsers.addAll(AddScheduleInfo.inviteMembers)
+            InviteData.fixGroups.addAll(AddScheduleInfo.inviteGroups)
             val intent = Intent(this, Modify_invite::class.java)
             startActivity(intent)
             finish()
         }
 
         backButton.setOnClickListener {
-            if (tempInvitedNumber == 0) {
+            if (InviteData.fixUsers.size == 0 && InviteData.fixGroups.size == 0) {
                 AddScheduleInfo.inviteMembers = mutableListOf()
+                AddScheduleInfo.inviteGroups = mutableListOf()
+                AddScheduleInfo.inviteGroupsNumber = 0
+                AddScheduleInfo.invitersNumber = 0
                 for (i in 0 until AddScheduleInfo.followerList.size) {
                     AddScheduleInfo.followerList[i].invite = false
                 }
-            } else {
+                for (i in 0 until AddScheduleInfo.groupList.size) {
+                    AddScheduleInfo.groupList[i].invite = false
+                }
+            } else if (InviteData.fixUsers.size > 0 && InviteData.fixGroups.size == 0) {
                 AddScheduleInfo.inviteMembers = mutableListOf()
-                val tempNumbers = mutableListOf(-1)
-                for (i in 0 until tempInvitedList.size) {
-                    tempInvitedList[i].sequence?.let { it1 ->
-                        tempNumbers.apply {
-                            tempNumbers.add(it1)
+                AddScheduleInfo.inviteGroups = mutableListOf()
+                AddScheduleInfo.inviteMembers.addAll(InviteData.fixUsers)
+                AddScheduleInfo.inviteGroupsNumber = 0
+                AddScheduleInfo.invitersNumber = InviteData.fixUsers.size
+                val tempNumbers1 = mutableListOf(-1)
+                for (i in 0 until InviteData.fixUsers.size) {
+                    InviteData.fixUsers[i].sequence?.let { it1 ->
+                        tempNumbers1.apply {
+                            tempNumbers1.add(it1)
                         }
                     }
                 }
                 for (i in 0 until AddScheduleInfo.followerList.size) {
-                    if (AddScheduleInfo.followerList[i].sequence !in tempNumbers) {
+                    if (AddScheduleInfo.followerList[i].sequence !in tempNumbers1) {
                         AddScheduleInfo.followerList[i].invite = false
                     }
                 }
-                for (i in 0 until tempInvitedList.size) {
-                    AddScheduleInfo.inviteMembers.add(tempInvitedList[i])
+                for (i in 0 until AddScheduleInfo.groupList.size) {
+                    AddScheduleInfo.groupList[i].invite = false
                 }
-//                for (i in 0 until AddScheduleInfo.inviteMembers.size) {
-//                    if (AddScheduleInfo.inviteMembers[i].sequence !in tempNumbers) {
-//                        AddScheduleInfo.inviteMembers[i].invite = false
-//                        AddScheduleInfo.inviteMembers.remove(AddScheduleInfo.inviteMembers[i])
-//                    }
-//                }
+            } else if (InviteData.fixUsers.size == 0 && InviteData.fixGroups.size > 0) {
+                AddScheduleInfo.inviteMembers = mutableListOf()
+                AddScheduleInfo.inviteGroups = mutableListOf()
+                AddScheduleInfo.inviteGroups.addAll(InviteData.fixGroups)
+                AddScheduleInfo.inviteGroupsNumber = InviteData.fixGroups.size
+                AddScheduleInfo.invitersNumber = 0
+                val tempNumbers2 = mutableListOf(-1)
+                for (i in 0 until InviteData.fixGroups.size) {
+                    InviteData.fixGroups[i].sequence?.let { it1 ->
+                        tempNumbers2.apply {
+                            tempNumbers2.add(it1)
+                        }
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.followerList.size) {
+                    AddScheduleInfo.followerList[i].invite = false
+                }
+                for (i in 0 until AddScheduleInfo.groupList.size) {
+                    if (AddScheduleInfo.groupList[i].sequence !in tempNumbers2) {
+                        AddScheduleInfo.groupList[i].invite = false
+                    }
+                }
+            } else {
+                AddScheduleInfo.inviteMembers = mutableListOf()
+                AddScheduleInfo.inviteGroups = mutableListOf()
+                AddScheduleInfo.inviteGroups.addAll(InviteData.fixGroups)
+                AddScheduleInfo.inviteMembers.addAll(InviteData.fixUsers)
+                AddScheduleInfo.inviteGroupsNumber = InviteData.fixGroups.size
+                AddScheduleInfo.invitersNumber = InviteData.fixUsers.size
+                val tempNumbers1 = mutableListOf(-1)
+                val tempNumbers2 = mutableListOf(-1)
+                for (i in 0 until InviteData.fixUsers.size) {
+                    InviteData.fixUsers[i].sequence?.let { it1 ->
+                        tempNumbers1.apply {
+                            tempNumbers1.add(it1)
+                        }
+                    }
+                }
+                for (i in 0 until InviteData.fixGroups.size) {
+                    InviteData.fixGroups[i].sequence?.let { it1 ->
+                        tempNumbers2.apply {
+                            tempNumbers2.add(it1)
+                        }
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.followerList.size) {
+                    if (AddScheduleInfo.followerList[i].sequence !in tempNumbers1) {
+                        AddScheduleInfo.followerList[i].invite = false
+                    }
+                }
+                for (i in 0 until AddScheduleInfo.groupList.size) {
+                    if (AddScheduleInfo.groupList[i].sequence !in tempNumbers1) {
+                        AddScheduleInfo.groupList[i].invite = false
+                    }
+                }
             }
-            Log.v("test5", AddScheduleInfo.inviteMembers.toString())
-            AddScheduleInfo.invitersNumber = tempInvitedNumber
             val intent = Intent(this, Modify_invite::class.java)
             startActivity(intent)
             finish()
         }
-
-        Log.v("followers", AddScheduleInfo.followerList.toString())
-        Log.v("test4", AddScheduleInfo.inviteMembers.toString())
-        Log.v("test2", tempInvitedNumber.toString())
-        Log.v("test3", tempInvitedList.toString())
 
         initInvitedRecycler()
         initFollowerRecycler()
@@ -122,7 +178,6 @@ class Modify_invite_detail : AppCompatActivity() {
                     if (inviteList.size >= 1) {
                         invitedBoolean = true
                     }
-                    Log.v("test7", tempInvitedList.toString())
                 } else {
                     AddScheduleInfo.invitersNumber--
                     inviteList.apply {
@@ -158,7 +213,6 @@ class Modify_invite_detail : AppCompatActivity() {
                     if (inviteList.size >= 1) {
                         invitedBoolean = true
                     }
-                    Log.v("test7", tempInvitedList.toString())
                 } else {
                     AddScheduleInfo.inviteGroupsNumber--
                     inviteList.apply {

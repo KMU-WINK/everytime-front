@@ -25,6 +25,7 @@ class Modify_invite : AppCompatActivity() {
     var memberNumber = 0
     var groupNumber = 0
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.addschedule_invite)
@@ -48,10 +49,12 @@ class Modify_invite : AppCompatActivity() {
         inviteTitle.text = "초대 " + inviterTemp.toString() + "명"
 
         okButton.setOnClickListener {
-            AddScheduleInfo.priorInviteMembers = AddScheduleInfo.inviteMembers
+            AddScheduleInfo.priorInviteMembers = mutableListOf()
+            AddScheduleInfo.priorInviteGroups = mutableListOf()
+            AddScheduleInfo.priorInviteMembers.addAll(AddScheduleInfo.inviteMembers)
             AddScheduleInfo.priorInvitersNumber = AddScheduleInfo.invitersNumber
             AddScheduleInfo.priorInviteGroupsNumber = AddScheduleInfo.inviteGroupsNumber
-            AddScheduleInfo.priorInviteGroups = AddScheduleInfo.inviteGroups
+            AddScheduleInfo.priorInviteGroups.addAll(AddScheduleInfo.inviteGroups)
             val intent = Intent(this, ModifyScheduleActivity::class.java)
             intent.putExtra("type", "")
             startActivity(intent)
@@ -85,9 +88,11 @@ class Modify_invite : AppCompatActivity() {
                     AddScheduleInfo.groupList[i].invite = false
                 }
             }
+            AddScheduleInfo.inviteGroups = mutableListOf()
+            AddScheduleInfo.inviteMembers = mutableListOf()
             AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
-            AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
-            AddScheduleInfo.inviteGroups = AddScheduleInfo.priorInviteGroups
+            AddScheduleInfo.inviteMembers.addAll(AddScheduleInfo.priorInviteMembers)
+            AddScheduleInfo.inviteGroups.addAll(AddScheduleInfo.priorInviteGroups)
             AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
             val intent = Intent(this, ModifyScheduleActivity::class.java)
             intent.putExtra("type", "")
@@ -101,9 +106,6 @@ class Modify_invite : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        Log.v("number", AddScheduleInfo.invitersNumber.toString())
-        Log.v("groups", AddScheduleInfo.groupList.toString())
 
         initGroupInviteList()
 
