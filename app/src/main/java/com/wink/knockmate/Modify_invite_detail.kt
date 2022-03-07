@@ -202,7 +202,9 @@ class Modify_invite_detail : AppCompatActivity() {
         groupAdapter.setOnArrowClickListener(object :
             Addschedule_invite_detail_Follower_Adapter.OnArrowClickListener {
             override fun onArrowClick(v: ImageView, data: UserModel, pos: Int) {
-
+                val intent = Intent(this@Modify_invite_detail, Modify_group_detail2::class.java)
+                intent.putExtra("id", data.id)
+                startActivity(intent)
             }
         })
     }

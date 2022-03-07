@@ -19,10 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AddSchedule_invite : Fragment() {
     lateinit var groupAdapter: Addschedule_invite_item_Adapter
-    var groupInviteList = mutableListOf<UserModel>()
     lateinit var groupInviteView: RecyclerView
     lateinit var userAdapter: Addschedule_invite_item_Adapter
-    var userInviteList = mutableListOf<UserModel>()
     lateinit var userInviteView: RecyclerView
     lateinit var groupFrame: LinearLayout
     lateinit var userFrame: LinearLayout
@@ -54,10 +52,12 @@ class AddSchedule_invite : Fragment() {
         inviteTitle.text = "초대 " + inviterTemp.toString() + "명"
 
         okButton.setOnClickListener {
-            AddScheduleInfo.priorInviteMembers = AddScheduleInfo.inviteMembers
+            AddScheduleInfo.priorInviteMembers = mutableListOf()
+            AddScheduleInfo.priorInviteGroups = mutableListOf()
+            AddScheduleInfo.priorInviteMembers.addAll(AddScheduleInfo.inviteMembers)
             AddScheduleInfo.priorInvitersNumber = AddScheduleInfo.invitersNumber
             AddScheduleInfo.priorInviteGroupsNumber = AddScheduleInfo.inviteGroupsNumber
-            AddScheduleInfo.priorInviteGroups = AddScheduleInfo.inviteGroups
+            AddScheduleInfo.priorInviteGroups.addAll(AddScheduleInfo.inviteGroups)
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
                 ?.replace(R.id.addschedule_frame, AddSchedule_detail())
@@ -92,9 +92,11 @@ class AddSchedule_invite : Fragment() {
                     AddScheduleInfo.groupList[i].invite = false
                 }
             }
+            AddScheduleInfo.inviteGroups = mutableListOf()
+            AddScheduleInfo.inviteMembers = mutableListOf()
             AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
-            AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
-            AddScheduleInfo.inviteGroups = AddScheduleInfo.priorInviteGroups
+            AddScheduleInfo.inviteMembers.addAll(AddScheduleInfo.priorInviteMembers)
+            AddScheduleInfo.inviteGroups.addAll(AddScheduleInfo.priorInviteGroups)
             AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
             parentFragment?.childFragmentManager
                 ?.beginTransaction()
@@ -110,11 +112,6 @@ class AddSchedule_invite : Fragment() {
                 ?.addToBackStack(null)
                 ?.commit()
         }
-
-        Log.v("test", userInviteList.toString())
-        Log.v("group", groupInviteList.toString())
-        Log.v("number", AddScheduleInfo.invitersNumber.toString())
-        Log.v("groups", AddScheduleInfo.groupList.toString())
 
         initGroupInviteList()
 
@@ -146,9 +143,11 @@ class AddSchedule_invite : Fragment() {
                         AddScheduleInfo.groupList[i].invite = false
                     }
                 }
+                AddScheduleInfo.inviteGroups = mutableListOf()
+                AddScheduleInfo.inviteMembers = mutableListOf()
                 AddScheduleInfo.invitersNumber = AddScheduleInfo.priorInvitersNumber
-                AddScheduleInfo.inviteMembers = AddScheduleInfo.priorInviteMembers
-                AddScheduleInfo.inviteGroups = AddScheduleInfo.priorInviteGroups
+                AddScheduleInfo.inviteMembers.addAll(AddScheduleInfo.priorInviteMembers)
+                AddScheduleInfo.inviteGroups.addAll(AddScheduleInfo.priorInviteGroups)
                 AddScheduleInfo.inviteGroupsNumber = AddScheduleInfo.priorInviteGroupsNumber
                 parentFragment?.childFragmentManager
                     ?.beginTransaction()

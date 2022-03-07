@@ -74,6 +74,28 @@
             android:name=".ModifyScheduleActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".Modify_group_detail1"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_group_detail2"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_invite"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_invite_detail"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_colorpick"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_repeat"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Modify_repeat_detail"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".TestMain"
             android:exported="true"
             android:noHistory="true"

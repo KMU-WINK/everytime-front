@@ -3,11 +3,8 @@ package com.wink.knockmate
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -116,6 +113,13 @@ class Modify_invite : AppCompatActivity() {
                 val intent = Intent(this@Modify_invite, Modify_group_detail1::class.java)
                 startActivity(intent)
                 finish()
+            }
+        })
+
+        userAdapter.setOnMoreClickListener(object :
+            Modify_invited_item_Adapter.OnMoreClickListener {
+            override fun onMoreClick(v: ImageView, data: UserModel, pos: Int) {
+                TODO("Not yet implemented")
             }
         })
     }

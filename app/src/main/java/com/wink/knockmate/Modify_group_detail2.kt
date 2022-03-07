@@ -3,7 +3,6 @@ package com.wink.knockmate
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,7 +13,7 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 
-class Modify_group_detail1 : AppCompatActivity() {
+class Modify_group_detail2 : AppCompatActivity() {
     val userList = mutableListOf<UserModel>()
     lateinit var itemAdapter: Addschedule_invite_detail_groupMem_Adapter
     lateinit var recycler: RecyclerView
