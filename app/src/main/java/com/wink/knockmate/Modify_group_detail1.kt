@@ -3,7 +3,6 @@ package com.wink.knockmate
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
@@ -82,7 +81,6 @@ class Modify_group_detail1 : AppCompatActivity() {
         recycler = findViewById(R.id.invite_detail_group_member_recycler)
 
         initMembersRecycler()
-
     }
 
     @SuppressLint("NotifyDataSetChanged")

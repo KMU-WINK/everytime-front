@@ -64,7 +64,7 @@
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule.xml" value="0.16893115942028986" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_brief.xml" value="0.2786458333333333" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_colorpick.xml" value="0.25" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_detail.xml" value="0.33" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_detail.xml" value="0.30337078651685395" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite.xml" value="0.13551165146909827" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail.xml" value="0.1" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_gray_item.xml" value="0.36614583333333334" />
@@ -73,12 +73,12 @@
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_detail_itme.xml" value="0.33" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_invited_gray_item.xml" value="0.31521739130434784" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_invited_item.xml" value="0.2786458333333333" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_item.xml" value="0.15185185185185185" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_invite_item.xml" value="0.25" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat.xml" value="0.2942708333333333" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/addschedule_repeat_detail.xml" value="0.14311043566362716" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/modify_bottomsheet.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/modify_cancel_dialog.xml" value="0.24365942028985507" />
-        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/modify_schedule.xml" value="0.254981884057971" />
+        <entry key="..\:/Users/admin/StudioProjects/everytime-front/app/src/main/res/layout/modify_schedule.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/border_search_id.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/bt_border.xml" value="0.21822916666666667" />
         <entry key="app/src/main/res/drawable/radio_bt_invite.xml" value="0.21822916666666667" />

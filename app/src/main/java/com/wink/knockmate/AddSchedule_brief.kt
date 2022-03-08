@@ -31,41 +31,88 @@ class AddSchedule_brief : Fragment() {
         val view = inflater!!.inflate(R.layout.addschedule_brief, container, false)
 
         val brief_setting = view.findViewById<ConstraintLayout>(R.id.brief_dateNTime)
+        val brief_setting2 = view.findViewById<ConstraintLayout>(R.id.brief_dateNTime2)
 
         val startDateText_brief = view.findViewById<TextView>(R.id.brief_date)
         val startTimeText_brief = view.findViewById<TextView>(R.id.brief_start_time)
         val endTimeText_brief = view.findViewById<TextView>(R.id.brief_end_time)
+        val startDateText_brief2 = view.findViewById<TextView>(R.id.brief_date2)
+        val startTimeText_brief2 = view.findViewById<TextView>(R.id.brief_start_time2)
+        val endTimeText_brief2 = view.findViewById<TextView>(R.id.brief_end_time2)
+        val endDateText_brief = view.findViewById<TextView>(R.id.brief_date3)
         val startCal = AddScheduleInfo.startCal
         val endCal = AddScheduleInfo.endCal
         val icon = view.findViewById<ImageView>(R.id.icon)
 
-        startDateText_brief.text =
-            startCal.get(Calendar.YEAR).toString() + "년도 " +
-                    (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
-                Calendar.DATE
-            ).toString() + "일(" + AddScheduleInfo.startDay + ")"
-        startTimeText_brief.text =
-            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(
-                startCal.get(
-                    Calendar.HOUR
+        if (endCal.get(Calendar.DATE) - startCal.get(Calendar.DATE) >= 1) {
+            brief_setting.visibility = View.VISIBLE
+            brief_setting2.visibility = View.GONE
+            startDateText_brief.text =
+                startCal.get(Calendar.YEAR).toString() + "년도 " +
+                        (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
+                    Calendar.DATE
+                ).toString() + "일(" + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + ")"
+            startTimeText_brief.text =
+                if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(
+                    startCal.get(
+                        Calendar.HOUR
+                    )
+                ) + ":" + calSetting(startCal.get(Calendar.MINUTE))
+                else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    startCal.get(
+                        Calendar.MINUTE
+                    )
                 )
-            ) + ":" + calSetting(startCal.get(Calendar.MINUTE))
-            else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
-                startCal.get(
-                    Calendar.MINUTE
+            endTimeText_brief.text =
+                if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    endCal.get(
+                        Calendar.MINUTE
+                    )
                 )
-            )
-        endTimeText_brief.text =
-            if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
-                endCal.get(
-                    Calendar.MINUTE
+                else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    endCal.get(
+                        Calendar.MINUTE
+                    )
                 )
-            )
-            else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
-                endCal.get(
-                    Calendar.MINUTE
+        } else {
+            brief_setting.visibility = View.GONE
+            brief_setting2.visibility = View.VISIBLE
+            startDateText_brief2.text =
+                startCal.get(Calendar.YEAR).toString() + "년도 " +
+                        (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
+                    Calendar.DATE
+                ).toString() + "일(" + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + ")"
+
+            endDateText_brief.text =
+                endCal.get(Calendar.YEAR).toString() + "년도 " +
+                        (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(
+                    Calendar.DATE
+                ).toString() + "일(" + dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK)) + ")"
+
+            startTimeText_brief2.text =
+                if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(
+                    startCal.get(
+                        Calendar.HOUR
+                    )
+                ) + ":" + calSetting(startCal.get(Calendar.MINUTE))
+                else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    startCal.get(
+                        Calendar.MINUTE
+                    )
                 )
-            )
+
+            endTimeText_brief2.text =
+                if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    endCal.get(
+                        Calendar.MINUTE
+                    )
+                )
+                else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                    endCal.get(
+                        Calendar.MINUTE
+                    )
+                )
+        }
 
         brief_setting.setOnClickListener {
             parentFragment?.childFragmentManager
@@ -282,5 +329,18 @@ class AddSchedule_brief : Fragment() {
                 (cal.get(Calendar.HOUR) + 12).toString() + ":" +
                 calSetting(cal.get(Calendar.MINUTE)) + ":" +
                 calSetting(cal.get(Calendar.SECOND))
+    }
+
+    private fun dayOfWeek(d: Int): String {
+        return when (d) {
+            1 -> "일"
+            2 -> "월"
+            3 -> "화"
+            4 -> "수"
+            5 -> "목"
+            6 -> "금"
+            7 -> "토"
+            else -> " "
+        }
     }
 }

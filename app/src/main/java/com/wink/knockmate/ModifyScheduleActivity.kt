@@ -12,7 +12,9 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import okhttp3.*
 import org.json.JSONObject
@@ -20,7 +22,10 @@ import java.io.IOException
 import java.util.*
 
 class ModifyScheduleActivity : AppCompatActivity() {
-    var calendarId = ""
+    private var calendarId = ""
+    private var saveState = false
+    private var startpicker = false
+    private var endpicker = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -392,18 +397,20 @@ class ModifyScheduleActivity : AppCompatActivity() {
 
         startDateText.text = (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
             Calendar.DATE
-        ).toString() + "일 (" + AddScheduleInfo.startDay + ")"
+        ).toString() + "일 (" + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + ")"
         startTimeText.text =
-            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " +
-                    calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(startCal.get(Calendar.MINUTE))
+            if (startCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                startCal.get(Calendar.MINUTE)
+            )
             else "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
                 startCal.get(
                     Calendar.MINUTE
                 )
             )
+
         endDateText.text =
             (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
-                .toString() + "일 (" + AddScheduleInfo.endDay + ")"
+                .toString() + "일 (" + dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK)) + ")"
         endTimeText.text =
             if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
                 endCal.get(Calendar.MINUTE)
@@ -414,99 +421,155 @@ class ModifyScheduleActivity : AppCompatActivity() {
                 )
             )
 
-        // startpicker
+        val memo = findViewById<EditText>(R.id.memo)
+        val title = findViewById<EditText>(R.id.schedule_title)
+
+        //startpicker
         val startView = findViewById<LinearLayout>(R.id.addschedule_start)
-        val startPicker = findViewById<ConstraintLayout>(R.id.start_picker)
-        val startDatePicker = findViewById<NumberPicker>(R.id.start_date_picker)
-        val startAmOrPmPicker = findViewById<NumberPicker>(R.id.start_am_or_pm)
-        val startTimePicker = findViewById<NumberPicker>(R.id.start_time_picker)
-        val month_list =
-            arrayOf("1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월")
-        val day_list1 = arrayOf(
-            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
-            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
-            "24일", "25일", "26일", "27일", "28일", "29일", "30일", "31일"
-        )
-        val day_list2 = arrayOf(
-            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
-            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
-            "24일", "25일", "26일", "27일", "28일", "29일", "30일"
-        )
-        val day_list3 = arrayOf(
-            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
-            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일", "23일",
-            "24일", "25일", "26일", "27일", "28일"
-        )
-        val day_list4 = arrayOf(
-            "1일", "2일", "3일", "4일", "5일", "6일", "7일", "8일", "9일", "10일", "11일", "12일",
-            "13일", "14일", "15일", "16일", "17일", "18일", "19일", "20일", "21일", "22일",
-            "23일", "24일", "25일", "26일", "27일", "28일", "29일"
-        )
-        val temp = mutableListOf<String>()
-        for (i in month_list) {
-            if (i === "1월" || i === "3월" || i === "5월" || i === "7월" || i === "8월" || i === "10월" || i === "12월") {
-                for (j in day_list1)
-                    temp.add(i + j)
-            } else if (i === "2월") {
-                for (j in day_list3)
-                    temp.add(i + j)
-            } else
-                for (j in day_list2)
-                    temp.add(i + j)
-        }
-        val hourAm = arrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
-        val hourPm = arrayOf(12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
-        val minute = arrayOf(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55)
-        val temp2 = mutableListOf<String>()
-        for (i in hourAm) {
-            for (j in minute)
-                temp2.add(i.toString() + ":" + j.toString())
-        }
-        for (i in hourPm) {
-            for (j in minute)
-                temp2.add(i.toString() + ":" + j.toString())
-        }
-        // 윤년 케이스 추가해야함
-        startDatePicker.displayedValues = temp.toTypedArray()
-        startAmOrPmPicker.displayedValues = arrayOf("오전", "오후")
-        startTimePicker.displayedValues = temp2.toTypedArray()
-        startDatePicker.value = (startCal.get(Calendar.MONTH) + 1).toString().toInt()
-        if (startCal.get(Calendar.AM_PM) == Calendar.AM) {
-            startAmOrPmPicker.value = 0
-        } else {
-            startAmOrPmPicker.value = 1
-        }
-
-        val endPicker = findViewById<ConstraintLayout>(R.id.end_picker)
-
-        startView.setOnClickListener(View.OnClickListener {
-            startPicker.visibility = View.VISIBLE
-            endPicker.visibility = View.GONE
-        })
-
-
-        // endpicker
         val endView = findViewById<LinearLayout>(R.id.addschedule_end)
-        val endDatePicker = findViewById<NumberPicker>(R.id.end_date_picker)
-        val endAmOrPmPicker = findViewById<NumberPicker>(R.id.end_am_or_pm)
-        val endTimePicker = findViewById<NumberPicker>(R.id.end_time_picker)
-        // 윤년 케이스 추가해야함
-        endDatePicker.displayedValues = temp.toTypedArray()
-        endAmOrPmPicker.displayedValues = arrayOf("오전", "오후")
-        endTimePicker.displayedValues = temp2.toTypedArray()
-        endDatePicker.value = (endCal.get(Calendar.MONTH) + 1).toString().toInt()
-        if (endCal.get(Calendar.AM_PM) == Calendar.AM) {
-            endAmOrPmPicker.value = 0
-        } else {
-            endAmOrPmPicker.value = 1
+        val startDatePicker = findViewById<DatePicker>(R.id.start_picker_date)
+        val startTimePicker = findViewById<TimePicker>(R.id.start_picker_time)
+        val endDatePicker = findViewById<DatePicker>(R.id.end_picker_date)
+        val endTimePicker = findViewById<TimePicker>(R.id.end_picker_time)
+        startView.setOnClickListener {
+            if (!startpicker) {
+                startpicker = true
+
+                startDatePicker.isVisible = true
+                startTimePicker.isVisible = true
+
+                endpicker = false
+
+                endDatePicker.isVisible = false
+                endTimePicker.isVisible = false
+
+                memo.clearFocus()
+                title.clearFocus()
+
+                startDatePicker.init(
+                    startCal.get(Calendar.YEAR),
+                    startCal.get(Calendar.MONTH),
+                    startCal.get(Calendar.DAY_OF_MONTH),
+                    DatePicker.OnDateChangedListener { _, year, month, dayOfMonth ->
+                        startCal.set(Calendar.YEAR, year)
+                        startCal.set(Calendar.MONTH, month)
+                        startCal.set(Calendar.DATE, dayOfMonth)
+                        AddScheduleInfo.startCal = startCal
+                        AddScheduleInfo.settingStartCal()
+                        startDateText.text =
+                            (startCal.get(Calendar.MONTH) + 1).toString() + "월 " + startCal.get(
+                                Calendar.DATE
+                            )
+                                .toString() + "일 (" + dayOfWeek(startCal.get(Calendar.DAY_OF_WEEK)) + ")"
+                    })
+
+                startTimePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+                    startCal.set(Calendar.HOUR, hourOfDay)
+                    startCal.set(Calendar.MINUTE, minute)
+                    AddScheduleInfo.startCal = startCal
+                    AddScheduleInfo.settingStartCal()
+                    startTimeText.text =
+                        if (hourOfDay < 12 || hourOfDay == 24) {
+                            "오전" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                startCal.get(Calendar.MINUTE)
+                            )
+                        } else {
+                            "오후" + " " + calSetting(startCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                startCal.get(Calendar.MINUTE)
+                            )
+                        }
+                    endTimeText.text =
+                        if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(
+                            endCal.get(
+                                Calendar.HOUR
+                            )
+                        ) + ":" + calSetting(
+                            endCal.get(Calendar.MINUTE)
+                        )
+                        else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                            endCal.get(
+                                Calendar.MINUTE
+                            )
+                        )
+                }
+            } else {
+                startpicker = false
+
+                startDatePicker.isVisible = false
+                startTimePicker.isVisible = false
+            }
         }
-        endView.setOnClickListener(View.OnClickListener {
-            startPicker.visibility = View.GONE
-            endPicker.visibility = View.VISIBLE
-        })
+
+        //endpicker
+        endView.setOnClickListener {
+            if (!endpicker) {
+                endpicker = true
+
+                endDatePicker.isVisible = true
+                endTimePicker.isVisible = true
+
+                startpicker = false
+
+                startDatePicker.isVisible = false
+                startTimePicker.isVisible = false
+
+                memo.clearFocus()
+                title.clearFocus()
+
+                endDatePicker.init(
+                    endCal.get(Calendar.YEAR),
+                    endCal.get(Calendar.MONTH),
+                    endCal.get(Calendar.DAY_OF_MONTH),
+                    DatePicker.OnDateChangedListener { _, year, month, dayOfMonth ->
+                        endCal.set(Calendar.YEAR, year)
+                        endCal.set(Calendar.MONTH, month)
+                        endCal.set(Calendar.DATE, dayOfMonth)
+                        AddScheduleInfo.endCal = endCal
+                        AddScheduleInfo.settingEndCal()
+                        endDateText.text =
+                            (endCal.get(Calendar.MONTH) + 1).toString() + "월 " + endCal.get(Calendar.DATE)
+                                .toString() + "일 (" + dayOfWeek(endCal.get(Calendar.DAY_OF_WEEK)) + ")"
+                    })
+
+                endTimePicker.setOnTimeChangedListener { _, hourOfDay, minute ->
+                    endCal.set(Calendar.HOUR, hourOfDay)
+                    endCal.set(Calendar.MINUTE, minute)
+                    AddScheduleInfo.endCal = endCal
+                    AddScheduleInfo.settingEndCal()
+                    endTimeText.text =
+                        if (hourOfDay < 12 || hourOfDay == 24) {
+                            "오전" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                endCal.get(Calendar.MINUTE)
+                            )
+                        } else {
+                            "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                                endCal.get(Calendar.MINUTE)
+                            )
+                        }
+                    endTimeText.text =
+                        if (endCal.get(Calendar.AM_PM) == 0) "오전" + " " + calSetting(
+                            endCal.get(
+                                Calendar.HOUR
+                            )
+                        ) + ":" + calSetting(
+                            endCal.get(Calendar.MINUTE)
+                        )
+                        else "오후" + " " + calSetting(endCal.get(Calendar.HOUR)) + ":" + calSetting(
+                            endCal.get(
+                                Calendar.MINUTE
+                            )
+                        )
+
+                }
+            } else {
+                endpicker = false
+
+                endDatePicker.isVisible = false
+                endTimePicker.isVisible = false
+            }
+        }
 
         // 일정 제목
-        val title = findViewById<EditText>(R.id.schedule_title)
         var titleClick = false
         title.setOnFocusChangeListener(object : View.OnFocusChangeListener {
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
@@ -515,8 +578,12 @@ class ModifyScheduleActivity : AppCompatActivity() {
                         title.text = null
                     }
                     titleClick = true
-                    startPicker.visibility = View.GONE
-                    endPicker.visibility = View.GONE
+                    endpicker = false
+                    endDatePicker.isVisible = false
+                    endTimePicker.isVisible = false
+                    startpicker = false
+                    startDatePicker.isVisible = false
+                    startTimePicker.isVisible = false
                 } else {
                     if (AddScheduleInfo.title != null || AddScheduleInfo.title == "일정 제목") {
                         title.setText(AddScheduleInfo.title)
@@ -538,12 +605,15 @@ class ModifyScheduleActivity : AppCompatActivity() {
 
 
         // 일정 메모
-        val memo = findViewById<EditText>(R.id.memo)
         memo.setOnFocusChangeListener(object : View.OnFocusChangeListener {
             override fun onFocusChange(v: View?, hasFocus: Boolean) {
                 if (hasFocus) {
-                    startPicker.visibility = View.GONE
-                    endPicker.visibility = View.GONE
+                    endpicker = false
+                    endDatePicker.isVisible = false
+                    endTimePicker.isVisible = false
+                    startpicker = false
+                    startDatePicker.isVisible = false
+                    startTimePicker.isVisible = false
                 }
             }
 
@@ -581,8 +651,12 @@ class ModifyScheduleActivity : AppCompatActivity() {
         }
         val to_invite_button = findViewById<ConstraintLayout>(R.id.to_invite_button)
         to_invite_button.setOnClickListener(View.OnClickListener {
-            startPicker.visibility = View.GONE
-            endPicker.visibility = View.GONE
+            endpicker = false
+            endDatePicker.isVisible = false
+            endTimePicker.isVisible = false
+            startpicker = false
+            startDatePicker.isVisible = false
+            startTimePicker.isVisible = false
             val intent = Intent(this, Modify_invite::class.java)
             startActivity(intent)
             finish()
@@ -593,8 +667,12 @@ class ModifyScheduleActivity : AppCompatActivity() {
         repeatText.text = AddScheduleInfo.repeatType
         val to_repeat_button = findViewById<ConstraintLayout>(R.id.to_repeat_button)
         to_repeat_button.setOnClickListener(View.OnClickListener {
-            startPicker.visibility = View.GONE
-            endPicker.visibility = View.GONE
+            endpicker = false
+            endDatePicker.isVisible = false
+            endTimePicker.isVisible = false
+            startpicker = false
+            startDatePicker.isVisible = false
+            startTimePicker.isVisible = false
             val intent = Intent(this, Modify_repeat::class.java)
             startActivity(intent)
             finish()
@@ -602,18 +680,24 @@ class ModifyScheduleActivity : AppCompatActivity() {
 
 
         // 일정 색상 선택으로 넘어가는 버튼
+        colorSetting(addscheduleIcon)
         val to_colorPick_button = findViewById<ConstraintLayout>(R.id.to_colorPick_button)
         val colorName = findViewById<TextView>(R.id.pick_color_name)
         val colorIcon = findViewById<ImageView>(R.id.color_icon)
-        colorName.text = "색상" + AddScheduleInfo.color.toString()
+        colorName.text = colorTextSetting()
         colorSetting(colorIcon)
         to_colorPick_button.setOnClickListener(View.OnClickListener {
-            startPicker.visibility = View.GONE
-            endPicker.visibility = View.GONE
+            endpicker = false
+            endDatePicker.isVisible = false
+            endTimePicker.isVisible = false
+            startpicker = false
+            startDatePicker.isVisible = false
+            startTimePicker.isVisible = false
             val intent = Intent(this, Modify_colorpick::class.java)
             startActivity(intent)
             finish()
         })
+
 
         val backButton = findViewById<TextView>(R.id.back_button)
         backButton.setOnClickListener {
@@ -622,37 +706,154 @@ class ModifyScheduleActivity : AppCompatActivity() {
 
         val saveButton = findViewById<TextView>(R.id.save_button)
         saveButton.setOnClickListener {
-            val startCalTemp = startCal
-            val endCalTemp = endCal
+            AddScheduleInfo.title = title.text.toString()
+            AddScheduleInfo.memo = memo.text.toString()
+
             val client = OkHttpClient()
             val bodyTemp = FormBody.Builder()
-                .add("id", calendarId)
                 .add("title", AddScheduleInfo.title)
                 .add("memo", AddScheduleInfo.memo)
                 .add("color", AddScheduleInfo.color.toString())
                 .add("userid", AddScheduleInfo.userId)
+                .add("id", calendarId)
+
+            for (i in 0 until AddScheduleInfo.invitedMembers.size) {
+                if (AddScheduleInfo.invitedMembers[i].user) {
+                    bodyTemp.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
+                } else {
+                    bodyTemp.add("groupid", AddScheduleInfo.inviteMembers[i].id!!)
+                }
+            }
+
+            bodyTemp.add(
+                "startDate",
+                "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                    AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                    AddScheduleInfo.startCal.get(
+                        Calendar.HOUR
+                    )
+                }:00:00"
+            )
+                .add(
+                    "endDate",
+                    "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                        AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                    }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                        AddScheduleInfo.endCal.get(
+                            Calendar.HOUR
+                        )
+                    }:00:00"
+                )
+
+            val body = bodyTemp.build()
+            val request: Request =
+                Request.Builder()
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .url("http://3.35.146.57:3000/calendar").put(body).build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("log1", e.message.toString())
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    object : Thread() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun run() {
+                            if (response.code() == 200) {
+                            } else {
+                            }
+                        }
+                    }.run()
+                }
+            })
+            finish()
+        }
+
+        val knockButton = findViewById<TextView>(R.id.knock_button)
+        if (AddScheduleInfo.invitersNumber == 0 && AddScheduleInfo.inviteGroupsNumber == 0) {
+            saveButton.visibility = View.VISIBLE
+            knockButton.visibility = View.GONE
+        } else {
+            saveButton.visibility = View.GONE
+            knockButton.visibility = View.VISIBLE
+        }
+
+        knockButton.setOnClickListener {
+            AddScheduleInfo.title = title.text.toString()
+            AddScheduleInfo.memo = memo.text.toString()
+            val client = OkHttpClient()
+            val bodyTemp = FormBody.Builder()
+                .add("title", AddScheduleInfo.title)
+                .add("memo", AddScheduleInfo.memo)
+                .add("color", AddScheduleInfo.color.toString())
+                .add("senderid", AddScheduleInfo.userId)
+
+            for (i in 0 until AddScheduleInfo.inviteMembers.size) {
+                bodyTemp.add("userid", AddScheduleInfo.inviteMembers[i].id!!)
+            }
+
+            for (i in 0 until AddScheduleInfo.inviteGroups.size) {
+                bodyTemp.add("groupid", AddScheduleInfo.inviteGroups[i].id!!)
+            }
 
             if (AddScheduleInfo.repeatType == "반복 안함") {
-                val temp = bodyTemp
-                val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                    .add("endDate", saveCalSetting(endCalTemp))
-                    .build()
+                bodyTemp.add(
+                    "startDate",
+                    "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                        AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                    }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                        AddScheduleInfo.startCal.get(
+                            Calendar.HOUR
+                        )
+                    }:00:00"
+                )
+                    .add(
+                        "endDate",
+                        "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                        }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.endCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+
                 val request: Request =
-                    Request.Builder()
-                        .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                        .url("http://3.35.146.57:3000/calendar").put(body).build()
+                    Request.Builder().addHeader("Content-Type", "application/x-www-form-urlencoded")
+                        .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                 client.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        Log.d("log1", e.message.toString())
+                        Log.d("log", "인터넷 연결 불안정")
+
                     }
 
                     override fun onResponse(call: Call, response: Response) {
                         object : Thread() {
-                            @SuppressLint("NotifyDataSetChanged")
                             override fun run() {
                                 if (response.code() == 200) {
-                                    Log.v("test", "save success")
+//                                    val act = activity
+//                                    activity?.runOnUiThread {
+//                                        (act as KnockmateActivity).knockable = false
+//                                        (act as KnockmateActivity).knocks.forEachIndexed { index, pair ->
+//                                            val v =
+//                                                ((act as KnockmateActivity).rows[pair.second].getChildAt(
+//                                                    pair.first
+//                                                ) as FrameLayout)
+//                                            v.getChildAt(v.childCount - 1)
+//                                                .setBackgroundResource(R.drawable.cell_rectangle)
+//                                        }
+//                                        act?.findViewById<TextView>(R.id.knockmate_knock_info_text)?.visibility =
+//                                            View.VISIBLE
+//                                        act?.findViewById<TextView>(R.id.knockmate_knock_info_text)?.text =
+//                                            "노크를 신청하였습니다."
+//                                        act?.findViewById<AppCompatButton>(R.id.knockmate_knock_info_button)?.visibility =
+//                                            View.GONE
+//                                    }
                                 } else {
+                                    saveState = false
+                                    Log.d("log", response.message())
                                 }
                             }
                         }.run()
@@ -660,178 +861,281 @@ class ModifyScheduleActivity : AppCompatActivity() {
                 })
             } else if (AddScheduleInfo.repeatType == "매일") {
                 for (i in 0 until 366) {
-                    val temp = bodyTemp
-                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                        .add("endDate", saveCalSetting(endCalTemp))
-                        .build()
+                    bodyTemp.add(
+                        "startDate",
+                        "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                        }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.startCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+                        .add(
+                            "endDate",
+                            "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                                AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                            }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                                AddScheduleInfo.endCal.get(
+                                    Calendar.HOUR
+                                )
+                            }:00:00"
+                        )
+
                     val request: Request =
                         Request.Builder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                            .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                     client.newCall(request).enqueue(object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
-                            Log.d("log1", e.message.toString())
+                            Log.d("log", "인터넷 연결 불안정")
+
                         }
 
                         override fun onResponse(call: Call, response: Response) {
                             object : Thread() {
-                                @SuppressLint("NotifyDataSetChanged")
                                 override fun run() {
                                     if (response.code() == 200) {
                                     } else {
+                                        saveState = false
+                                        Log.d("log", response.message())
                                     }
                                 }
                             }.run()
                         }
                     })
                     startCal.add(Calendar.DATE, 1)
+                    endCal.add(Calendar.DATE, 1)
                 }
             } else if (AddScheduleInfo.repeatType == "매주") {
                 for (i in 0 until 53) {
-                    val temp = bodyTemp
-                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                        .add("endDate", saveCalSetting(endCalTemp))
-                        .build()
+                    bodyTemp.add(
+                        "startDate",
+                        "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                        }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.startCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+                        .add(
+                            "endDate",
+                            "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                                AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                            }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                                AddScheduleInfo.endCal.get(
+                                    Calendar.HOUR
+                                )
+                            }:00:00"
+                        )
+
                     val request: Request =
                         Request.Builder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                            .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                     client.newCall(request).enqueue(object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
-                            Log.d("log1", e.message.toString())
+                            Log.d("log", "인터넷 연결 불안정")
+
                         }
 
                         override fun onResponse(call: Call, response: Response) {
                             object : Thread() {
-                                @SuppressLint("NotifyDataSetChanged")
                                 override fun run() {
                                     if (response.code() == 200) {
                                     } else {
+                                        saveState = false
+                                        Log.d("log", response.message())
                                     }
                                 }
                             }.run()
                         }
                     })
                     startCal.add(Calendar.DATE, 7)
+                    endCal.add(Calendar.DATE, 7)
                 }
             } else if (AddScheduleInfo.repeatType == "매월") {
                 for (i in 0 until 25) {
-                    val temp = bodyTemp
-                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                        .add("endDate", saveCalSetting(endCalTemp))
-                        .build()
+                    bodyTemp.add(
+                        "startDate",
+                        "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                        }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.startCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+                        .add(
+                            "endDate",
+                            "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                                AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                            }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                                AddScheduleInfo.endCal.get(
+                                    Calendar.HOUR
+                                )
+                            }:00:00"
+                        )
+
                     val request: Request =
                         Request.Builder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                            .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                     client.newCall(request).enqueue(object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
-                            Log.d("log1", e.message.toString())
+                            Log.d("log", "인터넷 연결 불안정")
+
                         }
 
                         override fun onResponse(call: Call, response: Response) {
                             object : Thread() {
-                                @SuppressLint("NotifyDataSetChanged")
                                 override fun run() {
                                     if (response.code() == 200) {
                                     } else {
+                                        saveState = false
+                                        Log.d("log", response.message())
                                     }
                                 }
                             }.run()
                         }
                     })
                     startCal.add(Calendar.MONTH, 1)
+                    endCal.add(Calendar.MONTH, 1)
                 }
             } else if (AddScheduleInfo.repeatType == "매년") {
                 for (i in 0 until 21) {
-                    val temp = bodyTemp
-                    val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                        .add("endDate", saveCalSetting(endCalTemp))
-                        .build()
+                    bodyTemp.add(
+                        "startDate",
+                        "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                            AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                        }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                            AddScheduleInfo.startCal.get(
+                                Calendar.HOUR
+                            )
+                        }:00:00"
+                    )
+                        .add(
+                            "endDate",
+                            "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                                AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                            }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                                AddScheduleInfo.endCal.get(
+                                    Calendar.HOUR
+                                )
+                            }:00:00"
+                        )
+
                     val request: Request =
                         Request.Builder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                            .url("http://3.35.146.57:3000/calendar").post(body).build()
+                            .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                     client.newCall(request).enqueue(object : Callback {
                         override fun onFailure(call: Call, e: IOException) {
-                            Log.d("log1", e.message.toString())
+                            Log.d("log", "인터넷 연결 불안정")
+
                         }
 
                         override fun onResponse(call: Call, response: Response) {
                             object : Thread() {
-                                @SuppressLint("NotifyDataSetChanged")
                                 override fun run() {
                                     if (response.code() == 200) {
                                     } else {
+                                        saveState = false
+                                        Log.d("log", response.message())
                                     }
                                 }
                             }.run()
                         }
                     })
                     startCal.add(Calendar.YEAR, 1)
+                    endCal.add(Calendar.YEAR, 1)
                 }
             } else if (AddScheduleInfo.repeatType == "맞춤 설정") {
                 if (AddScheduleInfo.repeatDetailType == "Days") {
                     for (i in 0 until AddScheduleInfo.repeatAllCount + 1) {
-                        val temp = bodyTemp
-                        val body = temp.add("startDate", saveCalSetting(startCalTemp))
-                            .add("endDate", saveCalSetting(endCalTemp))
-                            .build()
+                        bodyTemp.add(
+                            "startDate",
+                            "${AddScheduleInfo.startCal.get(Calendar.YEAR)}-${
+                                AddScheduleInfo.startCal.get(Calendar.MONTH) + 1
+                            }-${AddScheduleInfo.startCal.get(Calendar.DAY_OF_MONTH)} ${
+                                AddScheduleInfo.startCal.get(
+                                    Calendar.HOUR
+                                )
+                            }:00:00"
+                        )
+                            .add(
+                                "endDate",
+                                "${AddScheduleInfo.endCal.get(Calendar.YEAR)}-${
+                                    AddScheduleInfo.endCal.get(Calendar.MONTH) + 1
+                                }-${AddScheduleInfo.endCal.get(Calendar.DAY_OF_MONTH)} ${
+                                    AddScheduleInfo.endCal.get(
+                                        Calendar.HOUR
+                                    )
+                                }:00:00"
+                            )
+
                         val request: Request =
                             Request.Builder()
                                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                                .url("http://3.35.146.57:3000/knock").post(body).build()
+                                .url("http://3.35.146.57:3000/knock").post(bodyTemp.build()).build()
+
                         client.newCall(request).enqueue(object : Callback {
                             override fun onFailure(call: Call, e: IOException) {
-                                Log.d("log1", e.message.toString())
+                                Log.d("log", "인터넷 연결 불안정")
+
                             }
 
                             override fun onResponse(call: Call, response: Response) {
                                 object : Thread() {
-                                    @SuppressLint("NotifyDataSetChanged")
                                     override fun run() {
                                         if (response.code() == 200) {
                                         } else {
+                                            saveState = false
+                                            Log.d("log", response.message())
                                         }
                                     }
                                 }.run()
                             }
                         })
                         startCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
+                        endCal.add(Calendar.DATE, AddScheduleInfo.repeatInterval)
                     }
                 } else if (AddScheduleInfo.repeatDetailType == "Weeks") {
-//
                 }
             }
             finish()
         }
-
     }
 
     private fun colorSetting(v: ImageView) {
-        if (AddScheduleInfo.color == 1) {
+        if (AddScheduleInfo.color == 0) {
             Glide.with(this).load(R.drawable.color1).into(v)
-        } else if (AddScheduleInfo.color == 2) {
+        } else if (AddScheduleInfo.color == 1) {
             Glide.with(this).load(R.drawable.color2).into(v)
-        } else if (AddScheduleInfo.color == 3) {
+        } else if (AddScheduleInfo.color == 2) {
             Glide.with(this).load(R.drawable.color3).into(v)
-        } else if (AddScheduleInfo.color == 4) {
+        } else if (AddScheduleInfo.color == 3) {
             Glide.with(this).load(R.drawable.color4).into(v)
-        } else if (AddScheduleInfo.color == 5) {
+        } else if (AddScheduleInfo.color == 4) {
             Glide.with(this).load(R.drawable.color5).into(v)
-        } else if (AddScheduleInfo.color == 6) {
+        } else if (AddScheduleInfo.color == 5) {
             Glide.with(this).load(R.drawable.color6).into(v)
-        } else if (AddScheduleInfo.color == 7) {
+        } else if (AddScheduleInfo.color == 6) {
             Glide.with(this).load(R.drawable.color7).into(v)
-        } else if (AddScheduleInfo.color == 8) {
+        } else if (AddScheduleInfo.color == 7) {
             Glide.with(this).load(R.drawable.color8).into(v)
-        } else if (AddScheduleInfo.color == 9) {
+        } else if (AddScheduleInfo.color == 8) {
             Glide.with(this).load(R.drawable.color9).into(v)
-        } else if (AddScheduleInfo.color == 10) {
+        } else if (AddScheduleInfo.color == 9) {
             Glide.with(this).load(R.drawable.color10).into(v)
-        } else if (AddScheduleInfo.color == 11) {
+        } else if (AddScheduleInfo.color == 10) {
             Glide.with(this).load(R.drawable.color11).into(v)
-        } else if (AddScheduleInfo.color == 12) {
+        } else if (AddScheduleInfo.color == 11) {
             Glide.with(this).load(R.drawable.color12).into(v)
         }
     }
@@ -857,6 +1161,49 @@ class ModifyScheduleActivity : AppCompatActivity() {
                 (cal.get(Calendar.HOUR) + 12).toString() + ":" +
                 calSetting(cal.get(Calendar.MINUTE)) + ":" +
                 calSetting(cal.get(Calendar.SECOND))
+    }
+
+    private fun dayOfWeek(d: Int): String {
+        return when (d) {
+            1 -> "일"
+            2 -> "월"
+            3 -> "화"
+            4 -> "수"
+            5 -> "목"
+            6 -> "금"
+            7 -> "토"
+            else -> " "
+        }
+    }
+
+    private fun colorTextSetting(): String {
+        if (AddScheduleInfo.color == 0) {
+            return "레드"
+        } else if (AddScheduleInfo.color == 1) {
+            return "파스텔 레드"
+        } else if (AddScheduleInfo.color == 2) {
+            return "옐로우"
+        } else if (AddScheduleInfo.color == 3) {
+            return "파스텔 옐로우"
+        } else if (AddScheduleInfo.color == 4) {
+            return "그린"
+        } else if (AddScheduleInfo.color == 5) {
+            return "파스텔 그린"
+        } else if (AddScheduleInfo.color == 6) {
+            return "블루"
+        } else if (AddScheduleInfo.color == 7) {
+            return "파스텔 블루"
+        } else if (AddScheduleInfo.color == 8) {
+            return "어두운 그레이"
+        } else if (AddScheduleInfo.color == 9) {
+            return "짙은 그레이"
+        } else if (AddScheduleInfo.color == 10) {
+            return "그레이"
+        } else if (AddScheduleInfo.color == 11) {
+            return "밝은 그레이"
+        } else {
+            return ""
+        }
     }
 }
 

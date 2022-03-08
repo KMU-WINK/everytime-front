@@ -152,10 +152,13 @@ class Modify_invite : AppCompatActivity() {
                                     if (data.user) {
                                         userInviteList.remove(data)
                                         AddScheduleInfo.invitersNumber--
+                                        InviteData.userNum--
                                     } else {
                                         groupInviteList.remove(data)
                                         AddScheduleInfo.inviteGroupsNumber--
                                         AddScheduleInfo.allGroupMembersNumber -= data.members
+                                        InviteData.groupNum--
+                                        InviteData.allGroupNum -= data.members
                                     }
                                     onRestart()
                                 }
